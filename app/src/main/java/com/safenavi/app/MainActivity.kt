@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
                 true
             }
             menu.add("음성 안내 설정").setOnMenuItemClickListener {
-                startActivity(Intent(Settings.ACTION_TTS_SETTINGS))
+                startActivity(Intent("com.android.settings.TTS_SETTINGS"))
                 true
             }
             menu.add("앱 설정").setOnMenuItemClickListener {
