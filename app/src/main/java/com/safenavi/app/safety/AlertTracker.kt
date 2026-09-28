@@ -11,7 +11,7 @@ class AlertTracker {
         if(d<s.min){s.min=d;s.away=0}else if(d>s.min+15)s.away++
         s.last=d
         if(s.min<120 && s.away>=2){s.stage=AlertStage.PASSED;return AlertStage.PASSED}
-        if(s.approach<2)return null
+        if(s.approach<1 && s.stage==AlertStage.NONE && d>700)return null
         val n=when { d<=100->AlertStage.M100; d<=300->AlertStage.M300; d<=700->AlertStage.M700; else->AlertStage.NONE }
         val rank=mapOf(AlertStage.NONE to 0,AlertStage.M700 to 1,AlertStage.M300 to 2,AlertStage.M100 to 3,AlertStage.PASSED to 4)
         if(rank.getValue(n)<=rank.getValue(s.stage))return null

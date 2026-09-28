@@ -11,8 +11,8 @@ android {
         applicationId = "com.safenavi.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 14
-        versionName = "14"
+        versionCode = 15
+        versionName = "15"
     }
 
     compileOptions {
