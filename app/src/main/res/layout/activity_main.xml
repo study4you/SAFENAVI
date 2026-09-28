@@ -1,0 +1,15 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:gravity="center" android:padding="24dp">
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="SafeNavi" android:textSize="30sp" android:textStyle="bold"/>
+    <TextView android:id="@+id/status" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:text="안전운행 대기"
+        android:textSize="20sp" android:layout_marginTop="32dp"/>
+    <Button android:id="@+id/startButton" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="안전운행 시작"
+        android:layout_marginTop="40dp"/>
+    <Button android:id="@+id/stopButton" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="안전운행 종료"
+        android:layout_marginTop="12dp"/>
+</LinearLayout>
