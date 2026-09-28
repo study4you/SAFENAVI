@@ -49,7 +49,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
     private lateinit var safetySync: SafetyDataSync
 
     private var carMarker: Marker? = null
-    private val safetyMarkers = mutableListOf<Marker>()
     private var lastLocation: Location? = null
     private var firstFix = true
     private var driving = false
@@ -358,31 +357,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
             )
 
             withContext(Dispatchers.Main) {
-                safetyMarkers.forEach { map.overlays.remove(it) }
-                safetyMarkers.clear()
-
-                points.forEach { p ->
-                    val marker = Marker(map).apply {
-                        position = GeoPoint(p.latitude, p.longitude)
-                        title = p.locationName ?: p.roadName ?: "안전운행 지점"
-                        snippet = buildString {
-                            append(
-                                when (p.type) {
-                                    "SPEED" -> "과속"
-                                    "SIGNAL_SPEED" -> "신호·과속"
-                                    "SECTION" -> "구간단속"
-                                    "SCHOOL" -> "학교 주변"
-                                    "TRAFFIC_CALMING" -> "과속방지시설"
-                                    else -> "안전정보"
-                                }
-                            )
-                            p.speedLimit?.let { append(" · 제한속도 ${it}km/h") }
-                        }
-                        setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                    }
-                    safetyMarkers.add(marker)
-                    map.overlays.add(marker)
-                }
 
                 if (driving) {
                     driveHint.text = if (points.isEmpty()) {
