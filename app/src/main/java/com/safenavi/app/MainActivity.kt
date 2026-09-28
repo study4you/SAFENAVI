@@ -206,7 +206,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
                 dataStatus.text = if (total == 0) {
                     "안전정보 데이터 0건 · 지도/GPS만 동작 중"
                 } else {
-                    "전체 $total건 · 현재 5km 이내 ${points.size}건"
+                    "전체 ${total}건 · 현재 5km 이내 ${points.size}건"
                 }
                 map.invalidate()
             }
