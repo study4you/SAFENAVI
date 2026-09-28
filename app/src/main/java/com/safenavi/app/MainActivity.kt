@@ -20,6 +20,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
+import android.widget.PopupMenu
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import androidx.activity.result.contract.ActivityResultContracts
@@ -129,12 +130,35 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
             startActivity(Intent(this, DataUpdateActivity::class.java))
         }
         findViewById<Button>(R.id.driveRecenterButton).setOnClickListener { recenter(true) }
+        findViewById<Button>(R.id.menuButton).setOnClickListener { anchor -> showDriveMenu(anchor) }
         findViewById<Button>(R.id.zoomInButton).setOnClickListener { map.controller.zoomIn() }
         findViewById<Button>(R.id.zoomOutButton).setOnClickListener { map.controller.zoomOut() }
         findViewById<Button>(R.id.stopButton).setOnClickListener { stopSafetyAndExit() }
 
         requestOptionalPermissions()
         startAutomaticDrive()
+    }
+
+    private fun showDriveMenu(anchor: View) {
+        PopupMenu(this, anchor).apply {
+            menu.add("단속정보 업데이트").setOnMenuItemClickListener {
+                startActivity(Intent(this@MainActivity, DataUpdateActivity::class.java))
+                true
+            }
+            menu.add("음성 안내 설정").setOnMenuItemClickListener {
+                startActivity(Intent(Settings.ACTION_TTS_SETTINGS))
+                true
+            }
+            menu.add("앱 설정").setOnMenuItemClickListener {
+                startActivity(
+                    Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.parse("package:$packageName")
+                    }
+                )
+                true
+            }
+            show()
+        }
     }
 
     private fun requestOptionalPermissions() {
