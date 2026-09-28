@@ -10,10 +10,13 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.safenavi.app.data.SafetyDatabase
 import com.safenavi.app.location.DrivingLocationService
 import kotlinx.coroutines.Dispatchers
@@ -57,6 +60,26 @@ class MainActivity : AppCompatActivity(), LocationListener {
         status = findViewById(R.id.status)
         dataStatus = findViewById(R.id.dataStatus)
         map = findViewById(R.id.map)
+
+        val topPanel = findViewById<View>(R.id.topPanel)
+        val bottomControls = findViewById<View>(R.id.bottomControls)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root)) { _, insets ->
+            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            topPanel.setPadding(
+                topPanel.paddingLeft,
+                bars.top + 12.dp(),
+                topPanel.paddingRight,
+                12.dp()
+            )
+            bottomControls.setPadding(
+                bottomControls.paddingLeft,
+                10.dp(),
+                bottomControls.paddingRight,
+                bars.bottom + 10.dp()
+            )
+            insets
+        }
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         db = SafetyDatabase.getInstance(this)
 
@@ -222,6 +245,8 @@ class MainActivity : AppCompatActivity(), LocationListener {
         map.onPause()
         super.onPause()
     }
+
+    private fun Int.dp(): Int = (this * resources.displayMetrics.density).toInt()
 
     override fun onDestroy() {
         locationManager.removeUpdates(this)
