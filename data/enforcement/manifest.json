@@ -1,91 +1,128 @@
 {
-  "schema": 1,
-  "updatedAt": "2026-09-29",
+  "schema": 2,
+  "updatedAt": "2026-09-28T18:19:52+00:00",
+  "source": "OpenStreetMap",
+  "sourceLicense": "ODbL",
+  "sourceKind": "ROAD_SAFETY",
   "datasets": [
     {
       "region": "SEOUL",
-      "version": "1",
-      "path": "data/enforcement/seoul.json"
+      "version": "2",
+      "path": "data/enforcement/seoul.json",
+      "source": "OpenStreetMap",
+      "sourceKind": "ROAD_SAFETY"
     },
     {
       "region": "BUSAN",
-      "version": "1",
-      "path": "data/enforcement/busan.json"
+      "version": "2",
+      "path": "data/enforcement/busan.json",
+      "source": "OpenStreetMap",
+      "sourceKind": "ROAD_SAFETY"
     },
     {
       "region": "DAEGU",
-      "version": "1",
-      "path": "data/enforcement/daegu.json"
+      "version": "2",
+      "path": "data/enforcement/daegu.json",
+      "source": "OpenStreetMap",
+      "sourceKind": "ROAD_SAFETY"
     },
     {
       "region": "INCHEON",
       "version": "1",
-      "path": "data/enforcement/incheon.json"
+      "path": "data/enforcement/incheon.json",
+      "source": "OpenStreetMap",
+      "sourceKind": "ROAD_SAFETY"
     },
     {
       "region": "GWANGJU",
       "version": "1",
-      "path": "data/enforcement/gwangju.json"
+      "path": "data/enforcement/gwangju.json",
+      "source": "OpenStreetMap",
+      "sourceKind": "ROAD_SAFETY"
     },
     {
       "region": "DAEJEON",
-      "version": "1",
-      "path": "data/enforcement/daejeon.json"
+      "version": "2",
+      "path": "data/enforcement/daejeon.json",
+      "source": "OpenStreetMap",
+      "sourceKind": "ROAD_SAFETY"
     },
     {
       "region": "ULSAN",
       "version": "1",
-      "path": "data/enforcement/ulsan.json"
+      "path": "data/enforcement/ulsan.json",
+      "source": "OpenStreetMap",
+      "sourceKind": "ROAD_SAFETY"
     },
     {
       "region": "SEJONG",
       "version": "1",
-      "path": "data/enforcement/sejong.json"
+      "path": "data/enforcement/sejong.json",
+      "source": "OpenStreetMap",
+      "sourceKind": "ROAD_SAFETY"
     },
     {
       "region": "GYEONGGI",
       "version": "1",
-      "path": "data/enforcement/gyeonggi.json"
+      "path": "data/enforcement/gyeonggi.json",
+      "source": "OpenStreetMap",
+      "sourceKind": "ROAD_SAFETY"
     },
     {
       "region": "GANGWON",
-      "version": "1",
-      "path": "data/enforcement/gangwon.json"
+      "version": "2",
+      "path": "data/enforcement/gangwon.json",
+      "source": "OpenStreetMap",
+      "sourceKind": "ROAD_SAFETY"
     },
     {
       "region": "CHUNGBUK",
       "version": "1",
-      "path": "data/enforcement/chungbuk.json"
+      "path": "data/enforcement/chungbuk.json",
+      "source": "OpenStreetMap",
+      "sourceKind": "ROAD_SAFETY"
     },
     {
       "region": "CHUNGNAM",
       "version": "1",
-      "path": "data/enforcement/chungnam.json"
+      "path": "data/enforcement/chungnam.json",
+      "source": "OpenStreetMap",
+      "sourceKind": "ROAD_SAFETY"
     },
     {
       "region": "JEONBUK",
-      "version": "1",
-      "path": "data/enforcement/jeonbuk.json"
+      "version": "2",
+      "path": "data/enforcement/jeonbuk.json",
+      "source": "OpenStreetMap",
+      "sourceKind": "ROAD_SAFETY"
     },
     {
       "region": "JEONNAM",
       "version": "1",
-      "path": "data/enforcement/jeonnam.json"
+      "path": "data/enforcement/jeonnam.json",
+      "source": "OpenStreetMap",
+      "sourceKind": "ROAD_SAFETY"
     },
     {
       "region": "GYEONGBUK",
       "version": "1",
-      "path": "data/enforcement/gyeongbuk.json"
+      "path": "data/enforcement/gyeongbuk.json",
+      "source": "OpenStreetMap",
+      "sourceKind": "ROAD_SAFETY"
     },
     {
       "region": "GYEONGNAM",
-      "version": "1",
-      "path": "data/enforcement/gyeongnam.json"
+      "version": "2",
+      "path": "data/enforcement/gyeongnam.json",
+      "source": "OpenStreetMap",
+      "sourceKind": "ROAD_SAFETY"
     },
     {
       "region": "JEJU",
       "version": "1",
-      "path": "data/enforcement/jeju.json"
+      "path": "data/enforcement/jeju.json",
+      "source": "OpenStreetMap",
+      "sourceKind": "ROAD_SAFETY"
     }
   ]
 }
