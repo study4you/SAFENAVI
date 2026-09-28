@@ -17,6 +17,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import android.graphics.Color
@@ -171,6 +172,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
     }
 
     private fun stopSafetyAndExit() {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         stopService(Intent(this, DrivingLocationService::class.java))
         try { locationManager.removeUpdates(this) } catch (_: Exception) {}
         finishAndRemoveTask()
@@ -203,6 +205,8 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
 
     private fun enterDriveMode() {
         driving = true
+        // 안전운행 중에는 화면이 자동으로 꺼지지 않도록 유지한다.
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         followMode = true
         idleControls.visibility = View.GONE
         driveControls.visibility = View.VISIBLE
