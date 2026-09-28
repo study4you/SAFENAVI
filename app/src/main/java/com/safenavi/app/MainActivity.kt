@@ -107,6 +107,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
         }
 
         findViewById<Button>(R.id.myLocationButton).setOnClickListener { recenter(false) }
+        findViewById<Button>(R.id.dataUpdateButton).setOnClickListener {
+            startActivity(Intent(this, DataUpdateActivity::class.java))
+        }
         findViewById<Button>(R.id.recenterButton).setOnClickListener { recenter(true) }
         findViewById<Button>(R.id.driveRecenterButton).setOnClickListener { recenter(true) }
 

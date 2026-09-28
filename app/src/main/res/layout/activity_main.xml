@@ -134,16 +134,24 @@
             android:layout_height="62dp"
             android:layout_weight="1"
             android:text="안전운행 시작"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/myLocationButton"
-            android:layout_width="110dp"
+            android:layout_width="92dp"
             android:layout_height="62dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="8dp"
             android:text="내 위치"
-            android:textSize="16sp" />
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/dataUpdateButton"
+            android:layout_width="92dp"
+            android:layout_height="62dp"
+            android:layout_marginStart="8dp"
+            android:text="업데이트"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -190,7 +198,7 @@
                 android:id="@+id/driveHint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="전방 안전정보 감시"
+                android:text="전방 단속정보 감시"
                 android:textColor="#BFFFFFFF"
                 android:textSize="12sp"
                 android:layout_marginTop="2dp" />

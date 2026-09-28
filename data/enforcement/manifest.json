@@ -8,14 +8,84 @@
       "path": "data/enforcement/seoul.json"
     },
     {
-      "region": "GYEONGGI",
+      "region": "BUSAN",
       "version": "1",
-      "path": "data/enforcement/gyeonggi.json"
+      "path": "data/enforcement/busan.json"
+    },
+    {
+      "region": "DAEGU",
+      "version": "1",
+      "path": "data/enforcement/daegu.json"
     },
     {
       "region": "INCHEON",
       "version": "1",
       "path": "data/enforcement/incheon.json"
+    },
+    {
+      "region": "GWANGJU",
+      "version": "1",
+      "path": "data/enforcement/gwangju.json"
+    },
+    {
+      "region": "DAEJEON",
+      "version": "1",
+      "path": "data/enforcement/daejeon.json"
+    },
+    {
+      "region": "ULSAN",
+      "version": "1",
+      "path": "data/enforcement/ulsan.json"
+    },
+    {
+      "region": "SEJONG",
+      "version": "1",
+      "path": "data/enforcement/sejong.json"
+    },
+    {
+      "region": "GYEONGGI",
+      "version": "1",
+      "path": "data/enforcement/gyeonggi.json"
+    },
+    {
+      "region": "GANGWON",
+      "version": "1",
+      "path": "data/enforcement/gangwon.json"
+    },
+    {
+      "region": "CHUNGBUK",
+      "version": "1",
+      "path": "data/enforcement/chungbuk.json"
+    },
+    {
+      "region": "CHUNGNAM",
+      "version": "1",
+      "path": "data/enforcement/chungnam.json"
+    },
+    {
+      "region": "JEONBUK",
+      "version": "1",
+      "path": "data/enforcement/jeonbuk.json"
+    },
+    {
+      "region": "JEONNAM",
+      "version": "1",
+      "path": "data/enforcement/jeonnam.json"
+    },
+    {
+      "region": "GYEONGBUK",
+      "version": "1",
+      "path": "data/enforcement/gyeongbuk.json"
+    },
+    {
+      "region": "GYEONGNAM",
+      "version": "1",
+      "path": "data/enforcement/gyeongnam.json"
+    },
+    {
+      "region": "JEJU",
+      "version": "1",
+      "path": "data/enforcement/jeju.json"
     }
   ]
 }

@@ -16,7 +16,7 @@ data class DataUpdateResult(
 )
 
 class EnforcementDataUpdater(
-    context: Context,
+    private val context: Context,
     private val db: SafetyDatabase
 ) {
     private val prefs = context.getSharedPreferences("enforcement_data", Context.MODE_PRIVATE)
@@ -26,6 +26,28 @@ class EnforcementDataUpdater(
             "https://raw.githubusercontent.com/study4you/SAFENAVI/main/"
         private const val MANIFEST = "data/enforcement/manifest.json"
         private const val CHECK_INTERVAL = 6 * 60 * 60 * 1000L
+
+        val ALL_REGIONS = linkedMapOf(
+            "SEOUL" to "서울",
+            "BUSAN" to "부산",
+            "DAEGU" to "대구",
+            "INCHEON" to "인천",
+            "GWANGJU" to "광주",
+            "DAEJEON" to "대전",
+            "ULSAN" to "울산",
+            "SEJONG" to "세종",
+            "GYEONGGI" to "경기",
+            "GANGWON" to "강원",
+            "CHUNGBUK" to "충북",
+            "CHUNGNAM" to "충남",
+            "JEONBUK" to "전북",
+            "JEONNAM" to "전남",
+            "GYEONGBUK" to "경북",
+            "GYEONGNAM" to "경남",
+            "JEJU" to "제주"
+        )
+
+        val DEFAULT_REGIONS = setOf("SEOUL", "GYEONGGI", "INCHEON")
     }
 
     suspend fun pruneLegacyData() = withContext(Dispatchers.IO) {
@@ -35,78 +57,126 @@ class EnforcementDataUpdater(
         }
     }
 
-    suspend fun updateIfNeeded(force: Boolean = false): DataUpdateResult =
-        withContext(Dispatchers.IO) {
-            val now = System.currentTimeMillis()
-            val lastCheck = prefs.getLong("last_manifest_check", 0L)
-            if (!force && now - lastCheck < CHECK_INTERVAL) {
-                return@withContext DataUpdateResult(
-                    checked = false,
-                    updatedRegions = emptyList(),
-                    totalCount = db.safetyPointDao().count(),
-                    message = "최근 데이터 확인 완료"
-                )
-            }
+    fun getSelectedRegions(): Set<String> {
+        val saved = prefs.getStringSet("selected_regions", null)
+        return saved?.toSet() ?: DEFAULT_REGIONS
+    }
 
-            val manifestText = downloadText(BASE + MANIFEST)
-                ?: return@withContext DataUpdateResult(
-                    checked = true,
-                    updatedRegions = emptyList(),
-                    totalCount = db.safetyPointDao().count(),
-                    message = "데이터 서버 연결 실패"
-                )
+    fun saveSelectedRegions(regions: Set<String>) {
+        prefs.edit().putStringSet("selected_regions", regions).apply()
+    }
 
-            val root = JSONObject(manifestText)
-            val datasets = root.optJSONArray("datasets")
-                ?: return@withContext DataUpdateResult(
-                    checked = true,
-                    updatedRegions = emptyList(),
-                    totalCount = db.safetyPointDao().count(),
-                    message = "데이터 목록 형식 오류"
-                )
+    fun getRegionVersion(region: String): String? =
+        prefs.getString("version_${region.uppercase()}", null)
 
-            val updated = mutableListOf<String>()
+    suspend fun updateIfNeeded(force: Boolean = false): DataUpdateResult {
+        return updateRegions(getSelectedRegions(), force)
+    }
 
-            for (i in 0 until datasets.length()) {
-                val item = datasets.optJSONObject(i) ?: continue
-                val region = item.optString("region").uppercase()
-                val version = item.optString("version")
-                val path = item.optString("path")
+    suspend fun updateRegions(
+        selectedRegions: Set<String>,
+        force: Boolean = true
+    ): DataUpdateResult = withContext(Dispatchers.IO) {
+        val normalized = selectedRegions
+            .map { it.uppercase() }
+            .filter { it in ALL_REGIONS.keys }
+            .toSet()
 
-                if (region !in setOf("SEOUL", "GYEONGGI", "INCHEON")) continue
-                if (version.isBlank() || path.isBlank()) continue
-
-                val localVersion = prefs.getString("version_$region", null)
-                if (!force && localVersion == version) continue
-
-                val dataText = downloadText(BASE + path) ?: continue
-                val points = parseDataset(region, dataText)
-
-                db.withTransaction {
-                    db.safetyPointDao().deleteByRegion(region)
-                    if (points.isNotEmpty()) {
-                        db.safetyPointDao().insertAll(points)
-                    }
-                }
-
-                prefs.edit().putString("version_$region", version).apply()
-                updated += region
-            }
-
-            prefs.edit().putLong("last_manifest_check", now).apply()
-
-            val total = db.safetyPointDao().count()
-            DataUpdateResult(
-                checked = true,
-                updatedRegions = updated,
-                totalCount = total,
-                message = if (updated.isEmpty()) {
-                    "단속정보 최신 상태"
-                } else {
-                    "단속정보 업데이트: " + updated.joinToString(", ")
-                }
+        if (normalized.isEmpty()) {
+            return@withContext DataUpdateResult(
+                checked = false,
+                updatedRegions = emptyList(),
+                totalCount = db.safetyPointDao().count(),
+                message = "선택된 지역이 없습니다"
             )
         }
+
+        val now = System.currentTimeMillis()
+        val lastCheck = prefs.getLong("last_manifest_check", 0L)
+
+        if (!force && now - lastCheck < CHECK_INTERVAL) {
+            return@withContext DataUpdateResult(
+                checked = false,
+                updatedRegions = emptyList(),
+                totalCount = db.safetyPointDao().count(),
+                message = "최근 데이터 확인 완료"
+            )
+        }
+
+        val manifestText = downloadText(BASE + MANIFEST)
+            ?: return@withContext DataUpdateResult(
+                checked = true,
+                updatedRegions = emptyList(),
+                totalCount = db.safetyPointDao().count(),
+                message = "데이터 서버 연결 실패"
+            )
+
+        val root = JSONObject(manifestText)
+        val datasets = root.optJSONArray("datasets")
+            ?: return@withContext DataUpdateResult(
+                checked = true,
+                updatedRegions = emptyList(),
+                totalCount = db.safetyPointDao().count(),
+                message = "데이터 목록 형식 오류"
+            )
+
+        val updated = mutableListOf<String>()
+        val failed = mutableListOf<String>()
+
+        for (i in 0 until datasets.length()) {
+            val item = datasets.optJSONObject(i) ?: continue
+            val region = item.optString("region").uppercase()
+            val version = item.optString("version")
+            val path = item.optString("path")
+
+            if (region !in normalized) continue
+            if (region !in ALL_REGIONS.keys) continue
+            if (version.isBlank() || path.isBlank()) continue
+
+            val localVersion = prefs.getString("version_$region", null)
+            if (!force && localVersion == version) continue
+
+            val dataText = downloadText(BASE + path)
+            if (dataText == null) {
+                failed += region
+                continue
+            }
+
+            val points = parseDataset(region, dataText)
+
+            db.withTransaction {
+                db.safetyPointDao().deleteByRegion(region)
+                if (points.isNotEmpty()) {
+                    db.safetyPointDao().insertAll(points)
+                }
+            }
+
+            prefs.edit().putString("version_$region", version).apply()
+            updated += region
+        }
+
+        saveSelectedRegions(normalized)
+        prefs.edit().putLong("last_manifest_check", now).apply()
+
+        val total = db.safetyPointDao().count()
+        val message = when {
+            failed.isNotEmpty() && updated.isNotEmpty() ->
+                "일부 업데이트 완료 / 실패: " + failed.joinToString(", ")
+            failed.isNotEmpty() ->
+                "업데이트 실패: " + failed.joinToString(", ")
+            updated.isEmpty() ->
+                "선택 지역 단속정보 최신 상태"
+            else ->
+                "업데이트 완료: " + updated.joinToString(", ")
+        }
+
+        DataUpdateResult(
+            checked = true,
+            updatedRegions = updated,
+            totalCount = total,
+            message = message
+        )
+    }
 
     private fun parseDataset(region: String, json: String): List<SafetyPoint> {
         val root = JSONObject(json)
@@ -146,7 +216,7 @@ class EnforcementDataUpdater(
             requestMethod = "GET"
             connectTimeout = 8000
             readTimeout = 12000
-            setRequestProperty("User-Agent", "SafeNavi/0.06")
+            setRequestProperty("User-Agent", "SafeNavi/0.07")
             setRequestProperty("Cache-Control", "no-cache")
         }
 
