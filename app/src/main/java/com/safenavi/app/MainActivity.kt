@@ -7,7 +7,10 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -17,8 +20,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import com.safenavi.app.data.SafetyDatabase
 import com.safenavi.app.data.EnforcementDataUpdater
+import com.safenavi.app.data.SafetyDatabase
 import com.safenavi.app.location.DrivingLocationService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -55,16 +58,20 @@ class MainActivity : AppCompatActivity(), LocationListener {
     private var followMode = true
     private var safetyTotal = 0
 
-    private val permissionLauncher =
+    private val locationPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-            if (granted) {
-                startMapLocationUpdates()
-                startDrive()
-            } else {
+            if (granted) startAutomaticDrive()
+            else {
                 status.text = "위치 권한이 필요합니다"
                 dataStatus.text = "안전운행을 시작하려면 위치 권한을 허용해 주세요"
             }
         }
+
+    private val notificationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
+
+    private val overlayPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,42 +97,65 @@ class MainActivity : AppCompatActivity(), LocationListener {
             val result = dataUpdater.updateIfNeeded()
             safetyTotal = result.totalCount
             withContext(Dispatchers.Main) {
-                updateIdleStatus()
-                if (result.checked) dataStatus.text = result.message + " · ${result.totalCount}건"
+                if (driving && result.checked) {
+                    dataStatus.text = result.message + " · ${result.totalCount}건"
+                }
             }
         }
 
-        findViewById<Button>(R.id.startButton).setOnClickListener {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED
-            ) {
-                startMapLocationUpdates()
-                startDrive()
-            } else {
-                permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-            }
-        }
-
+        findViewById<Button>(R.id.startButton).setOnClickListener { startAutomaticDrive() }
         findViewById<Button>(R.id.myLocationButton).setOnClickListener { recenter(false) }
         findViewById<Button>(R.id.dataUpdateButton).setOnClickListener {
             startActivity(Intent(this, DataUpdateActivity::class.java))
         }
         findViewById<Button>(R.id.recenterButton).setOnClickListener { recenter(true) }
         findViewById<Button>(R.id.driveRecenterButton).setOnClickListener { recenter(true) }
-
         findViewById<Button>(R.id.zoomInButton).setOnClickListener { map.controller.zoomIn() }
         findViewById<Button>(R.id.zoomOutButton).setOnClickListener { map.controller.zoomOut() }
+        findViewById<Button>(R.id.stopButton).setOnClickListener { stopSafetyAndExit() }
 
-        findViewById<Button>(R.id.stopButton).setOnClickListener {
-            stopService(Intent(this, DrivingLocationService::class.java))
-            exitDriveMode()
-        }
+        requestOptionalPermissions()
+        startAutomaticDrive()
+    }
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-            == PackageManager.PERMISSION_GRANTED
+    private fun requestOptionalPermissions() {
+        if (Build.VERSION.SDK_INT >= 33 &&
+            ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+            != PackageManager.PERMISSION_GRANTED
         ) {
-            startMapLocationUpdates()
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            overlayPermissionLauncher.launch(
+                Intent(
+                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:$packageName")
+                )
+            )
+        }
+    }
+
+    private fun startAutomaticDrive() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            return
+        }
+
+        startMapLocationUpdates()
+        ContextCompat.startForegroundService(
+            this,
+            Intent(this, DrivingLocationService::class.java)
+        )
+        enterDriveMode()
+    }
+
+    private fun stopSafetyAndExit() {
+        stopService(Intent(this, DrivingLocationService::class.java))
+        try { locationManager.removeUpdates(this) } catch (_: Exception) {}
+        finishAndRemoveTask()
     }
 
     private fun bindViews() {
@@ -135,7 +165,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
         currentSpeed = findViewById(R.id.currentSpeed)
         locationLabel = findViewById(R.id.locationLabel)
         driveHint = findViewById(R.id.driveHint)
-
         topPanel = findViewById(R.id.topPanel)
         idleControls = findViewById(R.id.idleControls)
         driveControls = findViewById(R.id.driveControls)
@@ -146,7 +175,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
     private fun applySystemInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root)) { _, insets ->
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-
             topPanel.setPadding(16.dp(), bars.top + 8.dp(), 16.dp(), 10.dp())
             idleControls.setPadding(14.dp(), 10.dp(), 14.dp(), bars.bottom + 10.dp())
             driveControls.setPadding(12.dp(), 10.dp(), 12.dp(), bars.bottom + 10.dp())
@@ -154,18 +182,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
         }
     }
 
-    private fun startDrive() {
-        ContextCompat.startForegroundService(
-            this,
-            Intent(this, DrivingLocationService::class.java)
-        )
-        enterDriveMode()
-    }
-
     private fun enterDriveMode() {
         driving = true
         followMode = true
-
         idleControls.visibility = View.GONE
         driveControls.visibility = View.VISIBLE
         speedPanel.visibility = View.VISIBLE
@@ -175,35 +194,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
         dataStatus.text = if (safetyTotal > 0) {
             "전방 단속정보 감시 · 데이터 ${safetyTotal}건"
         } else {
-            "GPS 주행모드 · 단속정보 데이터 0건"
+            "GPS 주행모드 · 단속정보 확인 중"
         }
-
         lastLocation?.let { updateNavigationCamera(it, true) }
-    }
-
-    private fun exitDriveMode() {
-        driving = false
-        followMode = false
-
-        idleControls.visibility = View.VISIBLE
-        driveControls.visibility = View.GONE
-        speedPanel.visibility = View.GONE
-        floatingButtons.visibility = View.GONE
-
-        map.mapOrientation = 0f
-        updateIdleStatus()
-        lastLocation?.let {
-            map.controller.animateTo(GeoPoint(it.latitude, it.longitude))
-        }
-    }
-
-    private fun updateIdleStatus() {
-        status.text = if (lastLocation == null) "안전운행 대기" else "현재 위치 확인"
-        dataStatus.text = if (safetyTotal > 0) {
-            "단속정보 데이터 ${safetyTotal}건 · 시작 버튼을 누르세요"
-        } else {
-            "단속정보 데이터 0건 · 지도/GPS만 동작 중"
-        }
     }
 
     private fun startMapLocationUpdates() {
@@ -212,6 +205,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         ) return
 
         try {
+            locationManager.removeUpdates(this)
             locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
                 800L,
@@ -232,32 +226,15 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         val speedKmh = if (location.hasSpeed()) {
             (location.speed * 3.6f).roundToInt()
-        } else {
-            0
-        }
+        } else 0
+
         currentSpeed.text = speedKmh.toString()
-
-        if (driving) {
-            status.text = "안전운행 중"
-            dataStatus.text = "GPS ${location.accuracy.roundToInt()}m · ${speedKmh}km/h"
-            locationLabel.text = "현재 위치 추적 중"
-            updateNavigationCamera(location, firstFix)
-        } else {
-            status.text = "현재 위치 확인"
-            dataStatus.text = if (safetyTotal > 0) {
-                "GPS ${location.accuracy.roundToInt()}m · 단속정보 ${safetyTotal}건"
-            } else {
-                "GPS ${location.accuracy.roundToInt()}m · 단속정보 데이터 0건"
-            }
-
-            if (firstFix) {
-                map.controller.setZoom(17.0)
-                map.controller.animateTo(GeoPoint(location.latitude, location.longitude))
-            }
-        }
+        status.text = "안전운행 중"
+        dataStatus.text = "GPS ${location.accuracy.roundToInt()}m · ${speedKmh}km/h"
+        locationLabel.text = "현재 위치 추적 중"
+        updateNavigationCamera(location, firstFix)
 
         firstFix = false
-
         loadNearbySafetyPoints(location)
         map.invalidate()
     }
@@ -278,10 +255,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
     private fun updateNavigationCamera(location: Location, forceZoom: Boolean) {
         if (!followMode) return
 
-        val heading = when {
-            location.hasBearing() && location.speed > 1.2f -> location.bearing
-            else -> 0f
-        }
+        val heading = if (location.hasBearing() && location.speed > 1.2f) {
+            location.bearing
+        } else 0f
 
         if (forceZoom || map.zoomLevelDouble < 17.0) {
             map.controller.setZoom(18.0)
@@ -289,13 +265,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         if (heading != 0f) {
             map.mapOrientation = -heading
-            val ahead = pointAhead(
-                location.latitude,
-                location.longitude,
-                heading.toDouble(),
-                110.0
+            map.controller.animateTo(
+                pointAhead(location.latitude, location.longitude, heading.toDouble(), 110.0)
             )
-            map.controller.animateTo(ahead)
         } else {
             map.controller.animateTo(GeoPoint(location.latitude, location.longitude))
         }
@@ -304,13 +276,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
     private fun recenter(navigationMode: Boolean) {
         lastLocation?.let {
             followMode = navigationMode || driving
-            if (driving) {
-                updateNavigationCamera(it, false)
-            } else {
-                map.mapOrientation = 0f
-                map.controller.setZoom(17.0)
-                map.controller.animateTo(GeoPoint(it.latitude, it.longitude))
-            }
+            updateNavigationCamera(it, false)
         }
     }
 
@@ -343,28 +309,18 @@ class MainActivity : AppCompatActivity(), LocationListener {
             val r = 5000.0
             val latD = r / 111320.0
             val lonD = r / (111320.0 * cos(Math.toRadians(location.latitude)))
-
             val points = db.safetyPointDao().findNearby(
                 location.latitude - latD,
                 location.latitude + latD,
                 location.longitude - lonD,
                 location.longitude + lonD
             )
-
             withContext(Dispatchers.Main) {
-
-                if (driving) {
-                    driveHint.text = if (points.isEmpty()) {
-                        if (safetyTotal == 0) {
-                            "단속정보 데이터 필요"
-                        } else {
-                            "5km 이내 단속정보 없음"
-                        }
-                    } else {
-                        "5km 이내 단속정보 ${points.size}건"
-                    }
+                driveHint.text = when {
+                    points.isNotEmpty() -> "5km 이내 단속정보 ${points.size}건"
+                    safetyTotal == 0 -> "단속정보 데이터 업데이트 필요"
+                    else -> "5km 이내 단속정보 없음"
                 }
-                map.invalidate()
             }
         }
     }
@@ -372,17 +328,24 @@ class MainActivity : AppCompatActivity(), LocationListener {
     override fun onResume() {
         super.onResume()
         map.onResume()
+        sendBroadcast(
+            Intent(DrivingLocationService.ACTION_APP_FOREGROUND).setPackage(packageName)
+        )
     }
 
     override fun onPause() {
+        sendBroadcast(
+            Intent(DrivingLocationService.ACTION_APP_BACKGROUND).setPackage(packageName)
+        )
         map.onPause()
         super.onPause()
     }
 
-    private fun Int.dp(): Int = (this * resources.displayMetrics.density).toInt()
+    private fun Int.dp(): Int =
+        (this * resources.displayMetrics.density).toInt()
 
     override fun onDestroy() {
-        locationManager.removeUpdates(this)
+        try { locationManager.removeUpdates(this) } catch (_: Exception) {}
         super.onDestroy()
     }
 }
