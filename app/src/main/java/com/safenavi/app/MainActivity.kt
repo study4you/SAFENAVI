@@ -19,6 +19,8 @@ import android.provider.Settings
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -37,6 +39,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import com.safenavi.app.data.SafetyPoint
 import kotlin.math.*
 
 class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener {
@@ -65,6 +68,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
     private lateinit var dataUpdater: EnforcementDataUpdater
 
     private var carMarker: Marker? = null
+    private val safetyMarkers = mutableListOf<Marker>()
     private var lastLocation: Location? = null
     private var firstFix = true
     private var driving = false
@@ -366,12 +370,58 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
                 location.longitude + lonD
             )
             withContext(Dispatchers.Main) {
+                showSafetyMarkers(points)
                 driveHint.text = when {
                     points.isNotEmpty() -> "5km 이내 안전정보 ${points.size}건"
                     safetyTotal == 0 -> "안전정보 데이터 업데이트 필요"
                     else -> "5km 이내 안전정보 없음"
                 }
             }
+        }
+    }
+
+    private fun showSafetyMarkers(points: List<SafetyPoint>) {
+        safetyMarkers.forEach { map.overlays.remove(it) }
+        safetyMarkers.clear()
+
+        points.forEach { point ->
+            val marker = Marker(map).apply {
+                position = GeoPoint(point.latitude, point.longitude)
+                setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+                title = when (point.type) {
+                    "SIGNAL_SPEED" -> "신호·과속 단속"
+                    "SECTION" -> "구간 단속"
+                    else -> "과속 단속"
+                }
+                snippet = buildString {
+                    point.speedLimit?.let { speed -> append("제한속도 " + speed + "km/h") }
+                    point.roadName?.takeIf { road -> road.isNotBlank() }?.let { road ->
+                        if (isNotEmpty()) append(" · ")
+                        append(road)
+                    }
+                }
+                icon = enforcementMarkerIcon(point)
+            }
+            safetyMarkers.add(marker)
+            val carIndex = carMarker?.let { map.overlays.indexOf(it) } ?: -1
+            if (carIndex >= 0) map.overlays.add(carIndex, marker) else map.overlays.add(marker)
+        }
+        map.invalidate()
+    }
+
+    private fun enforcementMarkerIcon(point: SafetyPoint): android.graphics.drawable.Drawable {
+        val size = 42.dp()
+        return GradientDrawable().apply {
+            shape = GradientDrawable.OVAL
+            setColor(
+                when (point.type) {
+                    "SECTION" -> Color.rgb(255, 152, 0)
+                    "SIGNAL_SPEED" -> Color.rgb(198, 40, 40)
+                    else -> Color.rgb(211, 47, 47)
+                }
+            )
+            setStroke(3.dp(), Color.WHITE)
+            setSize(size, size)
         }
     }
 
