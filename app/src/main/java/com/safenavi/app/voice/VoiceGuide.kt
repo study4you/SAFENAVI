@@ -12,7 +12,7 @@ class VoiceGuide(context:Context):TextToSpeech.OnInitListener {
         if(!ready||s==AlertStage.PASSED||s==AlertStage.NONE)return
         val d=when(s){AlertStage.M700->"700미터 앞";AlertStage.M300->"300미터 앞";else->"100미터 앞"}
         val type=when(p.type){"SPEED"->"과속 안전운행 구간";"SIGNAL_SPEED"->"신호 과속 안전운행 구간";"SECTION"->"구간 단속 구간";else->"안전운행 구간"}
-        val msg=if(p.speedLimit!=null)"$d, 제한속도 ${p.speedLimit}킬로미터, $type입니다." else "$d, $type입니다."
+        val msg=if(p.speedLimit!=null)"$d, 제한속도 ${p.speedLimit}킬로미터, ${type}입니다." else "$d, ${type}입니다."
         tts.speak(msg,TextToSpeech.QUEUE_FLUSH,null,"${p.id}_${s.name}")
     }
     fun shutdown(){tts.stop();tts.shutdown()}
