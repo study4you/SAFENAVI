@@ -18,6 +18,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.safenavi.app.data.SafetyDatabase
+import com.safenavi.app.data.SafetyDataSync
 import com.safenavi.app.location.DrivingLocationService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -45,6 +46,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     private lateinit var locationManager: LocationManager
     private lateinit var db: SafetyDatabase
+    private lateinit var safetySync: SafetyDataSync
 
     private var carMarker: Marker? = null
     private val safetyMarkers = mutableListOf<Marker>()
@@ -76,6 +78,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         db = SafetyDatabase.getInstance(this)
+        safetySync = SafetyDataSync(this, db)
 
         map.setTileSource(TileSourceFactory.MAPNIK)
         map.setMultiTouchControls(true)
@@ -249,6 +252,18 @@ class MainActivity : AppCompatActivity(), LocationListener {
         }
 
         firstFix = false
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val added = safetySync.syncNearbyIfNeeded(location.latitude, location.longitude)
+            if (added > 0) {
+                safetyTotal = db.safetyPointDao().count()
+                withContext(Dispatchers.Main) {
+                    dataStatus.text = "안전정보 동기화 완료 · 총 ${safetyTotal}건"
+                    loadNearbySafetyPoints(location)
+                }
+            }
+        }
+
         loadNearbySafetyPoints(location)
         map.invalidate()
     }
@@ -356,6 +371,8 @@ class MainActivity : AppCompatActivity(), LocationListener {
                                     "SPEED" -> "과속"
                                     "SIGNAL_SPEED" -> "신호·과속"
                                     "SECTION" -> "구간단속"
+                                    "SCHOOL" -> "학교 주변"
+                                    "TRAFFIC_CALMING" -> "과속방지시설"
                                     else -> "안전정보"
                                 }
                             )
