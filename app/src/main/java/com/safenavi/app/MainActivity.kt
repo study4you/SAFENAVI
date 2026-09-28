@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
     private val roadSnapper = RoadSnapper()
     private var sensorHeading = 0f
     private var gpsHeading = 0f
+    private var navigationHeading = 0f
 
     private lateinit var locationManager: LocationManager
     private lateinit var db: SafetyDatabase
@@ -294,22 +295,32 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
     private fun updateNavigationCamera(location: Location, forceZoom: Boolean) {
         if (!followMode) return
 
-        val heading = if (location.hasBearing() && location.speed > 1.2f) {
-            location.bearing
-        } else 0f
+        // Heading-up navigation: keep the vehicle pointing toward the top of the
+        // screen and rotate the MAP beneath it. GPS bearing is usable even at
+        // walking/slow-driving speed; when it is unavailable, fall back to the
+        // device heading so the map does not snap back to north-up.
+        val targetHeading = when {
+            location.hasBearing() && location.speed > 0.35f -> location.bearing
+            gpsHeading != 0f -> gpsHeading
+            else -> sensorHeading
+        }
+        if (navigationHeading == 0f) {
+            navigationHeading = targetHeading
+        } else {
+            var delta = (targetHeading - navigationHeading + 540f) % 360f - 180f
+            // Smooth small GPS fluctuations while still following real turns quickly.
+            navigationHeading = (navigationHeading + delta * 0.35f + 360f) % 360f
+        }
+        val heading = navigationHeading
 
         if (forceZoom || map.zoomLevelDouble < 17.0) {
             map.controller.setZoom(18.0)
         }
 
-        if (heading != 0f) {
-            map.mapOrientation = -heading
-            map.controller.animateTo(
-                pointAhead(location.latitude, location.longitude, heading.toDouble(), 110.0)
-            )
-        } else {
-            map.controller.animateTo(GeoPoint(location.latitude, location.longitude))
-        }
+        map.mapOrientation = -heading
+        map.controller.animateTo(
+            pointAhead(location.latitude, location.longitude, heading.toDouble(), 110.0)
+        )
     }
 
     private fun recenter(navigationMode: Boolean) {
