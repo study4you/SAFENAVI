@@ -7,6 +7,11 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
+import android.widget.ImageView
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -23,17 +28,20 @@ import androidx.lifecycle.lifecycleScope
 import com.safenavi.app.data.EnforcementDataUpdater
 import com.safenavi.app.data.SafetyDatabase
 import com.safenavi.app.location.DrivingLocationService
+import com.safenavi.app.location.RoadSnapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
+import org.osmdroid.util.MapTileIndex
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import kotlin.math.*
 
-class MainActivity : AppCompatActivity(), LocationListener {
+class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener {
     private lateinit var map: MapView
     private lateinit var status: TextView
     private lateinit var dataStatus: TextView
@@ -46,6 +54,12 @@ class MainActivity : AppCompatActivity(), LocationListener {
     private lateinit var speedPanel: View
     private lateinit var floatingButtons: View
     private lateinit var topPanel: View
+    private lateinit var compassView: ImageView
+    private lateinit var sensorManager: SensorManager
+    private var rotationSensor: Sensor? = null
+    private val roadSnapper = RoadSnapper()
+    private var sensorHeading = 0f
+    private var gpsHeading = 0f
 
     private lateinit var locationManager: LocationManager
     private lateinit var db: SafetyDatabase
@@ -83,10 +97,12 @@ class MainActivity : AppCompatActivity(), LocationListener {
         applySystemInsets()
 
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
         db = SafetyDatabase.getInstance(this)
         dataUpdater = EnforcementDataUpdater(this, db)
 
-        map.setTileSource(TileSourceFactory.MAPNIK)
+        map.setTileSource(roadTileSource())
         map.setMultiTouchControls(true)
         map.isTilesScaledToDpi = true
         map.controller.setZoom(15.0)
@@ -108,7 +124,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
         findViewById<Button>(R.id.dataUpdateButton).setOnClickListener {
             startActivity(Intent(this, DataUpdateActivity::class.java))
         }
-        findViewById<Button>(R.id.recenterButton).setOnClickListener { recenter(true) }
         findViewById<Button>(R.id.driveRecenterButton).setOnClickListener { recenter(true) }
         findViewById<Button>(R.id.zoomInButton).setOnClickListener { map.controller.zoomIn() }
         findViewById<Button>(R.id.zoomOutButton).setOnClickListener { map.controller.zoomOut() }
@@ -170,6 +185,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         driveControls = findViewById(R.id.driveControls)
         speedPanel = findViewById(R.id.speedPanel)
         floatingButtons = findViewById(R.id.floatingButtons)
+        compassView = findViewById(R.id.compassView)
     }
 
     private fun applySystemInsets() {
@@ -221,22 +237,47 @@ class MainActivity : AppCompatActivity(), LocationListener {
     }
 
     override fun onLocationChanged(location: Location) {
-        lastLocation = location
-        updateCarMarker(location)
+        if (location.hasBearing() && location.speed > 1.5f) {
+            gpsHeading = location.bearing
+            updateCompass(gpsHeading)
+        }
 
-        val speedKmh = if (location.hasSpeed()) {
-            (location.speed * 3.6f).roundToInt()
-        } else 0
+        val raw = Location(location)
+        lifecycleScope.launch {
+            val snapped = roadSnapper.snap(raw)
+            val displayLocation = Location(raw).apply {
+                if (snapped != null) {
+                    latitude = snapped.latitude
+                    longitude = snapped.longitude
+                }
+            }
 
-        currentSpeed.text = speedKmh.toString()
-        status.text = "안전운행 중"
-        dataStatus.text = "GPS ${location.accuracy.roundToInt()}m · ${speedKmh}km/h"
-        locationLabel.text = "현재 위치 추적 중"
-        updateNavigationCamera(location, firstFix)
+            lastLocation = displayLocation
+            updateCarMarker(displayLocation)
 
-        firstFix = false
-        loadNearbySafetyPoints(location)
-        map.invalidate()
+            val speedKmh = if (raw.hasSpeed()) {
+                (raw.speed * 3.6f).roundToInt()
+            } else 0
+
+            currentSpeed.text = speedKmh.toString()
+            status.text = "안전운행 중"
+
+            val roadText = snapped?.roadName?.takeIf { it.isNotBlank() }
+            dataStatus.text = buildString {
+                append("GPS ")
+                append(raw.accuracy.roundToInt())
+                append("m · ")
+                append(speedKmh)
+                append("km/h")
+                if (snapped != null) append(" · 도로보정")
+            }
+            locationLabel.text = roadText ?: "현재 도로 추적 중"
+
+            updateNavigationCamera(displayLocation, firstFix)
+            firstFix = false
+            loadNearbySafetyPoints(displayLocation)
+            map.invalidate()
+        }
     }
 
     private fun updateCarMarker(location: Location) {
@@ -328,17 +369,63 @@ class MainActivity : AppCompatActivity(), LocationListener {
     override fun onResume() {
         super.onResume()
         map.onResume()
+        rotationSensor?.let {
+            sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_UI)
+        }
         sendBroadcast(
             Intent(DrivingLocationService.ACTION_APP_FOREGROUND).setPackage(packageName)
         )
     }
 
     override fun onPause() {
+        sensorManager.unregisterListener(this)
         sendBroadcast(
             Intent(DrivingLocationService.ACTION_APP_BACKGROUND).setPackage(packageName)
         )
         map.onPause()
         super.onPause()
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        if (event?.sensor?.type != Sensor.TYPE_ROTATION_VECTOR) return
+        val matrix = FloatArray(9)
+        val orientation = FloatArray(3)
+        SensorManager.getRotationMatrixFromVector(matrix, event.values)
+        SensorManager.getOrientation(matrix, orientation)
+        sensorHeading = ((Math.toDegrees(orientation[0].toDouble()) + 360.0) % 360.0).toFloat()
+
+        val moving = lastLocation?.speed?.let { it > 1.5f } == true
+        if (!moving) updateCompass(sensorHeading)
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) = Unit
+
+    private fun updateCompass(heading: Float) {
+        compassView.animate().rotation(heading).setDuration(180L).start()
+    }
+
+    private fun roadTileSource(): OnlineTileSourceBase {
+        return object : OnlineTileSourceBase(
+            "SafeNaviRoad",
+            0,
+            20,
+            256,
+            ".png",
+            arrayOf(
+                "https://a.basemaps.cartocdn.com/rastertiles/voyager/",
+                "https://b.basemaps.cartocdn.com/rastertiles/voyager/",
+                "https://c.basemaps.cartocdn.com/rastertiles/voyager/",
+                "https://d.basemaps.cartocdn.com/rastertiles/voyager/"
+            ),
+            "© OpenStreetMap contributors © CARTO"
+        ) {
+            override fun getTileURLString(pMapTileIndex: Long): String {
+                return baseUrl +
+                    MapTileIndex.getZoom(pMapTileIndex) + "/" +
+                    MapTileIndex.getX(pMapTileIndex) + "/" +
+                    MapTileIndex.getY(pMapTileIndex) + ".png"
+            }
+        }
     }
 
     private fun Int.dp(): Int =

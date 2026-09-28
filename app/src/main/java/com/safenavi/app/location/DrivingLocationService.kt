@@ -48,6 +48,7 @@ class DrivingLocationService : Service(), LocationListener {
     private val tracker = AlertTracker()
     private val trajectory = TrajectoryTracker()
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private val roadSnapper = RoadSnapper()
 
     private var overlayView: View? = null
     private var speedText: TextView? = null
@@ -198,20 +199,24 @@ class DrivingLocationService : Service(), LocationListener {
         }
 
         scope.launch {
+            val snapped = roadSnapper.snap(location)
+            val currentLat = snapped?.latitude ?: location.latitude
+            val currentLon = snapped?.longitude ?: location.longitude
+
             val r = 2000.0
             val latD = r / 111320.0
-            val lonD = r / (111320.0 * cos(Math.toRadians(location.latitude)))
+            val lonD = r / (111320.0 * cos(Math.toRadians(currentLat)))
 
             val pts = db.safetyPointDao().findNearby(
-                location.latitude - latD,
-                location.latitude + latD,
-                location.longitude - lonD,
-                location.longitude + lonD
+                currentLat - latD,
+                currentLat + latD,
+                currentLon - lonD,
+                currentLon + lonD
             )
 
             val alerts = engine.findAhead(
-                location.latitude,
-                location.longitude,
+                currentLat,
+                currentLon,
                 heading,
                 pts
             )
