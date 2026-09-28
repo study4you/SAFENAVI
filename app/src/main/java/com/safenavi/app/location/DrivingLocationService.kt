@@ -15,6 +15,7 @@ import android.media.ToneGenerator
 import android.os.*
 import android.provider.Settings
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.LinearLayout
@@ -52,6 +53,7 @@ class DrivingLocationService : Service(), LocationListener {
 
     private var overlayView: View? = null
     private var speedText: TextView? = null
+    private var speedUnitText: TextView? = null
     private var distanceText: TextView? = null
     private var limitText: TextView? = null
     private var warningText: TextView? = null
@@ -60,6 +62,8 @@ class DrivingLocationService : Service(), LocationListener {
     private var toneGenerator: ToneGenerator? = null
     private var speeding = false
     private var appInBackground = false
+    private var overlayParams: WindowManager.LayoutParams? = null
+    private val overlayPrefs by lazy { getSharedPreferences("overlay_position", Context.MODE_PRIVATE) }
 
     private val warningTone = object : Runnable {
         override fun run() {
@@ -293,55 +297,71 @@ class DrivingLocationService : Service(), LocationListener {
 
         val panel = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(20, 14, 20, 14)
+            setPadding(dp(14), dp(10), dp(14), dp(10))
             background = GradientDrawable().apply {
                 setColor(Color.argb(235, 18, 23, 29))
-                cornerRadius = 30f
-                setStroke(2, Color.argb(120, 255, 255, 255))
+                cornerRadius = dp(16).toFloat()
+                setStroke(dp(1), Color.argb(120, 255, 255, 255))
             }
-            elevation = 16f
+            elevation = dp(8).toFloat()
+        }
+
+        val speedRow = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
         }
 
         speedText = TextView(this).apply {
-            text = "0 km/h"
+            text = "0"
             setTextColor(Color.WHITE)
-            textSize = 22f
+            textSize = 80f
             setTypeface(typeface, android.graphics.Typeface.BOLD)
+            includeFontPadding = false
+        }
+
+        speedUnitText = TextView(this).apply {
+            text = "km/h"
+            setTextColor(Color.LTGRAY)
+            textSize = 16f
+            setPadding(dp(5), dp(34), 0, 0)
+            includeFontPadding = false
         }
 
         distanceText = TextView(this).apply {
             text = "전방 정보 없음"
             setTextColor(Color.LTGRAY)
-            textSize = 13f
+            textSize = 15f
         }
 
         limitText = TextView(this).apply {
             text = ""
             setTextColor(Color.rgb(130, 190, 255))
-            textSize = 13f
+            textSize = 14f
         }
 
         warningText = TextView(this).apply {
             text = ""
             setTextColor(Color.rgb(255, 90, 90))
-            textSize = 14f
+            textSize = 15f
             setTypeface(typeface, android.graphics.Typeface.BOLD)
         }
 
-        panel.addView(speedText)
+        speedRow.addView(speedText)
+        speedRow.addView(speedUnitText)
+        panel.addView(speedRow)
         panel.addView(distanceText)
         panel.addView(limitText)
         panel.addView(warningText)
 
-        panel.setOnClickListener {
-            val i = Intent(this, MainActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-            }
-            startActivity(i)
-        }
+        val screenW = resources.displayMetrics.widthPixels
+        val screenH = resources.displayMetrics.heightPixels
+        val panelWidth = dp(190)
+        val defaultX = (screenW - panelWidth - dp(12)).coerceAtLeast(0)
+        val savedX = overlayPrefs.getInt("x", defaultX)
+        val savedY = overlayPrefs.getInt("y", dp(110))
 
         val params = WindowManager.LayoutParams(
-            dp(150),
+            panelWidth,
             WindowManager.LayoutParams.WRAP_CONTENT,
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
@@ -352,12 +372,67 @@ class DrivingLocationService : Service(), LocationListener {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             PixelFormat.TRANSLUCENT
         ).apply {
-            gravity = Gravity.TOP or Gravity.END
-            x = dp(12)
-            y = dp(110)
+            gravity = Gravity.TOP or Gravity.START
+            x = savedX.coerceIn(0, (screenW - panelWidth).coerceAtLeast(0))
+            y = savedY.coerceIn(0, (screenH - dp(160)).coerceAtLeast(0))
+        }
+
+        var downRawX = 0f
+        var downRawY = 0f
+        var downX = 0
+        var downY = 0
+        var moved = false
+
+        panel.setOnTouchListener { _, event ->
+            when (event.actionMasked) {
+                MotionEvent.ACTION_DOWN -> {
+                    downRawX = event.rawX
+                    downRawY = event.rawY
+                    downX = params.x
+                    downY = params.y
+                    moved = false
+                    true
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val dx = (event.rawX - downRawX).roundToInt()
+                    val dy = (event.rawY - downRawY).roundToInt()
+                    if (kotlin.math.abs(dx) > dp(4) || kotlin.math.abs(dy) > dp(4)) {
+                        moved = true
+                    }
+
+                    val maxX = (screenW - panelWidth).coerceAtLeast(0)
+                    val panelHeight = panel.height.takeIf { it > 0 } ?: dp(160)
+                    val maxY = (screenH - panelHeight).coerceAtLeast(0)
+
+                    params.x = (downX + dx).coerceIn(0, maxX)
+                    params.y = (downY + dy).coerceIn(0, maxY)
+
+                    try {
+                        windowManager.updateViewLayout(panel, params)
+                    } catch (_: Exception) {
+                    }
+                    true
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    overlayPrefs.edit()
+                        .putInt("x", params.x)
+                        .putInt("y", params.y)
+                        .apply()
+
+                    if (!moved && event.actionMasked == MotionEvent.ACTION_UP) {
+                        val i = Intent(this, MainActivity::class.java).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                        }
+                        startActivity(i)
+                    }
+                    true
+                }
+                else -> false
+            }
         }
 
         overlayView = panel
+        overlayParams = params
         windowManager.addView(panel, params)
     }
 
@@ -366,7 +441,9 @@ class DrivingLocationService : Service(), LocationListener {
             try { windowManager.removeView(it) } catch (_: Exception) {}
         }
         overlayView = null
+        overlayParams = null
         speedText = null
+        speedUnitText = null
         distanceText = null
         limitText = null
         warningText = null
@@ -380,7 +457,7 @@ class DrivingLocationService : Service(), LocationListener {
     ) {
         if (appInBackground) showOverlayIfAllowed()
 
-        speedText?.text = "$speedKmh km/h"
+        speedText?.text = speedKmh.toString()
         distanceText?.text = if (distanceMeters != null) {
             "전방 안전구간 ${distanceMeters}m"
         } else {
