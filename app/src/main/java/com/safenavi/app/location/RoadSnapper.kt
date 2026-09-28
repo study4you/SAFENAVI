@@ -25,7 +25,7 @@ class RoadSnapper {
         val previous = lastSource
         val moved = previous?.distanceTo(location) ?: Float.MAX_VALUE
 
-        if (lastResult != null && now - lastRequestAt < 3000L && moved < 12f) {
+        if (lastResult != null && now - lastRequestAt < 5000L && moved < 20f) {
             return@withContext lastResult
         }
 
@@ -40,7 +40,7 @@ class RoadSnapper {
             requestMethod = "GET"
             connectTimeout = 2500
             readTimeout = 2500
-            setRequestProperty("User-Agent", "SafeNavi/0.09")
+            setRequestProperty("User-Agent", "SafeNavi/14")
         }
 
         try {
@@ -79,17 +79,29 @@ class RoadSnapper {
                     )
                     // Strong hysteresis: a parallel carriageway must be substantially
                     // better before we allow a lane-side switch.
-                    candidate.snapDistanceMeters + continuity[0] * 0.65
+                    candidate.snapDistanceMeters + continuity[0] * 1.8
                 } ?: candidates.first()
             } else {
                 candidates.minByOrNull { it.snapDistanceMeters } ?: candidates.first()
             }
 
+            val previousDistance = previousRoad?.let { road ->
+                val out = FloatArray(1)
+                Location.distanceBetween(
+                    location.latitude, location.longitude,
+                    road.latitude, road.longitude, out
+                )
+                out[0].toDouble()
+            } ?: Double.MAX_VALUE
+
+            // A divided highway can put both carriageways only a few metres apart.
+            // Keep the current carriageway unless the new candidate is clearly better;
+            // this prevents GPS jitter from hopping between parallel directions.
             val keepPrevious = previousRoad != null &&
                 location.speed > 3f &&
+                previousDistance < 38.0 &&
                 selected.roadName == previousRoad.roadName &&
-                selected.snapDistanceMeters > previousRoad.snapDistanceMeters &&
-                selected.snapDistanceMeters - previousRoad.snapDistanceMeters < 8.0
+                selected.snapDistanceMeters + 12.0 >= previousDistance
 
             val result = if (keepPrevious) previousRoad else selected
             stableResult = result

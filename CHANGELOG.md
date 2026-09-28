@@ -1,5 +1,13 @@
 # SafeNavi Changelog
 
+## 14
+- osmdroid 지도 타일 디스크 캐시를 최대 1GB로 확대
+- 내려받은 지도 타일을 30일간 우선 재사용하여 주행 중 네트워크 재요청 감소
+- 도로 스냅 요청 간격/이동 임계값을 완화해 불필요한 온라인 nearest 요청 감소
+- 기존 도로 연속성 가중치를 강화해 평행 상·하행선 사이 위치 튐 억제
+- 현재 도로가 GPS 기준 38m 이내이면 새 후보가 최소 12m 이상 유리할 때만 전환
+- RoadSnapper User-Agent 버전을 SafeNavi/14로 갱신
+
 ## 0.11
 - CARTO Voyager 타일의 API KEY REQUIRED 화면 문제 제거
 - API 키가 필요 없는 OpenStreetMap 표준 도로 지도로 변경

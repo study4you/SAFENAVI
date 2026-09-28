@@ -95,7 +95,14 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Configuration.getInstance().userAgentValue = packageName
+        Configuration.getInstance().apply {
+            userAgentValue = packageName
+            // Keep a large persistent road-map cache so tiles already seen/downloaded
+            // are rendered from storage instead of being fetched again while driving.
+            tileFileSystemCacheMaxBytes = 1024L * 1024L * 1024L
+            tileFileSystemCacheTrimBytes = 850L * 1024L * 1024L
+            expirationOverrideDuration = 30L * 24L * 60L * 60L * 1000L
+        }
         setContentView(R.layout.activity_main)
 
         bindViews()
