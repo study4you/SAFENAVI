@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "updatedAt": "2026-09-29",
+  "datasets": [
+    {
+      "region": "SEOUL",
+      "version": "1",
+      "path": "data/enforcement/seoul.json"
+    },
+    {
+      "region": "GYEONGGI",
+      "version": "1",
+      "path": "data/enforcement/gyeonggi.json"
+    },
+    {
+      "region": "INCHEON",
+      "version": "1",
+      "path": "data/enforcement/incheon.json"
+    }
+  ]
+}

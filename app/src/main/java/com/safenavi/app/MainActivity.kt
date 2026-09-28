@@ -18,7 +18,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.safenavi.app.data.SafetyDatabase
-import com.safenavi.app.data.SafetyDataSync
+import com.safenavi.app.data.EnforcementDataUpdater
 import com.safenavi.app.location.DrivingLocationService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     private lateinit var locationManager: LocationManager
     private lateinit var db: SafetyDatabase
-    private lateinit var safetySync: SafetyDataSync
+    private lateinit var dataUpdater: EnforcementDataUpdater
 
     private var carMarker: Marker? = null
     private var lastLocation: Location? = null
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         db = SafetyDatabase.getInstance(this)
-        safetySync = SafetyDataSync(this, db)
+        dataUpdater = EnforcementDataUpdater(this, db)
 
         map.setTileSource(TileSourceFactory.MAPNIK)
         map.setMultiTouchControls(true)
@@ -86,9 +86,12 @@ class MainActivity : AppCompatActivity(), LocationListener {
         map.controller.setCenter(GeoPoint(37.5665, 126.9780))
 
         lifecycleScope.launch(Dispatchers.IO) {
-            safetyTotal = db.safetyPointDao().count()
+            dataUpdater.pruneLegacyData()
+            val result = dataUpdater.updateIfNeeded()
+            safetyTotal = result.totalCount
             withContext(Dispatchers.Main) {
                 updateIdleStatus()
+                if (result.checked) dataStatus.text = result.message + " · ${result.totalCount}건"
             }
         }
 
@@ -167,9 +170,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         status.text = "안전운행 중"
         dataStatus.text = if (safetyTotal > 0) {
-            "전방 안전정보 감시 · 데이터 ${safetyTotal}건"
+            "전방 단속정보 감시 · 데이터 ${safetyTotal}건"
         } else {
-            "GPS 주행모드 · 안전정보 데이터 0건"
+            "GPS 주행모드 · 단속정보 데이터 0건"
         }
 
         lastLocation?.let { updateNavigationCamera(it, true) }
@@ -194,9 +197,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
     private fun updateIdleStatus() {
         status.text = if (lastLocation == null) "안전운행 대기" else "현재 위치 확인"
         dataStatus.text = if (safetyTotal > 0) {
-            "안전정보 데이터 ${safetyTotal}건 · 시작 버튼을 누르세요"
+            "단속정보 데이터 ${safetyTotal}건 · 시작 버튼을 누르세요"
         } else {
-            "안전정보 데이터 0건 · 지도/GPS만 동작 중"
+            "단속정보 데이터 0건 · 지도/GPS만 동작 중"
         }
     }
 
@@ -239,9 +242,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
         } else {
             status.text = "현재 위치 확인"
             dataStatus.text = if (safetyTotal > 0) {
-                "GPS ${location.accuracy.roundToInt()}m · 안전정보 ${safetyTotal}건"
+                "GPS ${location.accuracy.roundToInt()}m · 단속정보 ${safetyTotal}건"
             } else {
-                "GPS ${location.accuracy.roundToInt()}m · 안전정보 데이터 0건"
+                "GPS ${location.accuracy.roundToInt()}m · 단속정보 데이터 0건"
             }
 
             if (firstFix) {
@@ -251,17 +254,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
         }
 
         firstFix = false
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            val added = safetySync.syncNearbyIfNeeded(location.latitude, location.longitude)
-            if (added > 0) {
-                safetyTotal = db.safetyPointDao().count()
-                withContext(Dispatchers.Main) {
-                    dataStatus.text = "안전정보 동기화 완료 · 총 ${safetyTotal}건"
-                    loadNearbySafetyPoints(location)
-                }
-            }
-        }
 
         loadNearbySafetyPoints(location)
         map.invalidate()
@@ -361,12 +353,12 @@ class MainActivity : AppCompatActivity(), LocationListener {
                 if (driving) {
                     driveHint.text = if (points.isEmpty()) {
                         if (safetyTotal == 0) {
-                            "안전정보 데이터 필요"
+                            "단속정보 데이터 필요"
                         } else {
-                            "5km 이내 안전정보 없음"
+                            "5km 이내 단속정보 없음"
                         }
                     } else {
-                        "5km 이내 안전정보 ${points.size}건"
+                        "5km 이내 단속정보 ${points.size}건"
                     }
                 }
                 map.invalidate()
