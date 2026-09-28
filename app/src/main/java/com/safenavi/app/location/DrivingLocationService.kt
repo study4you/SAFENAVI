@@ -169,7 +169,7 @@ class DrivingLocationService : Service(), LocationListener {
 
         return NotificationCompat.Builder(this, "drive")
             .setContentTitle("SafeNavi 안전운행 중")
-            .setContentText("백그라운드에서도 단속정보를 안내합니다.")
+            .setContentText("백그라운드에서도 안전운행 정보를 안내합니다.")
             .setSmallIcon(android.R.drawable.ic_menu_mylocation)
             .setContentIntent(openPending)
             .addAction(
@@ -377,9 +377,9 @@ class DrivingLocationService : Service(), LocationListener {
 
         speedText?.text = "$speedKmh km/h"
         distanceText?.text = if (distanceMeters != null) {
-            "전방 단속정보 ${distanceMeters}m"
+            "전방 안전구간 ${distanceMeters}m"
         } else {
-            "전방 단속정보 없음"
+            "전방 안전정보 없음"
         }
         limitText?.text = if (limit != null) {
             "제한속도 ${limit}km/h"

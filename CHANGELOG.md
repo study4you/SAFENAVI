@@ -11,8 +11,6 @@
 - 알림창에서도 안전운행 서비스 안내 종료 가능
 - Android SYSTEM_ALERT_WINDOW 권한 추가
 
-# SafeNavi Changelog
-
 ## 0.07
 - 단속정보 / 교통정보 업데이트 전용 페이지 추가
 - 전국 17개 시·도 체크박스 선택 지원

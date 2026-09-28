@@ -192,7 +192,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         status.text = "안전운행 중"
         dataStatus.text = if (safetyTotal > 0) {
-            "전방 단속정보 감시 · 데이터 ${safetyTotal}건"
+            "전방 안전정보 감시 · 데이터 ${safetyTotal}건"
         } else {
             "GPS 주행모드 · 단속정보 확인 중"
         }
@@ -317,9 +317,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
             )
             withContext(Dispatchers.Main) {
                 driveHint.text = when {
-                    points.isNotEmpty() -> "5km 이내 단속정보 ${points.size}건"
-                    safetyTotal == 0 -> "단속정보 데이터 업데이트 필요"
-                    else -> "5km 이내 단속정보 없음"
+                    points.isNotEmpty() -> "5km 이내 안전정보 ${points.size}건"
+                    safetyTotal == 0 -> "안전정보 데이터 업데이트 필요"
+                    else -> "5km 이내 안전정보 없음"
                 }
             }
         }
