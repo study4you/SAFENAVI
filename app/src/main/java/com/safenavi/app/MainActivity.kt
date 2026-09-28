@@ -34,8 +34,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
-import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
-import org.osmdroid.util.MapTileIndex
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
@@ -102,7 +100,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
         db = SafetyDatabase.getInstance(this)
         dataUpdater = EnforcementDataUpdater(this, db)
 
-        map.setTileSource(roadTileSource())
+        map.setTileSource(TileSourceFactory.MAPNIK)
         map.setMultiTouchControls(true)
         map.isTilesScaledToDpi = true
         map.controller.setZoom(15.0)
@@ -402,30 +400,6 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
 
     private fun updateCompass(heading: Float) {
         compassView.animate().rotation(heading).setDuration(180L).start()
-    }
-
-    private fun roadTileSource(): OnlineTileSourceBase {
-        return object : OnlineTileSourceBase(
-            "SafeNaviRoad",
-            0,
-            20,
-            256,
-            ".png",
-            arrayOf(
-                "https://a.basemaps.cartocdn.com/rastertiles/voyager/",
-                "https://b.basemaps.cartocdn.com/rastertiles/voyager/",
-                "https://c.basemaps.cartocdn.com/rastertiles/voyager/",
-                "https://d.basemaps.cartocdn.com/rastertiles/voyager/"
-            ),
-            "© OpenStreetMap contributors © CARTO"
-        ) {
-            override fun getTileURLString(pMapTileIndex: Long): String {
-                return baseUrl +
-                    MapTileIndex.getZoom(pMapTileIndex) + "/" +
-                    MapTileIndex.getX(pMapTileIndex) + "/" +
-                    MapTileIndex.getY(pMapTileIndex) + ".png"
-            }
-        }
     }
 
     private fun Int.dp(): Int =
