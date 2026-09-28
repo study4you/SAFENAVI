@@ -326,8 +326,15 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
         }
 
         map.mapOrientation = -heading
-        map.controller.animateTo(
-            pointAhead(location.latitude, location.longitude, heading.toDouble(), 110.0)
+
+        // Continuous GPS updates must not start a new map animation every 800 ms.
+        // animateTo() made the camera chase the vehicle and fall behind at road speed.
+        // Move the camera immediately and keep a smaller look-ahead so the vehicle
+        // remains clearly visible in the lower-middle part of the navigation view.
+        val speedMps = if (location.hasSpeed()) location.speed.toDouble() else 0.0
+        val lookAheadMeters = (45.0 + speedMps * 1.2).coerceIn(45.0, 70.0)
+        map.controller.setCenter(
+            pointAhead(location.latitude, location.longitude, heading.toDouble(), lookAheadMeters)
         )
     }
 
