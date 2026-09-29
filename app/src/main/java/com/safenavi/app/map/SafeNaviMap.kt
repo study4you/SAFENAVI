@@ -51,6 +51,7 @@ class SafeNaviMap(private val mapView: MapView) {
     private var lastCameraUpdateAt = 0L
     private var dynamicZoom = Double.NaN
     private var manualZoomUntil = 0L
+    private var lookAheadTarget: LatLng? = null
 
     fun attach(mapLibreMap: MapLibreMap, onReady: () -> Unit = {}) {
         map = mapLibreMap
@@ -172,7 +173,19 @@ class SafeNaviMap(private val mapView: MapView) {
             smoothedTargetLat += (rawLat - smoothedTargetLat) * positionAlpha
             smoothedTargetLon += (rawLon - smoothedTargetLon) * positionAlpha
         }
-        val target = LatLng(smoothedTargetLat, smoothedTargetLon)
+        val vehicleTarget = LatLng(smoothedTargetLat, smoothedTargetLon)
+        val speedMps = if (location.hasSpeed()) location.speed.toDouble() else 0.0
+        val lookAheadMeters = (28.0 + speedMps * 1.65).coerceIn(28.0, 72.0)
+        val projected = offset(vehicleTarget, heading, lookAheadMeters)
+        val previousLookAhead = lookAheadTarget
+        val target = if (previousLookAhead == null || forceZoom) projected else {
+            val alpha = if (speedMps >= 15.0) 0.62 else 0.48
+            LatLng(
+                previousLookAhead.latitude + (projected.latitude - previousLookAhead.latitude) * alpha,
+                previousLookAhead.longitude + (projected.longitude - previousLookAhead.longitude) * alpha
+            )
+        }
+        lookAheadTarget = target
         val speedKmh = if (location.hasSpeed()) location.speed * 3.6 else 0.0
         val desiredZoom = when {
             speedKmh >= 100.0 -> 15.1
