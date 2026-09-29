@@ -25,9 +25,13 @@ class OfflineDataUpdater(private val context: Context) {
         fun mb(f:File)=if(f.exists()) "%.1fMB".format(f.length()/1048576.0) else "없음"
         val installed=graphDir.exists() && graphDir.walkTopDown().any { it.isFile }
         val graphInfo=File(graphDir,"safenavi-graph-info.txt")
-        val graphType=if(graphInfo.exists()) graphInfo.readLines().firstOrNull()?.substringAfter("type=") else null
+        val graphInfoLines=if(graphInfo.exists()) graphInfo.readLines() else emptyList()
+        val graphType=graphInfoLines.firstOrNull{it.startsWith("type=")}?.substringAfter("=")
+        val graphVersion=graphInfoLines.firstOrNull{
+            it.startsWith("graph.version") || it.startsWith("datareader.import.date")
+        }?.substringAfter("=")
         return "오프라인 지도 "+mb(map)+" · 도로 그래프 "+mb(graph)+
-            (if(installed) " · 설치됨"+(graphType?.let{" · $it"}?:"") else "")
+            (if(installed) " · 설치됨"+(graphType?.let{" · $it"}?:"")+(graphVersion?.let{" · $it"}?:"") else "")
     }
 
     suspend fun update(onProgress:(String)->Unit):OfflineDataResult=withContext(Dispatchers.IO){
