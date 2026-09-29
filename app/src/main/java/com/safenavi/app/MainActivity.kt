@@ -407,8 +407,10 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
         }
         val heading = navigationHeading
 
-        if (forceZoom || map.zoomLevelDouble < 17.0) {
-            map.controller.setZoom(18.0)
+        // Set a wider driving overview only when navigation is first entered/recentered.
+        // Never force the zoom back in after the driver presses the +/- controls.
+        if (forceZoom) {
+            map.controller.setZoom(16.5)
         }
 
         map.mapOrientation = -heading
