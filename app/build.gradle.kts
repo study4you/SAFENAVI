@@ -12,8 +12,8 @@ android {
         minSdk = 26
         targetSdk = 35
         manifestPlaceholders["NAVER_MAP_CLIENT_ID"] = System.getenv("NAVER_MAP_CLIENT_ID") ?: ""
-        versionCode = 26
-        versionName = "26"
+        versionCode = 27
+        versionName = "27"
     }
 
     compileOptions {
