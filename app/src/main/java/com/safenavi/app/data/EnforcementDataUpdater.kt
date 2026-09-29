@@ -99,7 +99,9 @@ class EnforcementDataUpdater(
             )
 
         val root = JSONObject(manifestText)
-        if (root.optInt("schema", -1) != REQUIRED_SCHEMA) {
+        if (root.optInt("schema", -1) != REQUIRED_SCHEMA ||
+            root.optString("sourceKind") != "ENFORCEMENT_CAMERA"
+        ) {
             return@withContext DataUpdateResult(
                 checked = true,
                 updatedRegions = emptyList(),
@@ -177,6 +179,7 @@ class EnforcementDataUpdater(
             }
             val datasetSchema = datasetRoot.optInt("schema", REQUIRED_SCHEMA)
             if (datasetSchema != REQUIRED_SCHEMA ||
+                datasetRoot.optString("sourceKind") != "ENFORCEMENT_CAMERA" ||
                 datasetRoot.optString("region").uppercase() != region ||
                 datasetRoot.optString("version") != version
             ) {
