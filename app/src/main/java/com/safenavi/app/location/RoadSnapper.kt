@@ -42,9 +42,13 @@ class RoadSnapper {
         lastRequestAt = now
         lastSource = Location(location)
 
+        val bearingOption = if (location.hasBearing() && location.speed > 2f) {
+            val bearing = ((location.bearing % 360f) + 360f) % 360f
+            "&bearings=${bearing.toInt()},35"
+        } else ""
         val urlText =
             "https://router.project-osrm.org/nearest/v1/driving/" +
-                "${location.longitude},${location.latitude}?number=5"
+                "${location.longitude},${location.latitude}?number=5&radiuses=45${bearingOption}"
 
         val connection = (URL(urlText).openConnection() as HttpURLConnection).apply {
             requestMethod = "GET"
