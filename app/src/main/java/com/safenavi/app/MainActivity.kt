@@ -36,7 +36,7 @@ import com.safenavi.app.location.DrivingLocationService
 import com.safenavi.app.location.RoadSnapper
 import com.safenavi.app.location.TunnelDeadReckoner
 import com.safenavi.app.map.NaverDrivingMap
-import com.safenavi.app.map.OsmDrivingMap
+import com.safenavi.app.map.SafeNaviMap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -49,8 +49,8 @@ import kotlin.math.*
 
 class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener, OnMapReadyCallback {
     private lateinit var map: MapView
-    private lateinit var freeMap: org.osmdroid.views.MapView
-    private lateinit var osmDrivingMap: OsmDrivingMap
+    private lateinit var safeMap: org.maplibre.android.maps.MapView
+    private lateinit var safeNaviMap: SafeNaviMap
     private lateinit var status: TextView
     private lateinit var dataStatus: TextView
     private lateinit var currentSpeed: TextView
@@ -121,9 +121,9 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
 
         bindViews()
         map.onCreate(savedInstanceState)
-        org.osmdroid.config.Configuration.getInstance().userAgentValue = packageName
-        osmDrivingMap = OsmDrivingMap(freeMap)
-        osmDrivingMap.setViewMode(if (mapPrefs.getString("safenavi_view", "2D") == "3D") OsmDrivingMap.ViewMode.THREE_D else OsmDrivingMap.ViewMode.TWO_D)
+        safeMap.onCreate(savedInstanceState)
+        safeNaviMap = SafeNaviMap(safeMap)
+        safeMap.getMapAsync { safeNaviMap.attach(it) { safeNaviMap.setViewMode(if (mapPrefs.getString("safenavi_view", "2D") == "3D") SafeNaviMap.ViewMode.THREE_D else SafeNaviMap.ViewMode.TWO_D) } }
         applyMapVisibility()
         map.getMapAsync(this)
         val appVersion = packageManager.getPackageInfo(packageName, 0).versionName ?: "?"
@@ -154,8 +154,8 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
         }
         findViewById<Button>(R.id.driveRecenterButton).setOnClickListener { recenter(true) }
         findViewById<Button>(R.id.menuButton).setOnClickListener { anchor -> showDriveMenu(anchor) }
-        findViewById<Button>(R.id.zoomInButton).setOnClickListener { if (isFreeMap()) osmDrivingMap.zoomIn() else drivingMap.zoomIn() }
-        findViewById<Button>(R.id.zoomOutButton).setOnClickListener { if (isFreeMap()) osmDrivingMap.zoomOut() else drivingMap.zoomOut() }
+        findViewById<Button>(R.id.zoomInButton).setOnClickListener { if (isFreeMap()) safeNaviMap.zoomIn() else drivingMap.zoomIn() }
+        findViewById<Button>(R.id.zoomOutButton).setOnClickListener { if (isFreeMap()) safeNaviMap.zoomOut() else drivingMap.zoomOut() }
         findViewById<Button>(R.id.stopButton).setOnClickListener { stopSafetyAndExit() }
 
         requestOptionalPermissions()
@@ -225,7 +225,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
                 mapPrefs.edit().putString("safenavi_view", if (which == 1) "3D" else "2D").apply()
                 if (!isFreeMap()) mapPrefs.edit().putString("map_type", "SAFENAVI").apply()
                 applyMapVisibility()
-                osmDrivingMap.setViewMode(if (which == 1) OsmDrivingMap.ViewMode.THREE_D else OsmDrivingMap.ViewMode.TWO_D)
+                safeNaviMap.setViewMode(if (which == 1) SafeNaviMap.ViewMode.THREE_D else SafeNaviMap.ViewMode.TWO_D)
                 lastLocation?.let { updateNavigationCamera(it, true) }
                 dialog.dismiss()
             }
@@ -236,9 +236,9 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
     private fun isFreeMap(): Boolean = mapPrefs.getString("map_type", "NAVER_NAVI") in setOf("FREE_BASIC", "SAFENAVI")
 
     private fun applyMapVisibility() {
-        if (!::freeMap.isInitialized) return
+        if (!::safeMap.isInitialized) return
         map.visibility = if (isFreeMap()) View.GONE else View.VISIBLE
-        freeMap.visibility = if (isFreeMap()) View.VISIBLE else View.GONE
+        safeMap.visibility = if (isFreeMap()) View.VISIBLE else View.GONE
     }
 
     private fun applySavedMapStyle() = Unit
@@ -289,7 +289,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
 
     private fun bindViews() {
         map = findViewById(R.id.map)
-        freeMap = findViewById(R.id.freeMap)
+        safeMap = findViewById(R.id.safeMap)
         status = findViewById(R.id.status)
         dataStatus = findViewById(R.id.dataStatus)
         currentSpeed = findViewById(R.id.currentSpeed)
@@ -448,7 +448,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
         }
         val heading = navigationHeading
 
-        if (isFreeMap()) osmDrivingMap.updateVehicle(location, heading, forceZoom)
+        if (isFreeMap()) safeNaviMap.updateVehicle(location, heading, forceZoom)
         else drivingMap.updateVehicle(location, heading, forceZoom)
     }
 
@@ -490,14 +490,14 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
     }
 
     private fun showSafetyMarkers(points: List<SafetyPoint>) {
-        if (isFreeMap()) osmDrivingMap.showSafetyPoints(points)
+        if (isFreeMap()) safeNaviMap.showSafetyPoints(points)
         else drivingMap.showSafetyPoints(points)
     }
 
     override fun onResume() {
         super.onResume()
         map.onResume()
-        if (::freeMap.isInitialized) freeMap.onResume()
+        if (::safeMap.isInitialized) safeMap.onResume()
         rotationSensor?.let {
             sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_UI)
         }
@@ -511,7 +511,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
         sendBroadcast(
             Intent(DrivingLocationService.ACTION_APP_BACKGROUND).setPackage(packageName)
         )
-        if (::freeMap.isInitialized) freeMap.onPause()
+        if (::safeMap.isInitialized) safeMap.onPause()
         map.onPause()
         super.onPause()
     }
@@ -542,7 +542,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
     override fun onDestroy() {
         window.decorView.removeCallbacks(tunnelTicker)
         try { locationManager.removeUpdates(this) } catch (_: Exception) {}
-        if (::freeMap.isInitialized) freeMap.onDetach()
+        if (::safeMap.isInitialized) safeMap.onDetach()
         map.onDestroy()
         super.onDestroy()
     }
