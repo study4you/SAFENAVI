@@ -15,6 +15,8 @@ data class DataUpdateResult(
     val message: String
 )
 
+data class DownloadProgress(val percent: Int, val bytesPerSecond: Long, val label: String)
+
 class EnforcementDataUpdater(
     private val context: Context,
     private val db: SafetyDatabase
@@ -75,7 +77,8 @@ class EnforcementDataUpdater(
 
     suspend fun updateRegions(
         selectedRegions: Set<String>,
-        force: Boolean = true
+        force: Boolean = true,
+        onProgress: ((DownloadProgress) -> Unit)? = null
     ): DataUpdateResult = withContext(Dispatchers.IO) {
         val normalized = selectedRegions
             .map { it.uppercase() }
@@ -136,7 +139,12 @@ class EnforcementDataUpdater(
             val localVersion = prefs.getString("version_$region", null)
             if (!force && localVersion == version) continue
 
-            val dataText = downloadText(BASE + path)
+            onProgress?.invoke(DownloadProgress((i * 100 / datasets.length()).coerceIn(0, 99), 0, ALL_REGIONS[region] ?: region))
+            val dataText = downloadText(BASE + path) { read, total, speed ->
+                val filePercent = if (total > 0) (read * 100 / total).toInt() else 0
+                val overall = (((i.toDouble() + filePercent / 100.0) / datasets.length()) * 100).toInt().coerceIn(0, 99)
+                onProgress?.invoke(DownloadProgress(overall, speed, ALL_REGIONS[region] ?: region))
+            }
             if (dataText == null) {
                 failed += region
                 continue
@@ -169,6 +177,8 @@ class EnforcementDataUpdater(
             else ->
                 "업데이트 완료: " + updated.joinToString(", ")
         }
+
+        onProgress?.invoke(DownloadProgress(100, 0, "완료"))
 
         DataUpdateResult(
             checked = true,
@@ -211,7 +221,7 @@ class EnforcementDataUpdater(
         return result
     }
 
-    private fun downloadText(urlText: String): String? {
+    private fun downloadText(urlText: String, progress: ((Long, Long, Long) -> Unit)? = null): String? {
         val connection = (URL(urlText).openConnection() as HttpURLConnection).apply {
             requestMethod = "GET"
             connectTimeout = 8000
@@ -222,7 +232,22 @@ class EnforcementDataUpdater(
 
         return try {
             if (connection.responseCode !in 200..299) return null
-            connection.inputStream.bufferedReader().use { it.readText() }
+            val total = connection.contentLengthLong
+            val started = android.os.SystemClock.elapsedRealtime()
+            var read = 0L
+            val out = java.io.ByteArrayOutputStream()
+            connection.inputStream.use { input ->
+                val buffer = ByteArray(16 * 1024)
+                while (true) {
+                    val n = input.read(buffer)
+                    if (n < 0) break
+                    out.write(buffer, 0, n)
+                    read += n
+                    val elapsed = (android.os.SystemClock.elapsedRealtime() - started).coerceAtLeast(1L)
+                    progress?.invoke(read, total, read * 1000L / elapsed)
+                }
+            }
+            out.toString(Charsets.UTF_8.name())
         } catch (_: Exception) {
             null
         } finally {
