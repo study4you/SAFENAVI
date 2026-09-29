@@ -174,6 +174,16 @@ class EnforcementDataUpdater(
                 failed += region
                 continue
             }
+            val datasetRoot = try { JSONObject(dataText) } catch (_: Exception) {
+                failed += region
+                continue
+            }
+            if (datasetRoot.optString("region").uppercase() != region ||
+                datasetRoot.optString("version") != version
+            ) {
+                failed += region
+                continue
+            }
             val points = parseDataset(region, dataText)
             val declaredCount = item.optInt("count", -1)
             val declaredSha256 = item.optString("sha256").lowercase()
