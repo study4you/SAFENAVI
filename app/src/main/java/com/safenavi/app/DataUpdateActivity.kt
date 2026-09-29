@@ -55,7 +55,10 @@ class DataUpdateActivity : AppCompatActivity() {
             statusText.text = "선택 지역 업데이트 확인 중..."
 
             lifecycleScope.launch(Dispatchers.IO) {
-                val result = updater.updateRegions(selected, force = true)
+                val result = updater.updateRegions(selected, force = true) { p ->
+                    val speed = if (p.bytesPerSecond >= 1024 * 1024) String.format("%.1f MB/s", p.bytesPerSecond / 1048576.0) else String.format("%.0f KB/s", p.bytesPerSecond / 1024.0)
+                    runOnUiThread { statusText.text = "단속정보 ${p.label} · ${p.percent}% · $speed" }
+                }
                 withContext(Dispatchers.Main) { statusText.text = result.message + " · 지도/도로 다운로드 준비" }
                 val offline = offlineUpdater.update { progress ->
                     runOnUiThread { statusText.text = result.message + "\n" + progress }
