@@ -28,6 +28,8 @@ jobs:
           gradle-version: '8.9'
 
       - name: Build debug APK
+        env:
+          NAVER_MAP_CLIENT_ID: ${{ secrets.NAVER_MAP_CLIENT_ID }}
         run: gradle --no-daemon assembleDebug
 
       - name: Upload APK
