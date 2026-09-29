@@ -419,6 +419,9 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
             }
             locationLabel.text = roadText ?: "현재 도로 추적 중"
 
+            if (isFreeMap() && snapped != null && snapped.roadGeometry.size >= 2) {
+                safeNaviMap.updateRoadGeometry(snapped.roadGeometry)
+            }
             updateNavigationCamera(smooth, firstFix)
             firstFix = false
             loadNearbySafetyPoints(smooth, roadText)
