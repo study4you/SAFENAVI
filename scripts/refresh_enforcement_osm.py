@@ -208,6 +208,9 @@ def main():
         if idx < len(REGIONS) - 1:
             time.sleep(2)
 
+    if not datasets:
+        raise RuntimeError("no verified enforcement-camera datasets; manifest left unchanged")
+
     manifest_out = {
         "schema": 2,
         "updatedAt": now,
