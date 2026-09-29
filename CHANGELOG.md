@@ -1,5 +1,12 @@
 # SafeNavi Changelog
 
+## 25
+- 주행 지도를 기존 osmdroid/Mapsforge에서 네이버 지도 Android SDK로 전환
+- 네이버 Navi 지도 타입 적용
+- 기존 주행방향 회전, 전방 카메라 오프셋, 수동 확대/축소 유지
+- 현재 차량 위치와 진행경로 단속 마커를 네이버 지도 오버레이로 이전
+- NCP Key ID는 공개 소스에 저장하지 않고 GitHub Actions Secret에서 빌드 시 주입
+
 ## 24
 - v23의 잘못된 512px 타일 크기 변경을 제거하고 Mapsforge 기본 테마 의존을 종료
 - SafeNavi 자동차 주행 전용 오프라인 지도 렌더 테마 추가
