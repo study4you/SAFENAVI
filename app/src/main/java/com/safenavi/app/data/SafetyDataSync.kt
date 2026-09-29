@@ -38,6 +38,9 @@ class SafetyDataSync(
         }
 
         val points = fetchOsmSafetyPoints(lat, lon)
+        // Remove legacy school/traffic-calming rows left by older builds so
+        // the local database remains camera-only.
+        db.safetyPointDao().deleteNonEnforcement()
         if (points.isNotEmpty()) {
             db.safetyPointDao().insertAll(points)
         }
