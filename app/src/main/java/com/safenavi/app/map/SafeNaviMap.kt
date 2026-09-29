@@ -45,6 +45,7 @@ class SafeNaviMap(private val mapView: MapView) {
     private var lastRoadGeometry: List<Pair<Double, Double>> = emptyList()
     private var lastCameraTarget: LatLng? = null
     private var lastCameraBearing = Double.NaN
+    private var smoothedCameraBearing = Double.NaN
 
     fun attach(mapLibreMap: MapLibreMap, onReady: () -> Unit = {}) {
         map = mapLibreMap
@@ -148,6 +149,19 @@ class SafeNaviMap(private val mapView: MapView) {
             .bearing(heading.toDouble())
             .tilt(if (mode == ViewMode.THREE_D) 58.0 else 0.0)
         if (forceZoom) builder.zoom(16.5) else builder.zoom(current.cameraPosition.zoom)
+        val rawBearing = heading.toDouble()
+        if (smoothedCameraBearing.isNaN()) smoothedCameraBearing = rawBearing
+        val turnDelta = ((rawBearing - smoothedCameraBearing + 540.0) % 360.0) - 180.0
+        val bearingAlpha = when {
+            kotlin.math.abs(turnDelta) >= 35.0 -> 0.58
+            kotlin.math.abs(turnDelta) >= 12.0 -> 0.42
+            else -> 0.26
+        }
+        smoothedCameraBearing = (smoothedCameraBearing + turnDelta * bearingAlpha + 360.0) % 360.0
+        val cameraPosition = CameraPosition.Builder(builder.build())
+            .bearing(smoothedCameraBearing)
+            .build()
+
         val previousTarget = lastCameraTarget
         val moved = previousTarget?.let {
             val out = FloatArray(1)
@@ -155,11 +169,11 @@ class SafeNaviMap(private val mapView: MapView) {
             out[0]
         } ?: Float.MAX_VALUE
         val bearingDelta = if (lastCameraBearing.isNaN()) 180.0 else
-            kotlin.math.abs(((heading.toDouble() - lastCameraBearing + 540.0) % 360.0) - 180.0)
-        if (forceZoom || moved >= 1.5f || bearingDelta >= 1.5) {
-            current.animateCamera(CameraUpdateFactory.newCameraPosition(builder.build()), 500)
+            kotlin.math.abs(((smoothedCameraBearing - lastCameraBearing + 540.0) % 360.0) - 180.0)
+        if (forceZoom || moved >= 1.5f || bearingDelta >= 1.2) {
+            current.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 500)
             lastCameraTarget = target
-            lastCameraBearing = heading.toDouble()
+            lastCameraBearing = smoothedCameraBearing
         }
         updateCurrentRoadHighlight(location, heading)
     }
