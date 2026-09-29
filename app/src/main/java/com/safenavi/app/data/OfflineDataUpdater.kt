@@ -24,7 +24,10 @@ class OfflineDataUpdater(private val context: Context) {
         val graphDir=File(dir,"south-korea-graph")
         fun mb(f:File)=if(f.exists()) "%.1fMB".format(f.length()/1048576.0) else "없음"
         val installed=graphDir.exists() && graphDir.walkTopDown().any { it.isFile }
-        return "오프라인 지도 "+mb(map)+" · 도로 그래프 "+mb(graph)+(if(installed) " · 설치됨" else "")
+        val graphInfo=File(graphDir,"safenavi-graph-info.txt")
+        val graphType=if(graphInfo.exists()) graphInfo.readLines().firstOrNull()?.substringAfter("type=") else null
+        return "오프라인 지도 "+mb(map)+" · 도로 그래프 "+mb(graph)+
+            (if(installed) " · 설치됨"+(graphType?.let{" · $it"}?:"") else "")
     }
 
     suspend fun update(onProgress:(String)->Unit):OfflineDataResult=withContext(Dispatchers.IO){
@@ -63,9 +66,19 @@ class OfflineDataUpdater(private val context: Context) {
             }
         }
         if(count==0) error("도로 그래프 압축파일이 비어 있음")
+        val names=staging.walkTopDown().filter{it.isFile}.map{it.name.lowercase()}.toList()
+        val type=when {
+            names.any{it=="properties"} && names.any{it.contains("edges")} -> "GraphHopper"
+            names.any{it.endsWith(".gh")} -> "GraphHopper"
+            else -> "unknown"
+        }
+        File(staging,"safenavi-graph-info.txt").writeText(
+            "type=$type\nfiles=$count\n"+
+            names.take(80).joinToString("\n")
+        )
         if(targetDir.exists()) targetDir.deleteRecursively()
         if(!staging.renameTo(targetDir)) error("도로 그래프 설치 실패")
-        onProgress("도로 그래프 설치 완료 · "+count+"개 파일")
+        onProgress("도로 그래프 설치 완료 · "+count+"개 파일 · "+type)
     }
 
     private fun download(url:String,target:File,label:String,onProgress:(String)->Unit){
