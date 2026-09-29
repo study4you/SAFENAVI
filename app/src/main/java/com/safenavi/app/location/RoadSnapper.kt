@@ -30,6 +30,7 @@ class RoadSnapper {
     private var lastSnapRequestAt = 0L
     private var consecutiveSnapFailures = 0
     private var nextNetworkAttemptAt = 0L
+    private var lastGoodSnapAt = 0L
 
     suspend fun snap(location: Location): SnappedRoadPoint? = snapMutex.withLock {
         val fixTimeNanos = location.elapsedRealtimeNanos
@@ -66,7 +67,11 @@ class RoadSnapper {
         lastSource = Location(location)
 
         if (now < nextNetworkAttemptAt && lastResult != null) {
-            return@withContext lastResult
+            val age = now - lastGoodSnapAt
+            if (age <= 30_000L) return@withContext lastResult
+            lastResult = null
+            stableResult = null
+            geometryAnchor = null
         }
 
         val bearingOption = if (location.hasBearing() && location.speed > 2f) {
@@ -91,6 +96,7 @@ class RoadSnapper {
             }
             consecutiveSnapFailures = 0
             nextNetworkAttemptAt = 0L
+            lastGoodSnapAt = now
 
             val body = connection.inputStream.bufferedReader().use { it.readText() }
             val root = JSONObject(body)
