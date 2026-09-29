@@ -260,6 +260,8 @@ class EnforcementDataUpdater(
             val lat = p.optDouble("latitude", Double.NaN)
             val lon = p.optDouble("longitude", Double.NaN)
             if (!lat.isFinite() || !lon.isFinite()) continue
+            // Reject obviously corrupt coordinates outside the Korean service area.
+            if (lat !in 32.0..39.5 || lon !in 123.0..132.5) continue
 
             result += SafetyPoint(
                 id = p.optLong("id"),
