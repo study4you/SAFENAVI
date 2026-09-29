@@ -23,10 +23,20 @@ class SafetyEngine {
             // The camera must be physically in front of the vehicle.
             val bearingToCamera = GeoCalculator.bearing(lat, lon, p.latitude, p.longitude)
             val forwardAngle = GeoCalculator.angleDifference(heading, bearingToCamera)
-            if (forwardAngle > 12.0) return@mapNotNull null
+            val maxForwardAngle = when {
+                d < 250.0 -> 30.0
+                d < 700.0 -> 20.0
+                else -> 12.0
+            }
+            if (forwardAngle > maxForwardAngle) return@mapNotNull null
 
             val lateral = d * kotlin.math.sin(Math.toRadians(forwardAngle))
-            if (lateral > 18.0) return@mapNotNull null
+            val maxLateral = when {
+                d < 250.0 -> 32.0
+                d < 700.0 -> 26.0
+                else -> 20.0
+            }
+            if (lateral > maxLateral) return@mapNotNull null
 
             // Use direction metadata when the source provides it. Missing direction
             // must not hide a real camera; forward/lateral geometry still filters it.
