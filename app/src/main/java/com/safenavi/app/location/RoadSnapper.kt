@@ -25,6 +25,8 @@ class RoadSnapper {
     private var stableResult: SnappedRoadPoint? = null
     private val snapMutex = Mutex()
     private var newestFixTimeNanos = Long.MIN_VALUE
+    private var geometryFetchedAt = 0L
+    private var geometryAnchor: SnappedRoadPoint? = null
 
     suspend fun snap(location: Location): SnappedRoadPoint? = snapMutex.withLock {
         val fixTimeNanos = location.elapsedRealtimeNanos
@@ -125,13 +127,26 @@ class RoadSnapper {
                 selected.snapDistanceMeters + 18.0 >= previousDistance
 
             val result = if (keepPrevious) previousRoad else selected
-            val geometry = fetchLocalGeometry(result, location)
+            val anchor = geometryAnchor
+            val anchorDistance = anchor?.let {
+                val out = FloatArray(1)
+                Location.distanceBetween(result.latitude, result.longitude, it.latitude, it.longitude, out)
+                out[0].toDouble()
+            } ?: Double.MAX_VALUE
+            val sameRoad = anchor != null && result.roadName == anchor.roadName
+            val cacheFresh = now - geometryFetchedAt < 8000L
+            val reuseGeometry = sameRoad && anchorDistance < 65.0 && cacheFresh && anchor!!.roadGeometry.size >= 2
+            val geometry = if (reuseGeometry) anchor!!.roadGeometry else fetchLocalGeometry(result, location)
             val enriched = if (geometry.isNotEmpty()) {
                 result.copy(
                     roadBearing = geometryBearing(geometry, location.bearing.toDouble()),
                     roadGeometry = geometry
                 )
             } else result
+            if (!reuseGeometry && enriched.roadGeometry.size >= 2) {
+                geometryAnchor = enriched
+                geometryFetchedAt = now
+            }
             stableResult = enriched
             enriched.also { lastResult = it }
         } catch (_: Exception) {
