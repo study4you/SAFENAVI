@@ -6,6 +6,7 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.zip.ZipInputStream
 
 data class OfflineDataResult(val ok:Boolean,val message:String)
 
@@ -20,14 +21,18 @@ class OfflineDataUpdater(private val context: Context) {
     fun status():String {
         val map=File(dir,"south-korea.map")
         val graph=File(dir,"south-korea-graph.zip")
+        val graphDir=File(dir,"south-korea-graph")
         fun mb(f:File)=if(f.exists()) "%.1fMB".format(f.length()/1048576.0) else "없음"
-        return "오프라인 지도 "+mb(map)+" · 도로 그래프 "+mb(graph)
+        val installed=graphDir.exists() && graphDir.walkTopDown().any { it.isFile }
+        return "오프라인 지도 "+mb(map)+" · 도로 그래프 "+mb(graph)+(if(installed) " · 설치됨" else "")
     }
 
     suspend fun update(onProgress:(String)->Unit):OfflineDataResult=withContext(Dispatchers.IO){
         try {
             download(MAP_URL,File(dir,"south-korea.map"),"지도",onProgress)
-            download(GRAPH_URL,File(dir,"south-korea-graph.zip"),"도로",onProgress)
+            val graphZip=File(dir,"south-korea-graph.zip")
+            download(GRAPH_URL,graphZip,"도로",onProgress)
+            installGraph(graphZip,File(dir,"south-korea-graph"),onProgress)
             prefs.edit().putLong("updated_at",System.currentTimeMillis()).apply()
             OfflineDataResult(true,"지도/도로 데이터 업데이트 완료")
         } catch(e:Exception) {
@@ -35,11 +40,39 @@ class OfflineDataUpdater(private val context: Context) {
         }
     }
 
+    private fun installGraph(zip:File,targetDir:File,onProgress:(String)->Unit){
+        val staging=File(dir,"south-korea-graph.installing")
+        if(staging.exists()) staging.deleteRecursively()
+        staging.mkdirs()
+        val root=staging.canonicalFile
+        var count=0
+        ZipInputStream(zip.inputStream().buffered()).use { zin ->
+            while(true){
+                val entry=zin.nextEntry ?: break
+                val out=File(staging,entry.name).canonicalFile
+                if(out.path != root.path && !out.path.startsWith(root.path+File.separator)) {
+                    error("잘못된 도로 그래프 경로")
+                }
+                if(entry.isDirectory) out.mkdirs() else {
+                    out.parentFile?.mkdirs()
+                    out.outputStream().buffered().use { output -> zin.copyTo(output,128*1024) }
+                    count++
+                    if(count%25==0) onProgress("도로 그래프 설치 "+count+"개 파일")
+                }
+                zin.closeEntry()
+            }
+        }
+        if(count==0) error("도로 그래프 압축파일이 비어 있음")
+        if(targetDir.exists()) targetDir.deleteRecursively()
+        if(!staging.renameTo(targetDir)) error("도로 그래프 설치 실패")
+        onProgress("도로 그래프 설치 완료 · "+count+"개 파일")
+    }
+
     private fun download(url:String,target:File,label:String,onProgress:(String)->Unit){
         val tmp=File(target.absolutePath+".part")
         val c=(URL(url).openConnection() as HttpURLConnection).apply{
             connectTimeout=15000;readTimeout=30000
-            setRequestProperty("User-Agent","SafeNavi/19")
+            setRequestProperty("User-Agent","SafeNavi/21")
         }
         try {
             if(c.responseCode !in 200..299) error("HTTP "+c.responseCode)
