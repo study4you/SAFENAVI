@@ -50,6 +50,7 @@ class SafeNaviMap(private val mapView: MapView) {
     private var smoothedTargetLon = Double.NaN
     private var lastCameraUpdateAt = 0L
     private var dynamicZoom = Double.NaN
+    private var manualZoomUntil = 0L
 
     fun attach(mapLibreMap: MapLibreMap, onReady: () -> Unit = {}) {
         map = mapLibreMap
@@ -142,8 +143,16 @@ class SafeNaviMap(private val mapView: MapView) {
         )
     }
 
-    fun zoomIn() { map?.animateCamera(CameraUpdateFactory.zoomIn()) }
-    fun zoomOut() { map?.animateCamera(CameraUpdateFactory.zoomOut()) }
+    fun zoomIn() {
+        manualZoomUntil = android.os.SystemClock.elapsedRealtime() + 12_000L
+        map?.animateCamera(CameraUpdateFactory.zoomIn())
+        dynamicZoom = map?.cameraPosition?.zoom ?: dynamicZoom
+    }
+    fun zoomOut() {
+        manualZoomUntil = android.os.SystemClock.elapsedRealtime() + 12_000L
+        map?.animateCamera(CameraUpdateFactory.zoomOut())
+        dynamicZoom = map?.cameraPosition?.zoom ?: dynamicZoom
+    }
 
     fun updateVehicle(location: Location, heading: Float, forceZoom: Boolean) {
         val current = map ?: return
@@ -173,7 +182,9 @@ class SafeNaviMap(private val mapView: MapView) {
             speedKmh >= 20.0 -> 16.3
             else -> 16.6
         }
+        val manualZoomActive = android.os.SystemClock.elapsedRealtime() < manualZoomUntil
         if (dynamicZoom.isNaN() || forceZoom) dynamicZoom = desiredZoom
+        else if (manualZoomActive) dynamicZoom = current.cameraPosition.zoom
         else dynamicZoom += (desiredZoom - dynamicZoom) * 0.18
 
         val builder = CameraPosition.Builder()
