@@ -149,9 +149,22 @@ class SafeNaviMap(private val mapView: MapView) {
         updateCurrentRoadHighlight(location, heading)
     }
 
-    private fun updateCurrentRoadHighlight(location: Location, heading: Float) {
+    fun updateRoadGeometry(points: List<Pair<Double, Double>>) {
         val current = map ?: return
+        if (points.size < 2) return
         currentRoadLine?.let { current.removePolyline(it) }
+        val latLngs = points.map { LatLng(it.first, it.second) }.toTypedArray()
+        currentRoadLine = current.addPolyline(
+            PolylineOptions()
+                .add(*latLngs)
+                .width(8f)
+                .color(android.graphics.Color.rgb(255, 184, 54))
+        )
+    }
+
+    private fun updateCurrentRoadHighlight(location: Location, heading: Float) {
+        if (currentRoadLine != null) return
+        val current = map ?: return
         val center = LatLng(location.latitude, location.longitude)
         val back = offset(center, heading + 180f, 32.0)
         val front = offset(center, heading, 78.0)
