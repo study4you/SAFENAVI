@@ -155,6 +155,10 @@ class EnforcementDataUpdater(
                 failed += region
                 continue
             }
+            if (!path.lowercase().endsWith(".json")) {
+                failed += region
+                continue
+            }
             val dataText = downloadText(BASE + path) { read, total, speed ->
                 val knownTotal = if (expectedBytes > 0L) expectedBytes else total
                 val filePercent = if (knownTotal > 0) (read * 100 / knownTotal).toInt().coerceIn(0, 100) else 0
