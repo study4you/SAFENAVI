@@ -34,20 +34,18 @@ import com.safenavi.app.data.SafetyDatabase
 import com.safenavi.app.location.DrivingLocationService
 import com.safenavi.app.location.RoadSnapper
 import com.safenavi.app.location.TunnelDeadReckoner
-import com.safenavi.app.map.OfflineMapManager
+import com.safenavi.app.map.NaverDrivingMap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.osmdroid.config.Configuration
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory
-import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.Marker
+import com.naver.maps.map.MapView
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.OnMapReadyCallback
 import com.safenavi.app.data.SafetyPoint
 import com.safenavi.app.safety.SafetyEngine
 import kotlin.math.*
 
-class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener {
+class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener, OnMapReadyCallback {
     private lateinit var map: MapView
     private lateinit var status: TextView
     private lateinit var dataStatus: TextView
@@ -66,8 +64,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
     private val roadSnapper = RoadSnapper()
     private val tunnelReckoner = TunnelDeadReckoner()
     private val safetyEngine = SafetyEngine()
-    private lateinit var offlineMapManager: OfflineMapManager
-    private var offlineMapActive = false
+    private val drivingMap = NaverDrivingMap()
     private var currentRoadName: String? = null
     private var sensorHeading = 0f
     private var gpsHeading = 0f
@@ -79,8 +76,6 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
     private lateinit var db: SafetyDatabase
     private lateinit var dataUpdater: EnforcementDataUpdater
 
-    private var carMarker: Marker? = null
-    private val safetyMarkers = mutableListOf<Marker>()
     private var lastLocation: Location? = null
     private var firstFix = true
     private var driving = false
@@ -117,17 +112,11 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Configuration.getInstance().apply {
-            userAgentValue = packageName
-            // Keep a large persistent road-map cache so tiles already seen/downloaded
-            // are rendered from storage instead of being fetched again while driving.
-            tileFileSystemCacheMaxBytes = 1024L * 1024L * 1024L
-            tileFileSystemCacheTrimBytes = 850L * 1024L * 1024L
-            expirationOverrideDuration = 30L * 24L * 60L * 60L * 1000L
-        }
         setContentView(R.layout.activity_main)
 
         bindViews()
+        map.onCreate(savedInstanceState)
+        map.getMapAsync(this)
         val appVersion = packageManager.getPackageInfo(packageName, 0).versionName ?: "?"
         findViewById<TextView>(R.id.versionLabel).text = "v$appVersion"
         applySystemInsets()
@@ -137,14 +126,6 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
         rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
         db = SafetyDatabase.getInstance(this)
         dataUpdater = EnforcementDataUpdater(this, db)
-        offlineMapManager = OfflineMapManager(this)
-
-        map.setTileSource(TileSourceFactory.MAPNIK)
-        offlineMapActive = offlineMapManager.attach(map)
-        map.setMultiTouchControls(true)
-        map.isTilesScaledToDpi = true
-        map.controller.setZoom(15.0)
-        map.controller.setCenter(GeoPoint(37.5665, 126.9780))
 
         lifecycleScope.launch(Dispatchers.IO) {
             dataUpdater.pruneLegacyData()
@@ -164,13 +145,18 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
         }
         findViewById<Button>(R.id.driveRecenterButton).setOnClickListener { recenter(true) }
         findViewById<Button>(R.id.menuButton).setOnClickListener { anchor -> showDriveMenu(anchor) }
-        findViewById<Button>(R.id.zoomInButton).setOnClickListener { map.controller.zoomIn() }
-        findViewById<Button>(R.id.zoomOutButton).setOnClickListener { map.controller.zoomOut() }
+        findViewById<Button>(R.id.zoomInButton).setOnClickListener { drivingMap.zoomIn() }
+        findViewById<Button>(R.id.zoomOutButton).setOnClickListener { drivingMap.zoomOut() }
         findViewById<Button>(R.id.stopButton).setOnClickListener { stopSafetyAndExit() }
 
         requestOptionalPermissions()
         window.decorView.post(tunnelTicker)
         startAutomaticDrive()
+    }
+
+    override fun onMapReady(naverMap: NaverMap) {
+        drivingMap.attach(naverMap)
+        lastLocation?.let { updateNavigationCamera(it, true) }
     }
 
     private fun showDriveMenu(anchor: View) {
@@ -349,7 +335,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
             val roadText = snapped?.roadName?.takeIf { it.isNotBlank() }
             currentRoadName = roadText
             dataStatus.text = buildString {
-                append(if (offlineMapActive) "오프라인맵 · " else "온라인맵 · ")
+                append("네이버 내비맵 · ")
                 if (gpsAccuracy != null && gpsAccuracy <= 35f) {
                     append("GPS ")
                     append(gpsAccuracy.roundToInt())
@@ -366,22 +352,10 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
             updateNavigationCamera(smooth, firstFix)
             firstFix = false
             loadNearbySafetyPoints(smooth, roadText)
-            map.invalidate()
         }
     }
 
-    private fun updateCarMarker(location: Location) {
-        if (carMarker == null) {
-            carMarker = Marker(map).apply {
-                title = "현재 위치"
-                icon = ContextCompat.getDrawable(this@MainActivity, R.drawable.ic_navigation_arrow)
-                setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-                setFlat(false)
-                map.overlays.add(this)
-            }
-        }
-        carMarker?.position = GeoPoint(location.latitude, location.longitude)
-    }
+    private fun updateCarMarker(location: Location) = Unit
 
     private fun updateNavigationCamera(location: Location, forceZoom: Boolean) {
         if (!followMode) return
@@ -407,23 +381,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
         }
         val heading = navigationHeading
 
-        // Set a wider driving overview only when navigation is first entered/recentered.
-        // Never force the zoom back in after the driver presses the +/- controls.
-        if (forceZoom) {
-            map.controller.setZoom(16.5)
-        }
-
-        map.mapOrientation = -heading
-
-        // Continuous GPS updates must not start a new map animation every 800 ms.
-        // animateTo() made the camera chase the vehicle and fall behind at road speed.
-        // Move the camera immediately and keep a smaller look-ahead so the vehicle
-        // remains clearly visible in the lower-middle part of the navigation view.
-        val speedMps = if (location.hasSpeed()) location.speed.toDouble() else 0.0
-        val lookAheadMeters = (45.0 + speedMps * 1.2).coerceIn(45.0, 70.0)
-        map.controller.setCenter(
-            pointAhead(location.latitude, location.longitude, heading.toDouble(), lookAheadMeters)
-        )
+        drivingMap.updateVehicle(location, heading, forceZoom)
     }
 
     private fun recenter(navigationMode: Boolean) {
@@ -431,30 +389,6 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
             followMode = navigationMode || driving
             updateNavigationCamera(it, false)
         }
-    }
-
-    private fun pointAhead(
-        lat: Double,
-        lon: Double,
-        bearing: Double,
-        meters: Double
-    ): GeoPoint {
-        val radius = 6371000.0
-        val delta = meters / radius
-        val theta = Math.toRadians(bearing)
-        val phi1 = Math.toRadians(lat)
-        val lambda1 = Math.toRadians(lon)
-
-        val phi2 = asin(
-            sin(phi1) * cos(delta) +
-                cos(phi1) * sin(delta) * cos(theta)
-        )
-        val lambda2 = lambda1 + atan2(
-            sin(theta) * sin(delta) * cos(phi1),
-            cos(delta) - sin(phi1) * sin(phi2)
-        )
-
-        return GeoPoint(Math.toDegrees(phi2), Math.toDegrees(lambda2))
     }
 
     private fun loadNearbySafetyPoints(location: Location, roadName: String?) {
@@ -488,56 +422,12 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
     }
 
     private fun showSafetyMarkers(points: List<SafetyPoint>) {
-        safetyMarkers.forEach { map.overlays.remove(it) }
-        safetyMarkers.clear()
-
-        points.forEach { point ->
-            val marker = Marker(map).apply {
-                position = GeoPoint(point.latitude, point.longitude)
-                setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                title = when (point.type) {
-                    "SIGNAL_SPEED" -> "신호·과속 단속"
-                    "SECTION" -> "구간 단속"
-                    else -> "과속 단속"
-                }
-                snippet = buildString {
-                    point.speedLimit?.let { speed -> append("제한속도 " + speed + "km/h") }
-                    point.roadName?.takeIf { road -> road.isNotBlank() }?.let { road ->
-                        if (isNotEmpty()) append(" · ")
-                        append(road)
-                    }
-                }
-                icon = enforcementMarkerIcon(point)
-            }
-            safetyMarkers.add(marker)
-            val carIndex = carMarker?.let { map.overlays.indexOf(it) } ?: -1
-            if (carIndex >= 0) map.overlays.add(carIndex, marker) else map.overlays.add(marker)
-        }
-        map.invalidate()
-    }
-
-    private fun enforcementMarkerIcon(point: SafetyPoint): android.graphics.drawable.Drawable {
-        val size = 42.dp()
-        return GradientDrawable().apply {
-            shape = GradientDrawable.OVAL
-            setColor(
-                when (point.type) {
-                    "SECTION" -> Color.rgb(255, 152, 0)
-                    "SIGNAL_SPEED" -> Color.rgb(198, 40, 40)
-                    else -> Color.rgb(211, 47, 47)
-                }
-            )
-            setStroke(3.dp(), Color.WHITE)
-            setSize(size, size)
-        }
+        drivingMap.showSafetyPoints(points)
     }
 
     override fun onResume() {
         super.onResume()
         map.onResume()
-        if (!offlineMapActive && offlineMapManager.isInstalled()) {
-            offlineMapActive = offlineMapManager.attach(map)
-        }
         rotationSensor?.let {
             sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_UI)
         }
@@ -581,7 +471,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
     override fun onDestroy() {
         window.decorView.removeCallbacks(tunnelTicker)
         try { locationManager.removeUpdates(this) } catch (_: Exception) {}
-        offlineMapManager.detach()
+        map.onDestroy()
         super.onDestroy()
     }
 }
