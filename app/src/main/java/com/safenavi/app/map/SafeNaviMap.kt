@@ -54,6 +54,8 @@ class SafeNaviMap(private val mapView: MapView) {
     private var lookAheadTarget: LatLng? = null
     private var lastVehicleLocation: Location? = null
     private var lastReliableHeading = Float.NaN
+    private var headingCandidate = Float.NaN
+    private var headingCandidateCount = 0
 
     fun attach(mapLibreMap: MapLibreMap, onReady: () -> Unit = {}) {
         map = mapLibreMap
@@ -169,8 +171,30 @@ class SafeNaviMap(private val mapView: MapView) {
         lastVehicleLocation = Location(location)
         val speedForHeading = if (location.hasSpeed()) location.speed else 0f
         val effectiveHeading = if (location.hasBearing() && speedForHeading >= 2.5f) {
-            lastReliableHeading = heading
-            heading
+            if (lastReliableHeading.isNaN()) {
+                lastReliableHeading = heading
+                headingCandidateCount = 0
+            } else {
+                val delta = kotlin.math.abs(((heading - lastReliableHeading + 540f) % 360f) - 180f)
+                if (delta >= 70f && speedForHeading < 8f) {
+                    val candidateDelta = if (headingCandidate.isNaN()) 180f else
+                        kotlin.math.abs(((heading - headingCandidate + 540f) % 360f) - 180f)
+                    if (candidateDelta <= 18f) headingCandidateCount++ else {
+                        headingCandidate = heading
+                        headingCandidateCount = 1
+                    }
+                    if (headingCandidateCount >= 2) {
+                        lastReliableHeading = heading
+                        headingCandidateCount = 0
+                        headingCandidate = Float.NaN
+                    }
+                } else {
+                    lastReliableHeading = heading
+                    headingCandidateCount = 0
+                    headingCandidate = Float.NaN
+                }
+            }
+            lastReliableHeading
         } else if (!lastReliableHeading.isNaN()) {
             lastReliableHeading
         } else {
