@@ -13,12 +13,15 @@ import com.safenavi.app.data.SafetyPoint
 import kotlin.math.*
 
 class NaverDrivingMap {
+    enum class Style { NAVER_NAVI, FREE_BASIC }
+
     private var map: NaverMap? = null
+    private var style = Style.NAVER_NAVI
     private val safetyMarkers = mutableListOf<Marker>()
 
     fun attach(naverMap: NaverMap) {
         map = naverMap
-        naverMap.mapType = NaverMap.MapType.Navi
+        applyStyle(naverMap)
         naverMap.uiSettings.isZoomControlEnabled = false
         naverMap.uiSettings.isCompassEnabled = false
         naverMap.locationOverlay.apply {
@@ -30,6 +33,18 @@ class NaverDrivingMap {
                 CameraPosition(LatLng(37.5665, 126.9780), 15.0)
             )
         )
+    }
+
+    fun setStyle(newStyle: Style) {
+        style = newStyle
+        map?.let(::applyStyle)
+    }
+
+    private fun applyStyle(naverMap: NaverMap) {
+        naverMap.mapType = when (style) {
+            Style.NAVER_NAVI -> NaverMap.MapType.Navi
+            Style.FREE_BASIC -> NaverMap.MapType.Basic
+        }
     }
 
     fun zoomIn() { map?.moveCamera(CameraUpdate.zoomIn()) }
