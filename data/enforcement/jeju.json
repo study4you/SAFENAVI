@@ -1,8 +1,8 @@
 {
   "region": "JEJU",
   "regionName": "제주",
-  "version": "2",
-  "updatedAt": "2026-09-28T18:38:09+00:00",
+  "version": "3",
+  "updatedAt": "2026-09-29T18:37:08+00:00",
   "source": "OpenStreetMap",
   "sourceLicense": "ODbL",
   "sourceKind": "ROAD_SAFETY",
@@ -19,7 +19,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/153127184",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -35,7 +35,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/414941325",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -51,7 +51,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496101558",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -67,7 +67,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/493461142",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -83,7 +83,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496101556",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -99,7 +99,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/493477221",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -115,7 +115,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496101554",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -131,7 +131,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/596715027",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -147,7 +147,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496101553",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -163,7 +163,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/493477222",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -179,7 +179,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496101552",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -195,7 +195,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/579086078",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -211,7 +211,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/153127178",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -227,7 +227,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496101551",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -243,7 +243,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/493461140",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -259,7 +259,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/3739452072",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -275,7 +275,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496101550",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -291,7 +291,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/370223036",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -307,7 +307,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/493461141",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -323,7 +323,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/327139956",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -339,7 +339,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/10720408494",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -355,7 +355,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/5666300763",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -371,7 +371,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496101693",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -387,7 +387,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496101696",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -403,7 +403,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/10720408055",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -419,7 +419,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/10720408067",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -435,7 +435,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/8074397601",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -451,7 +451,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/10720408007",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -467,7 +467,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496101689",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -483,7 +483,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496101688",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -499,7 +499,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/3740766568",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -515,7 +515,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/10720408006",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -531,7 +531,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/3740838594",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -547,7 +547,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/3948673787",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -563,7 +563,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496101566",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -579,7 +579,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1414265857",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -595,7 +595,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496101565",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -611,7 +611,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/3948578716",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -627,7 +627,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496101547",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -643,7 +643,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/2609215630",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -659,7 +659,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496101564",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -675,7 +675,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/10720408218",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -691,7 +691,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/3740766567",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -707,7 +707,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496101563",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -723,7 +723,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496101546",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -739,7 +739,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496101562",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -755,7 +755,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/29702907",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -771,7 +771,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/414679086",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -787,7 +787,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/2609200251",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -803,7 +803,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/493461102",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -819,7 +819,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496101560",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -835,7 +835,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/7895521654",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -851,7 +851,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/10720408600",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -867,7 +867,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/2825888105",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -883,7 +883,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496101561",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -899,7 +899,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/430614602",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -915,7 +915,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/281505126",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -931,7 +931,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546888",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -947,7 +947,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/642478011",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -963,7 +963,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/2407941325",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -979,7 +979,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349995205",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -995,7 +995,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/282238444",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1011,7 +1011,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1543152221",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1027,7 +1027,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/582476124",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1043,7 +1043,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349995201",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1059,7 +1059,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349995202",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1075,7 +1075,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349995204",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1091,7 +1091,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/287219886",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1107,7 +1107,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546932",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1123,7 +1123,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546935",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1139,7 +1139,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1004166787",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1155,7 +1155,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546936",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1171,7 +1171,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/290798936",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1187,7 +1187,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/9265278834",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -1203,7 +1203,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/9265278837",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -1219,7 +1219,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/287219888",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1235,7 +1235,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1004166788",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1251,7 +1251,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349995185",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1267,7 +1267,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349995184",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1283,7 +1283,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349995187",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1299,7 +1299,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349995186",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1315,7 +1315,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/436759381",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -1331,7 +1331,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/327178106",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -1347,7 +1347,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349995188",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1363,7 +1363,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/290798927",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1379,7 +1379,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/29704610",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1395,7 +1395,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/287216675",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1411,7 +1411,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199547073",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1427,7 +1427,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546997",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1443,7 +1443,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/248065113",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1459,7 +1459,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/287216676",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1475,7 +1475,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199547074",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1491,7 +1491,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/200453042",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1507,7 +1507,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1216585178",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1523,7 +1523,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/290798913",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1539,7 +1539,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/290798912",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1555,7 +1555,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/287219893",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1571,7 +1571,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349995157",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1587,7 +1587,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349995216",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1603,7 +1603,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/290798921",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1619,7 +1619,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1216585179",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1635,7 +1635,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546995",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1651,7 +1651,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/290798910",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1667,7 +1667,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/290798909",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1683,7 +1683,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/290798939",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1699,7 +1699,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/285879186",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1715,7 +1715,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/290798889",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1731,7 +1731,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/290798903",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1747,7 +1747,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/285873127",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1763,7 +1763,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/285873126",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1779,7 +1779,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/249448952",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1795,7 +1795,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/290798932",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1811,7 +1811,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1474475686",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1827,7 +1827,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/290801410",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1843,7 +1843,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/75607019",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1859,7 +1859,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/75607021",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1875,7 +1875,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/287266342",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1891,7 +1891,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/287266338",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1907,7 +1907,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/287266345",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1923,7 +1923,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/287266340",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1939,7 +1939,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/30021000",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1955,7 +1955,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/285190775",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1971,7 +1971,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/285209385",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -1987,7 +1987,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/42434264",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2003,7 +2003,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/285228419",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2019,7 +2019,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546965",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2035,7 +2035,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546960",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2051,7 +2051,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/288438770",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2067,7 +2067,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/372513213",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2083,7 +2083,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/372513212",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2099,7 +2099,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/282206054",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2115,7 +2115,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/372513211",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2131,7 +2131,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1555358941",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2147,7 +2147,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1555358943",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2163,7 +2163,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1555358939",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2179,7 +2179,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1555358932",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2195,7 +2195,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1555358942",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2211,7 +2211,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1555358938",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2227,7 +2227,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1555358931",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2243,7 +2243,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546964",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2259,7 +2259,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1555358940",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2275,7 +2275,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1555358930",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2291,7 +2291,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1555358934",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2307,7 +2307,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1555358935",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2323,7 +2323,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1555358933",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2339,7 +2339,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1555358944",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2355,7 +2355,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1555358945",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2371,7 +2371,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1555358936",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2387,7 +2387,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1555358937",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2403,7 +2403,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/282206580",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2419,7 +2419,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/548066237",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2435,7 +2435,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546968",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2451,7 +2451,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/42434258",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2467,7 +2467,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546957",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2483,7 +2483,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/289999721",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2499,7 +2499,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546967",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2515,7 +2515,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/277823806",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2531,7 +2531,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546959",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2547,7 +2547,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/288300398",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2563,7 +2563,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546963",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2579,7 +2579,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1287357014",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2595,7 +2595,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/93690560",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2611,7 +2611,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546956",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2627,7 +2627,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/95066613",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2643,7 +2643,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/95066578",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2659,7 +2659,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/37404110",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2675,7 +2675,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1210284584",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2691,7 +2691,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1210284585",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2707,7 +2707,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546970",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2723,7 +2723,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/93690538",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2739,7 +2739,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/392333231",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2755,7 +2755,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/37404108",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2771,7 +2771,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/93690473",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2787,7 +2787,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/37414683",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2803,7 +2803,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/246698411",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2819,7 +2819,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/425652847",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2835,7 +2835,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/425652846",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2851,7 +2851,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/581265216",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2867,7 +2867,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/93690526",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2883,7 +2883,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/281813708",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2899,7 +2899,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/392333230",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2915,7 +2915,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/392333229",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2931,7 +2931,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/93690459",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2947,7 +2947,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/581265217",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2963,7 +2963,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/95608954",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2979,7 +2979,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/95608939",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -2995,7 +2995,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/93690465",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3011,7 +3011,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/93690476",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3027,7 +3027,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496379042",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3043,7 +3043,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496379041",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3059,7 +3059,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243868",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3075,7 +3075,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496379040",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3091,7 +3091,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496379039",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3107,7 +3107,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/426528732",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3123,7 +3123,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/232444749",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3139,7 +3139,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243866",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3155,7 +3155,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496379034",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3171,7 +3171,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243870",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3187,7 +3187,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496379033",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3203,7 +3203,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/95608944",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3219,7 +3219,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/581265218",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3235,7 +3235,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496379031",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3251,7 +3251,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546961",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3267,7 +3267,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/93690471",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3283,7 +3283,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546955",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3299,7 +3299,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546962",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3315,7 +3315,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/376324972",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3331,7 +3331,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/93690540",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3347,7 +3347,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546966",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3363,7 +3363,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496379032",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3379,7 +3379,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1444093789",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3395,7 +3395,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243867",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3411,7 +3411,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496379025",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3427,7 +3427,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243818",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3443,7 +3443,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1496379026",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3459,7 +3459,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/376324973",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3475,7 +3475,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243819",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3491,7 +3491,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/11019331450",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -3507,7 +3507,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243825",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3523,7 +3523,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243823",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3539,7 +3539,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1498437713",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3555,7 +3555,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1498437715",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3571,7 +3571,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243824",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3587,7 +3587,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1498437716",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3603,7 +3603,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243822",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3619,7 +3619,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1498437703",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3635,7 +3635,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/700145349",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3651,7 +3651,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/700136879",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3667,7 +3667,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/700145350",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3683,7 +3683,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243829",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3699,7 +3699,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1351779008",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3715,7 +3715,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1498437702",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3731,7 +3731,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1210284581",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3747,7 +3747,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1351779007",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3763,7 +3763,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1351779013",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3779,7 +3779,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/700145347",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3795,7 +3795,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1351779006",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3811,7 +3811,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/700145348",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3827,7 +3827,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/700145344",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3843,7 +3843,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1351779009",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3859,7 +3859,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/700145343",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3875,7 +3875,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1351779012",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3891,7 +3891,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1351779010",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3907,7 +3907,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1351779011",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3923,7 +3923,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/700145342",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3939,7 +3939,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/700142599",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3955,7 +3955,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243827",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3971,7 +3971,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1210284566",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -3987,7 +3987,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1210284565",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4003,7 +4003,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1351782715",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4019,7 +4019,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1351782713",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4035,7 +4035,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1351782730",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4051,7 +4051,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1498437710",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4067,7 +4067,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1351782728",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4083,7 +4083,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1351782729",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4099,7 +4099,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1351782712",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4115,7 +4115,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/242829426",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4131,7 +4131,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243834",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4147,7 +4147,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1351782714",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4163,7 +4163,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1498437711",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4179,7 +4179,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/242825469",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4195,7 +4195,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/242825726",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4211,7 +4211,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243832",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4227,7 +4227,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243831",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4243,7 +4243,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/376324971",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4259,7 +4259,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/376324970",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4275,7 +4275,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1498437709",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4291,7 +4291,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243841",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4307,7 +4307,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1498437708",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4323,7 +4323,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243840",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4339,7 +4339,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243843",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4355,7 +4355,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1498437700",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4371,7 +4371,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243861",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4387,7 +4387,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1498437701",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4403,7 +4403,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243845",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4419,7 +4419,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243844",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4435,7 +4435,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243842",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4451,7 +4451,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/371734145",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4467,7 +4467,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/232444752",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4483,7 +4483,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1498437699",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4499,7 +4499,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243865",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4515,7 +4515,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1498437698",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4531,7 +4531,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243880",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4547,7 +4547,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243876",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4563,7 +4563,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1498437707",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4579,7 +4579,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1498437706",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4595,7 +4595,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1498437704",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4611,7 +4611,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1210284563",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4627,7 +4627,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1498437705",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4643,7 +4643,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/286071344",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4659,7 +4659,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1210284561",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4675,7 +4675,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/436404124",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -4691,7 +4691,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/43609758",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4707,7 +4707,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243849",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4723,7 +4723,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/987686159",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4739,7 +4739,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/987686160",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4755,7 +4755,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/672857117",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4771,7 +4771,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1149398809",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4787,7 +4787,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1349243856",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4803,7 +4803,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/371734146",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4819,7 +4819,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/672857116",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4835,7 +4835,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/660821244",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4851,7 +4851,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/660821243",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4867,7 +4867,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1030255260",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4883,7 +4883,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1029600674",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4899,7 +4899,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1029600675",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4915,7 +4915,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1030255263",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4931,7 +4931,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1029600680",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4947,7 +4947,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/2899000180",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -4963,7 +4963,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1030255262",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -4979,7 +4979,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/2626544788",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -4995,7 +4995,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1030255264",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5011,7 +5011,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1029600679",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5027,7 +5027,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1030255265",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5043,7 +5043,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1030255267",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5059,7 +5059,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1030255266",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5075,7 +5075,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/957454189",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5091,7 +5091,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1029600678",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5107,7 +5107,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1029600677",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5123,7 +5123,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1029600676",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5139,7 +5139,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/286250870",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5155,7 +5155,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/286250871",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5171,7 +5171,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1422888327",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5187,7 +5187,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/3744353180",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -5203,7 +5203,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/13076404334",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -5219,7 +5219,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/414679103",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -5235,7 +5235,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/370745954",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5251,7 +5251,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/199546944",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5267,7 +5267,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/286250867",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5283,7 +5283,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/286250868",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5299,7 +5299,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/94697473",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5315,7 +5315,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/414679102",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -5331,7 +5331,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/414679467",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -5347,7 +5347,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/1738260440",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -5363,7 +5363,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/944232258",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5379,7 +5379,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/3790507592",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -5395,7 +5395,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/286250869",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5411,7 +5411,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1541183482",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5427,7 +5427,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/944232259",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5443,7 +5443,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1201847851",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5459,7 +5459,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/284806064",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5475,7 +5475,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1030884683",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5491,7 +5491,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1030884682",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5507,7 +5507,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/1107059472",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -5523,7 +5523,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/822124002",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5539,7 +5539,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1502869856",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5555,7 +5555,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1502869857",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5571,7 +5571,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/13755214469",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -5587,7 +5587,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/436404173",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -5603,7 +5603,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1541183475",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5619,7 +5619,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1201847847",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5635,7 +5635,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1541187335",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5651,7 +5651,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1541187334",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5667,7 +5667,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1541187332",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5683,7 +5683,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1541187333",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5699,7 +5699,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/3789873483",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -5715,7 +5715,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/1107059991",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -5731,7 +5731,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/245293279",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5747,7 +5747,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/1107060019",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -5763,7 +5763,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531876388",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5779,7 +5779,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530992191",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5795,7 +5795,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531876387",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5811,7 +5811,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/594539769",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5827,7 +5827,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530992188",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5843,7 +5843,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530992189",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5859,7 +5859,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531869203",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5875,7 +5875,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531869202",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5891,7 +5891,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1535744119",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5907,7 +5907,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530992187",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5923,7 +5923,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1533813867",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5939,7 +5939,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/847459144",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5955,7 +5955,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/288746194",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5971,7 +5971,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531224956",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -5987,7 +5987,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1533858743",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6003,7 +6003,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531188280",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6019,7 +6019,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/288746195",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6035,7 +6035,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530008077",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6051,7 +6051,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/657898768",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6067,7 +6067,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/657898762",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6083,7 +6083,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1533858772",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6099,7 +6099,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/288746184",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6115,7 +6115,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/375473874",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6131,7 +6131,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531224958",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6147,7 +6147,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530149302",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6163,7 +6163,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530149303",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6179,7 +6179,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1533582782",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6195,7 +6195,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531159702",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6211,7 +6211,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531199134",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6227,7 +6227,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531143432",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6243,7 +6243,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530008078",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6259,7 +6259,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531188282",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6275,7 +6275,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/582253042",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6291,7 +6291,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530008075",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6307,7 +6307,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530149304",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6323,7 +6323,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530008095",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6339,7 +6339,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530008094",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6355,7 +6355,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531224950",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6371,7 +6371,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530008114",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6387,7 +6387,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530008082",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6403,7 +6403,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530008079",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6419,7 +6419,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531224948",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6435,7 +6435,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530008102",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6451,7 +6451,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531160096",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6467,7 +6467,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530149305",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6483,7 +6483,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531224951",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6499,7 +6499,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530008116",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6515,7 +6515,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531224949",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6531,7 +6531,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531143434",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6547,7 +6547,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530008085",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6563,7 +6563,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531224947",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6579,7 +6579,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530008103",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6595,7 +6595,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531159700",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6611,7 +6611,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531224952",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6627,7 +6627,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/375563746",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6643,7 +6643,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531224953",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6659,7 +6659,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531224954",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6675,7 +6675,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531224955",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6691,7 +6691,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531150184",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6707,7 +6707,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/94896908",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6723,7 +6723,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/94897290",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6739,7 +6739,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/95606537",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6755,7 +6755,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/98412276",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6771,7 +6771,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/95606500",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6787,7 +6787,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/354451077",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6803,7 +6803,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1533858782",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6819,7 +6819,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531911887",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6835,7 +6835,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531152652",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6851,7 +6851,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1530008100",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6867,7 +6867,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/94897127",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6883,7 +6883,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531165788",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6899,7 +6899,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/98412310",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6915,7 +6915,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531224945",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6931,7 +6931,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531165790",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6947,7 +6947,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531199143",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6963,7 +6963,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531199144",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6979,7 +6979,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531199145",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -6995,7 +6995,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531199146",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7011,7 +7011,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/95606600",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7027,7 +7027,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531199142",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7043,7 +7043,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/94896989",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7059,7 +7059,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1533866871",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7075,7 +7075,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1533862482",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7091,7 +7091,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531152651",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7107,7 +7107,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531165791",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7123,7 +7123,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/246678407",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7139,7 +7139,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/371702855",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7155,7 +7155,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/371702843",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7171,7 +7171,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531199147",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7187,7 +7187,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/371702847",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7203,7 +7203,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/371702846",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7219,7 +7219,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531152650",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7235,7 +7235,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/596972301",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7251,7 +7251,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/371702849",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7267,7 +7267,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1531152648",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7283,7 +7283,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/596972278",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7299,7 +7299,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/371718839",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7315,7 +7315,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/94897051",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7331,7 +7331,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "node/1101728502",
       "sourceKind": "TRAFFIC_SIGNAL"
@@ -7347,7 +7347,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1534506944",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7363,7 +7363,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/95606494",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7379,7 +7379,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/1534506945",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7395,7 +7395,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/95606502",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7411,7 +7411,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/370065146",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7427,7 +7427,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/276702539",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7443,7 +7443,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/276702538",
       "sourceKind": "ROAD_SPEED_LIMIT"
@@ -7459,7 +7459,7 @@
       "direction": null,
       "sectionType": null,
       "sectionLength": null,
-      "dataDate": "2026-09-28",
+      "dataDate": "2026-09-29",
       "source": "OpenStreetMap",
       "sourceId": "way/256432696",
       "sourceKind": "ROAD_SPEED_LIMIT"

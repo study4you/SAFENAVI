@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "updatedAt": "2026-09-28T18:38:09+00:00",
+  "updatedAt": "2026-09-29T18:37:08+00:00",
   "source": "OpenStreetMap",
   "sourceLicense": "ODbL",
   "sourceKind": "ROAD_SAFETY",
@@ -14,7 +14,7 @@
     },
     {
       "region": "BUSAN",
-      "version": "2",
+      "version": "3",
       "path": "data/enforcement/busan.json",
       "source": "OpenStreetMap",
       "sourceKind": "ROAD_SAFETY"
@@ -28,7 +28,7 @@
     },
     {
       "region": "INCHEON",
-      "version": "1",
+      "version": "2",
       "path": "data/enforcement/incheon.json",
       "source": "OpenStreetMap",
       "sourceKind": "ROAD_SAFETY"
@@ -42,14 +42,14 @@
     },
     {
       "region": "DAEJEON",
-      "version": "2",
+      "version": "3",
       "path": "data/enforcement/daejeon.json",
       "source": "OpenStreetMap",
       "sourceKind": "ROAD_SAFETY"
     },
     {
       "region": "ULSAN",
-      "version": "2",
+      "version": "3",
       "path": "data/enforcement/ulsan.json",
       "source": "OpenStreetMap",
       "sourceKind": "ROAD_SAFETY"
@@ -77,14 +77,14 @@
     },
     {
       "region": "CHUNGBUK",
-      "version": "2",
+      "version": "3",
       "path": "data/enforcement/chungbuk.json",
       "source": "OpenStreetMap",
       "sourceKind": "ROAD_SAFETY"
     },
     {
       "region": "CHUNGNAM",
-      "version": "1",
+      "version": "2",
       "path": "data/enforcement/chungnam.json",
       "source": "OpenStreetMap",
       "sourceKind": "ROAD_SAFETY"
@@ -112,14 +112,14 @@
     },
     {
       "region": "GYEONGNAM",
-      "version": "2",
+      "version": "3",
       "path": "data/enforcement/gyeongnam.json",
       "source": "OpenStreetMap",
       "sourceKind": "ROAD_SAFETY"
     },
     {
       "region": "JEJU",
-      "version": "2",
+      "version": "3",
       "path": "data/enforcement/jeju.json",
       "source": "OpenStreetMap",
       "sourceKind": "ROAD_SAFETY"
