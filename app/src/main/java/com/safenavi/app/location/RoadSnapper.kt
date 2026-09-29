@@ -13,7 +13,8 @@ data class SnappedRoadPoint(
     val latitude: Double,
     val longitude: Double,
     val roadName: String?,
-    val snapDistanceMeters: Double
+    val snapDistanceMeters: Double,
+    val roadBearing: Double?
 )
 
 class RoadSnapper {
@@ -43,7 +44,7 @@ class RoadSnapper {
 
         val urlText =
             "https://router.project-osrm.org/nearest/v1/driving/" +
-                "${location.longitude},${location.latitude}?number=3"
+                "${location.longitude},${location.latitude}?number=5"
 
         val connection = (URL(urlText).openConnection() as HttpURLConnection).apply {
             requestMethod = "GET"
@@ -72,7 +73,8 @@ class RoadSnapper {
                     latitude = a.getDouble(1),
                     longitude = a.getDouble(0),
                     roadName = wp.optString("name").takeIf { it.isNotBlank() },
-                    snapDistanceMeters = distance
+                    snapDistanceMeters = distance,
+                    roadBearing = wp.optJSONArray("nodes")?.let { null }
                 )
             }
             if (candidates.isEmpty()) return@withContext null
@@ -88,7 +90,11 @@ class RoadSnapper {
                     )
                     // Strong hysteresis: a parallel carriageway must be substantially
                     // better before we allow a lane-side switch.
-                    candidate.snapDistanceMeters + continuity[0] * 1.8
+                    val directionPenalty = candidate.roadBearing?.let {
+                        val d = kotlin.math.abs(((location.bearing - it + 540.0) % 360.0) - 180.0)
+                        d * 0.35
+                    } ?: 0.0
+                    candidate.snapDistanceMeters + continuity[0] * 1.8 + directionPenalty
                 } ?: candidates.first()
             } else {
                 candidates.minByOrNull { it.snapDistanceMeters } ?: candidates.first()
