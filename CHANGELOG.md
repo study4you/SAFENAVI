@@ -1,5 +1,14 @@
 # SafeNavi Changelog
 
+## 20
+- 다운로드된 Mapsforge South Korea .map 파일을 실제 주행 지도에 연결
+- 오프라인 지도 설치 시 osmdroid Mapsforge provider로 자동 전환
+- 오프라인 지도 사용 중 네트워크 타일 요청 차단
+- 지도 파일이 없으면 기존 온라인 MAPNIK 지도로 자동 fallback
+- 업데이트 후 주행 화면 복귀 시 새 오프라인 지도 자동 활성화
+- 주행 상태에 온라인맵/오프라인맵 표시
+
+
 ## 19
 - 업데이트 화면을 주행 데이터 업데이트로 개편
 - 단속정보 업데이트 후 South Korea Mapsforge 오프라인 벡터 지도 다운로드

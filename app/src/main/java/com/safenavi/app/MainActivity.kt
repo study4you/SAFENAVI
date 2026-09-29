@@ -34,6 +34,7 @@ import com.safenavi.app.data.SafetyDatabase
 import com.safenavi.app.location.DrivingLocationService
 import com.safenavi.app.location.RoadSnapper
 import com.safenavi.app.location.TunnelDeadReckoner
+import com.safenavi.app.map.OfflineMapManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -65,6 +66,8 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
     private val roadSnapper = RoadSnapper()
     private val tunnelReckoner = TunnelDeadReckoner()
     private val safetyEngine = SafetyEngine()
+    private lateinit var offlineMapManager: OfflineMapManager
+    private var offlineMapActive = false
     private var currentRoadName: String? = null
     private var sensorHeading = 0f
     private var gpsHeading = 0f
@@ -122,8 +125,10 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
         rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
         db = SafetyDatabase.getInstance(this)
         dataUpdater = EnforcementDataUpdater(this, db)
+        offlineMapManager = OfflineMapManager(this)
 
         map.setTileSource(TileSourceFactory.MAPNIK)
+        offlineMapActive = offlineMapManager.attach(map)
         map.setMultiTouchControls(true)
         map.isTilesScaledToDpi = true
         map.controller.setZoom(15.0)
@@ -329,6 +334,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
             val roadText = snapped?.roadName?.takeIf { it.isNotBlank() }
             currentRoadName = roadText
             dataStatus.text = buildString {
+                append(if (offlineMapActive) "오프라인맵 · " else "온라인맵 · ")
                 append(if (rawGps.accuracy <= 35f) "GPS " else "터널 추측주행 ")
                 append(rawGps.accuracy.roundToInt())
                 append("m · ")
@@ -508,6 +514,9 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
     override fun onResume() {
         super.onResume()
         map.onResume()
+        if (!offlineMapActive && offlineMapManager.isInstalled()) {
+            offlineMapActive = offlineMapManager.attach(map)
+        }
         rotationSensor?.let {
             sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_UI)
         }
@@ -548,6 +557,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
 
     override fun onDestroy() {
         try { locationManager.removeUpdates(this) } catch (_: Exception) {}
+        offlineMapManager.detach()
         super.onDestroy()
     }
 }
