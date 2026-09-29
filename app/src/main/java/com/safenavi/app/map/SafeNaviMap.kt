@@ -21,7 +21,7 @@ class SafeNaviMap(private val mapView: MapView) {
     fun attach(mapLibreMap: MapLibreMap, onReady: () -> Unit = {}) {
         map = mapLibreMap
         mapLibreMap.setStyle(
-            Style.Builder().fromUri("https://demotiles.maplibre.org/style.json")
+            Style.Builder().fromUri("https://tiles.openfreemap.org/styles/liberty")
         ) { onReady() }
     }
 
