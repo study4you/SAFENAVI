@@ -12,8 +12,8 @@ android {
         minSdk = 26
         targetSdk = 35
         manifestPlaceholders["NAVER_MAP_CLIENT_ID"] = System.getenv("NAVER_MAP_CLIENT_ID") ?: ""
-        versionCode = 27
-        versionName = "27"
+        versionCode = 28
+        versionName = "28"
     }
 
     compileOptions {
@@ -33,5 +33,6 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("com.naver.maps:map-sdk:3.24.0")
+    implementation("org.osmdroid:osmdroid-android:6.1.20")
     kapt("androidx.room:room-compiler:2.6.1")
 }
