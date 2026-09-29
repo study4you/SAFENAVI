@@ -42,6 +42,7 @@ class SafeNaviMap(private val mapView: MapView) {
     private var loadedStyle: Style? = null
     private val safetyMarkers = mutableListOf<Marker>()
     private var currentRoadLine: Polyline? = null
+    private var lastRoadGeometry: List<Pair<Double, Double>> = emptyList()
 
     fun attach(mapLibreMap: MapLibreMap, onReady: () -> Unit = {}) {
         map = mapLibreMap
@@ -151,7 +152,7 @@ class SafeNaviMap(private val mapView: MapView) {
 
     fun updateRoadGeometry(points: List<Pair<Double, Double>>) {
         val current = map ?: return
-        if (points.size < 2) return
+        if (points.size < 2 || sameGeometry(points, lastRoadGeometry)) return
         currentRoadLine?.let { current.removePolyline(it) }
         val latLngs = points.map { LatLng(it.first, it.second) }.toTypedArray()
         currentRoadLine = current.addPolyline(
@@ -160,6 +161,16 @@ class SafeNaviMap(private val mapView: MapView) {
                 .width(8f)
                 .color(android.graphics.Color.rgb(255, 184, 54))
         )
+        lastRoadGeometry = points
+    }
+
+    private fun sameGeometry(a: List<Pair<Double, Double>>, b: List<Pair<Double, Double>>): Boolean {
+        if (a.size != b.size || a.isEmpty()) return false
+        val indexes = intArrayOf(0, a.lastIndex / 2, a.lastIndex).distinct()
+        return indexes.all { i ->
+            kotlin.math.abs(a[i].first - b[i].first) < 0.000001 &&
+                kotlin.math.abs(a[i].second - b[i].second) < 0.000001
+        }
     }
 
     private fun updateCurrentRoadHighlight(location: Location, heading: Float) {
