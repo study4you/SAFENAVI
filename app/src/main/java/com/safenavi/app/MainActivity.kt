@@ -123,6 +123,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
         map.onCreate(savedInstanceState)
         org.osmdroid.config.Configuration.getInstance().userAgentValue = packageName
         osmDrivingMap = OsmDrivingMap(freeMap)
+        osmDrivingMap.setViewMode(if (mapPrefs.getString("safenavi_view", "2D") == "3D") OsmDrivingMap.ViewMode.THREE_D else OsmDrivingMap.ViewMode.TWO_D)
         applyMapVisibility()
         map.getMapAsync(this)
         val appVersion = packageManager.getPackageInfo(packageName, 0).versionName ?: "?"
@@ -177,6 +178,10 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
                 showMapTypeDialog()
                 true
             }
+            menu.add("SafeNavi 2D / 3D").setOnMenuItemClickListener {
+                showSafeNaviViewModeDialog()
+                true
+            }
             menu.add("음성 안내 설정").setOnMenuItemClickListener {
                 startActivity(Intent("com.android.settings.TTS_SETTINGS"))
                 true
@@ -195,12 +200,12 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
 
     private fun showMapTypeDialog() {
         val current = mapPrefs.getString("map_type", "NAVER_NAVI") ?: "NAVER_NAVI"
-        val items = arrayOf("네이버 내비맵", "OpenStreetMap 무료 지도")
+        val items = arrayOf("네이버 내비맵", "SafeNavi 자체 지도")
         val checked = if (current == "FREE_BASIC") 1 else 0
         AlertDialog.Builder(this)
             .setTitle("지도 종류")
             .setSingleChoiceItems(items, checked) { dialog, which ->
-                val type = if (which == 1) "FREE_BASIC" else "NAVER_NAVI"
+                val type = if (which == 1) "SAFENAVI" else "NAVER_NAVI"
                 mapPrefs.edit().putString("map_type", type).apply()
                 applySavedMapStyle()
                 applyMapVisibility()
@@ -211,7 +216,24 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
             .show()
     }
 
-    private fun isFreeMap(): Boolean = mapPrefs.getString("map_type", "NAVER_NAVI") == "FREE_BASIC"
+    private fun showSafeNaviViewModeDialog() {
+        val current = mapPrefs.getString("safenavi_view", "2D") ?: "2D"
+        val items = arrayOf("2D", "3D")
+        AlertDialog.Builder(this)
+            .setTitle("SafeNavi 지도 표시")
+            .setSingleChoiceItems(items, if (current == "3D") 1 else 0) { dialog, which ->
+                mapPrefs.edit().putString("safenavi_view", if (which == 1) "3D" else "2D").apply()
+                if (!isFreeMap()) mapPrefs.edit().putString("map_type", "SAFENAVI").apply()
+                applyMapVisibility()
+                osmDrivingMap.setViewMode(if (which == 1) OsmDrivingMap.ViewMode.THREE_D else OsmDrivingMap.ViewMode.TWO_D)
+                lastLocation?.let { updateNavigationCamera(it, true) }
+                dialog.dismiss()
+            }
+            .setNegativeButton("취소", null)
+            .show()
+    }
+
+    private fun isFreeMap(): Boolean = mapPrefs.getString("map_type", "NAVER_NAVI") in setOf("FREE_BASIC", "SAFENAVI")
 
     private fun applyMapVisibility() {
         if (!::freeMap.isInitialized) return
@@ -222,7 +244,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
     private fun applySavedMapStyle() = Unit
 
     private fun selectedMapLabel(): String =
-        if (mapPrefs.getString("map_type", "NAVER_NAVI") == "FREE_BASIC") "OpenStreetMap" else "네이버 내비맵"
+        if (isFreeMap()) "SafeNavi ${mapPrefs.getString("safenavi_view", "2D")}" else "네이버 내비맵"
 
     private fun requestOptionalPermissions() {
         if (Build.VERSION.SDK_INT >= 33 &&
