@@ -1,5 +1,11 @@
 # SafeNavi Changelog
 
+## 28
+- 네이버 Basic을 무료 지도라고 처리하던 잘못된 구현 제거
+- 독립 OpenStreetMap 지도 엔진 추가
+- 설정에서 네이버 내비맵/OpenStreetMap 전환
+- 무료 지도에서도 차량 방향 회전, 카메라 마커, 확대/축소 연동
+
 ## 27
 - GitHub Actions 고정 debug 서명키 캐시 적용: 이후 빌드 간 동일 서명 유지
 - 주행 중 메뉴에 지도 종류 선택 추가
