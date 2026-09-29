@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rendertheme xmlns="http://mapsforge.org/renderTheme" version="1" map-background="#f4f3ef">
+  <rule e="way" k="natural" v="water|bay|strait">
+    <area fill="#c9e5f5"/>
+  </rule>
+  <rule e="way" k="waterway" v="river|canal">
+    <line stroke="#b4dced" stroke-width="2"/>
+  </rule>
+  <rule e="way" k="landuse|leisure" v="forest|wood|grass|meadow|park|recreation_ground">
+    <area fill="#e3efdf"/>
+  </rule>
+  <rule e="way" k="highway" v="motorway|motorway_link">
+    <line stroke="#d9a04b" stroke-width="7"/>
+    <line stroke="#f7c873" stroke-width="5"/>
+    <pathText k="name" font-size="11" fill="#303030" stroke="#ffffff" stroke-width="2"/>
+  </rule>
+  <rule e="way" k="highway" v="trunk|trunk_link|primary|primary_link">
+    <line stroke="#d9a96a" stroke-width="6"/>
+    <line stroke="#fff0bd" stroke-width="4"/>
+    <pathText k="name" font-size="11" fill="#303030" stroke="#ffffff" stroke-width="2"/>
+  </rule>
+  <rule e="way" k="highway" v="secondary|secondary_link">
+    <line stroke="#d5d0c7" stroke-width="5"/>
+    <line stroke="#ffffff" stroke-width="3.5"/>
+    <pathText k="name" font-size="10" fill="#404040" stroke="#ffffff" stroke-width="2"/>
+  </rule>
+  <rule e="way" k="highway" v="tertiary|tertiary_link|unclassified">
+    <line stroke="#d7d4ce" stroke-width="4"/>
+    <line stroke="#ffffff" stroke-width="2.8"/>
+    <pathText k="name" font-size="9" fill="#505050" stroke="#ffffff" stroke-width="2"/>
+  </rule>
+  <rule e="way" k="highway" v="residential|living_street|service" zoom-min="14">
+    <line stroke="#dedbd5" stroke-width="3"/>
+    <line stroke="#ffffff" stroke-width="2"/>
+    <pathText k="name" font-size="8" fill="#666666" stroke="#ffffff" stroke-width="1.5"/>
+  </rule>
+  <rule e="way" k="railway" v="rail">
+    <line stroke="#b8b8b8" stroke-width="1"/>
+  </rule>
+</rendertheme>
