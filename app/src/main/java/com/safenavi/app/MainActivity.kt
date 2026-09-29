@@ -542,7 +542,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
     override fun onDestroy() {
         window.decorView.removeCallbacks(tunnelTicker)
         try { locationManager.removeUpdates(this) } catch (_: Exception) {}
-        if (::safeMap.isInitialized) safeMap.onDetach()
+        if (::safeMap.isInitialized) safeMap.onDestroy()
         map.onDestroy()
         super.onDestroy()
     }
