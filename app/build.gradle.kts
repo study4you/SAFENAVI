@@ -11,6 +11,7 @@ android {
         applicationId = "com.safenavi.app"
         minSdk = 26
         targetSdk = 35
+        manifestPlaceholders["NAVER_MAP_CLIENT_ID"] = System.getenv("NAVER_MAP_CLIENT_ID") ?: ""
         versionCode = 25
         versionName = "25"
     }
