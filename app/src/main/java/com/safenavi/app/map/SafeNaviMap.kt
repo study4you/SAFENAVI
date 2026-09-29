@@ -8,6 +8,15 @@ import org.maplibre.android.geometry.LatLng
 import org.maplibre.android.maps.MapView
 import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.Style
+import org.maplibre.android.style.layers.FillExtrusionLayer
+import org.maplibre.android.style.layers.Property
+import org.maplibre.android.style.layers.PropertyFactory.fillExtrusionBase
+import org.maplibre.android.style.layers.PropertyFactory.fillExtrusionColor
+import org.maplibre.android.style.layers.PropertyFactory.fillExtrusionHeight
+import org.maplibre.android.style.layers.PropertyFactory.fillExtrusionOpacity
+import org.maplibre.android.style.layers.PropertyFactory.visibility
+import org.maplibre.android.style.expressions.Expression.get
+import org.maplibre.android.style.expressions.Expression.toNumber
 import org.maplibre.android.annotations.Marker
 import org.maplibre.android.annotations.MarkerOptions
 
@@ -16,13 +25,19 @@ class SafeNaviMap(private val mapView: MapView) {
 
     private var map: MapLibreMap? = null
     private var mode = ViewMode.TWO_D
+    private var loadedStyle: Style? = null
     private val safetyMarkers = mutableListOf<Marker>()
 
     fun attach(mapLibreMap: MapLibreMap, onReady: () -> Unit = {}) {
         map = mapLibreMap
         mapLibreMap.setStyle(
             Style.Builder().fromUri("https://tiles.openfreemap.org/styles/liberty")
-        ) { onReady() }
+        ) { style ->
+            loadedStyle = style
+            installBuildingLayer(style)
+            applyBuildingMode()
+            onReady()
+        }
     }
 
     fun setViewMode(value: ViewMode) {
@@ -32,6 +47,28 @@ class SafeNaviMap(private val mapView: MapView) {
                 .tilt(if (value == ViewMode.THREE_D) 58.0 else 0.0)
                 .build()
         } ?: return
+        applyBuildingMode()
+    }
+
+    private fun installBuildingLayer(style: Style) {
+        if (style.getLayer("safenavi-3d-buildings") != null) return
+        val layer = FillExtrusionLayer("safenavi-3d-buildings", "openmaptiles")
+            .withSourceLayer("building")
+            .withMinZoom(15f)
+            .withProperties(
+                fillExtrusionColor("#d7d9dc"),
+                fillExtrusionOpacity(0.78f),
+                fillExtrusionHeight(toNumber(get("render_height"))),
+                fillExtrusionBase(toNumber(get("render_min_height"))),
+                visibility(Property.NONE)
+            )
+        style.addLayer(layer)
+    }
+
+    private fun applyBuildingMode() {
+        loadedStyle?.getLayer("safenavi-3d-buildings")?.setProperties(
+            visibility(if (mode == ViewMode.THREE_D) Property.VISIBLE else Property.NONE)
+        )
     }
 
     fun zoomIn() { map?.animateCamera(CameraUpdateFactory.zoomIn()) }
