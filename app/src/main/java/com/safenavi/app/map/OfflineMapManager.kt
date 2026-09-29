@@ -3,11 +3,11 @@ package com.safenavi.app.map
 import android.app.Application
 import android.content.Context
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory
+import org.mapsforge.map.android.rendertheme.AssetsRenderTheme
 import org.osmdroid.mapsforge.MapsForgeTileProvider
 import org.osmdroid.mapsforge.MapsForgeTileSource
 import org.osmdroid.tileprovider.util.SimpleRegisterReceiver
 import org.osmdroid.views.MapView
-import org.osmdroid.util.TileSystem
 import java.io.File
 
 class OfflineMapManager(private val context: Context) {
@@ -25,13 +25,16 @@ class OfflineMapManager(private val context: Context) {
             }
             MapsForgeTileSource.createInstance(context.applicationContext as Application)
             detach()
-            // Render the vector map at a lower tile scale. The previous 256px Mapsforge
-            // tile was stretched by osmdroid on high-density phones, making Korean
-            // place labels, POIs and buildings look huge and visually cluttered.
-            // 512px tiles keep the same geographic content but render labels/features
-            // at roughly half the previous on-screen size.
-            TileSystem.setTileSize(512)
-            source = MapsForgeTileSource.createFromFiles(arrayOf(mapFile()), null, "safenavi-offline-v23")
+            val roadTheme = AssetsRenderTheme(
+                context.applicationContext.assets,
+                "renderthemes/",
+                "safenavi-road.xml"
+            )
+            source = MapsForgeTileSource.createFromFiles(
+                arrayOf(mapFile()),
+                roadTheme,
+                "safenavi-road-v24"
+            )
             provider = MapsForgeTileProvider(SimpleRegisterReceiver(context), source, null)
             map.setTileProvider(provider)
             map.setUseDataConnection(false)
