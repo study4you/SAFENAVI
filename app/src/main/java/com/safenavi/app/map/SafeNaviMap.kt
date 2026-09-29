@@ -10,6 +10,7 @@ import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.Style
 import org.maplibre.android.style.layers.FillExtrusionLayer
 import org.maplibre.android.style.layers.SymbolLayer
+import org.maplibre.android.style.layers.LineLayer
 import org.maplibre.android.style.layers.Property
 import org.maplibre.android.style.layers.PropertyFactory.fillExtrusionBase
 import org.maplibre.android.style.layers.PropertyFactory.fillExtrusionColor
@@ -21,6 +22,9 @@ import org.maplibre.android.style.layers.PropertyFactory.textSize
 import org.maplibre.android.style.layers.PropertyFactory.textColor
 import org.maplibre.android.style.layers.PropertyFactory.textHaloColor
 import org.maplibre.android.style.layers.PropertyFactory.textHaloWidth
+import org.maplibre.android.style.layers.PropertyFactory.lineColor
+import org.maplibre.android.style.layers.PropertyFactory.lineWidth
+import org.maplibre.android.style.layers.PropertyFactory.lineOpacity
 import org.maplibre.android.style.expressions.Expression.get
 import org.maplibre.android.style.expressions.Expression.toNumber
 import org.maplibre.android.annotations.Marker
@@ -41,6 +45,7 @@ class SafeNaviMap(private val mapView: MapView) {
         ) { style ->
             loadedStyle = style
             simplifyBaseStyle(style)
+            installRoadHierarchy(style)
             installKoreanRoadLabels(style)
             installBuildingLayer(style)
             applyBuildingMode()
@@ -67,6 +72,19 @@ class SafeNaviMap(private val mapView: MapView) {
                 layer.setProperties(visibility(Property.NONE))
             }
         }
+    }
+
+    private fun installRoadHierarchy(style: Style) {
+        if (style.getLayer("safenavi-major-roads") != null) return
+        // A restrained overlay makes the primary driving network visually dominant.
+        val major = LineLayer("safenavi-major-roads", "openmaptiles")
+            .withSourceLayer("transportation")
+            .withProperties(
+                lineColor("#f4c86a"),
+                lineWidth(3.8f),
+                lineOpacity(0.62f)
+            )
+        style.addLayer(major)
     }
 
     private fun installKoreanRoadLabels(style: Style) {
