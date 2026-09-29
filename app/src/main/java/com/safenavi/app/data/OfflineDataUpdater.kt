@@ -111,15 +111,40 @@ class OfflineDataUpdater(private val context: Context) {
         val tmp=File(target.absolutePath+".part")
         val c=(URL(url).openConnection() as HttpURLConnection).apply{
             connectTimeout=15000;readTimeout=30000
-            setRequestProperty("User-Agent","SafeNavi/21")
+            setRequestProperty("User-Agent","SafeNavi/22")
         }
         try {
             if(c.responseCode !in 200..299) error("HTTP "+c.responseCode)
             val total=c.contentLengthLong
             c.inputStream.use{input->tmp.outputStream().use{out->
-                val buf=ByteArray(128*1024);var done=0L;var last=-1
-                while(true){val n=input.read(buf);if(n<0)break;out.write(buf,0,n);done+=n
-                    if(total>0){val pct=(done*100/total).toInt();if(pct!=last&&pct%2==0){last=pct;onProgress(label+" 다운로드 "+pct+"%")}}
+                val buf=ByteArray(128*1024)
+                var done=0L
+                var lastPct=-1
+                var lastUiMs=0L
+                val startedMs=android.os.SystemClock.elapsedRealtime()
+                while(true){
+                    val n=input.read(buf)
+                    if(n<0) break
+                    out.write(buf,0,n)
+                    done+=n
+                    val now=android.os.SystemClock.elapsedRealtime()
+                    val elapsed=((now-startedMs).coerceAtLeast(1L))/1000.0
+                    val bytesPerSec=done/elapsed
+                    val speed=when {
+                        bytesPerSec>=1048576.0 -> "%.1f MB/s".format(bytesPerSec/1048576.0)
+                        else -> "%.0f KB/s".format(bytesPerSec/1024.0)
+                    }
+                    if(total>0){
+                        val pct=(done*100/total).toInt().coerceIn(0,100)
+                        if(pct!=lastPct && (now-lastUiMs>=250L || pct==100)){
+                            lastPct=pct
+                            lastUiMs=now
+                            onProgress("$label 다운로드 $pct% · $speed")
+                        }
+                    } else if(now-lastUiMs>=500L){
+                        lastUiMs=now
+                        onProgress("$label 다운로드 %.1fMB · $speed".format(done/1048576.0))
+                    }
                 }
             }}
             if(tmp.length()<=0) error(label+" 파일이 비어 있음")
