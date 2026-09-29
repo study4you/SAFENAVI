@@ -24,7 +24,12 @@ class OfflineMapManager(private val context: Context) {
             }
             MapsForgeTileSource.createInstance(context.applicationContext as Application)
             detach()
-            source = MapsForgeTileSource.createFromFiles(arrayOf(mapFile()), null, "safenavi-offline-v20")
+            // Render the vector map at a lower tile scale. The previous 256px Mapsforge
+            // tile was stretched by osmdroid on high-density phones, making Korean
+            // place labels, POIs and buildings look huge and visually cluttered.
+            // 512px tiles keep the same geographic content but render labels/features
+            // at roughly half the previous on-screen size.
+            source = MapsForgeTileSource.createFromFiles(arrayOf(mapFile()), null, "safenavi-offline-v23", 512)
             provider = MapsForgeTileProvider(SimpleRegisterReceiver(context), source, null)
             map.setTileProvider(provider)
             map.setUseDataConnection(false)
