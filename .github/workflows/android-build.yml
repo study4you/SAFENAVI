@@ -54,7 +54,7 @@ jobs:
       - name: Build debug APK
         env:
           NAVER_MAP_CLIENT_ID: ${{ secrets.NAVER_MAP_CLIENT_ID }}
-        run: gradle --no-daemon assembleDebug
+        run: gradle --no-daemon assembleDebug --stacktrace --info
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
