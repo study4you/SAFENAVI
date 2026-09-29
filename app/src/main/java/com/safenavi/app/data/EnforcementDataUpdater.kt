@@ -187,6 +187,11 @@ class EnforcementDataUpdater(
                 continue
             }
             val points = parseDataset(region, dataText)
+            val duplicateIds = points.groupingBy { it.id }.eachCount().any { it.value > 1 }
+            if (duplicateIds) {
+                failed += region
+                continue
+            }
             val declaredCount = item.optInt("count", -1)
             val declaredSha256 = item.optString("sha256").lowercase()
             // Production datasets must declare count + SHA-256 so a truncated,
