@@ -66,14 +66,22 @@ class OfflineDataUpdater(private val context: Context) {
             }
         }
         if(count==0) error("도로 그래프 압축파일이 비어 있음")
-        val names=staging.walkTopDown().filter{it.isFile}.map{it.name.lowercase()}.toList()
+        val files=staging.walkTopDown().filter{it.isFile}.toList()
+        val names=files.map{it.name.lowercase()}
+        val properties=files.firstOrNull{it.name.equals("properties",true)}
+        val propertyLines=properties?.takeIf{it.length() in 1..262144}?.readLines().orEmpty()
         val type=when {
-            names.any{it=="properties"} && names.any{it.contains("edges")} -> "GraphHopper"
+            properties!=null && names.any{it.contains("edges")} -> "GraphHopper"
             names.any{it.endsWith(".gh")} -> "GraphHopper"
             else -> "unknown"
         }
+        val graphVersion=propertyLines.firstOrNull{
+            it.startsWith("graph.version") || it.startsWith("datareader.import.date") ||
+            it.startsWith("graph.encoded_values")
+        } ?: "version=unknown"
         File(staging,"safenavi-graph-info.txt").writeText(
-            "type=$type\nfiles=$count\n"+
+            "type=$type\n$graphVersion\nfiles=$count\n"+
+            propertyLines.take(80).joinToString("\n")+"\n--files--\n"+
             names.take(80).joinToString("\n")
         )
         if(targetDir.exists()) targetDir.deleteRecursively()
