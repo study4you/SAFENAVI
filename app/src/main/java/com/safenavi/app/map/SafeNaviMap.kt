@@ -43,6 +43,8 @@ class SafeNaviMap(private val mapView: MapView) {
     private val safetyMarkers = mutableListOf<Marker>()
     private var currentRoadLine: Polyline? = null
     private var lastRoadGeometry: List<Pair<Double, Double>> = emptyList()
+    private var lastCameraTarget: LatLng? = null
+    private var lastCameraBearing = Double.NaN
 
     fun attach(mapLibreMap: MapLibreMap, onReady: () -> Unit = {}) {
         map = mapLibreMap
@@ -146,7 +148,19 @@ class SafeNaviMap(private val mapView: MapView) {
             .bearing(heading.toDouble())
             .tilt(if (mode == ViewMode.THREE_D) 58.0 else 0.0)
         if (forceZoom) builder.zoom(16.5) else builder.zoom(current.cameraPosition.zoom)
-        current.animateCamera(CameraUpdateFactory.newCameraPosition(builder.build()), 350)
+        val previousTarget = lastCameraTarget
+        val moved = previousTarget?.let {
+            val out = FloatArray(1)
+            Location.distanceBetween(it.latitude, it.longitude, target.latitude, target.longitude, out)
+            out[0]
+        } ?: Float.MAX_VALUE
+        val bearingDelta = if (lastCameraBearing.isNaN()) 180.0 else
+            kotlin.math.abs(((heading.toDouble() - lastCameraBearing + 540.0) % 360.0) - 180.0)
+        if (forceZoom || moved >= 1.5f || bearingDelta >= 1.5) {
+            current.animateCamera(CameraUpdateFactory.newCameraPosition(builder.build()), 500)
+            lastCameraTarget = target
+            lastCameraBearing = heading.toDouble()
+        }
         updateCurrentRoadHighlight(location, heading)
     }
 
