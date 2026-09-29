@@ -151,6 +151,11 @@ class EnforcementDataUpdater(
             }
 
             val points = parseDataset(region, dataText)
+            if (points.isEmpty()) {
+                // Never replace a valid installed region with a corrupt/empty download.
+                failed += region
+                continue
+            }
 
             db.withTransaction {
                 db.safetyPointDao().deleteByRegion(region)
