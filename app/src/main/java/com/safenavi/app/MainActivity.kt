@@ -21,6 +21,7 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import android.widget.PopupMenu
+import androidx.appcompat.app.AlertDialog
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import androidx.activity.result.contract.ActivityResultContracts
@@ -65,6 +66,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
     private val tunnelReckoner = TunnelDeadReckoner()
     private val safetyEngine = SafetyEngine()
     private val drivingMap = NaverDrivingMap()
+    private val mapPrefs by lazy { getSharedPreferences("map_settings", Context.MODE_PRIVATE) }
     private var currentRoadName: String? = null
     private var sensorHeading = 0f
     private var gpsHeading = 0f
@@ -155,6 +157,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
     }
 
     override fun onMapReady(naverMap: NaverMap) {
+        applySavedMapStyle()
         drivingMap.attach(naverMap)
         lastLocation?.let { updateNavigationCamera(it, true) }
     }
@@ -163,6 +166,10 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
         PopupMenu(this, anchor).apply {
             menu.add("단속정보 업데이트").setOnMenuItemClickListener {
                 startActivity(Intent(this@MainActivity, DataUpdateActivity::class.java))
+                true
+            }
+            menu.add("지도 종류 선택").setOnMenuItemClickListener {
+                showMapTypeDialog()
                 true
             }
             menu.add("음성 안내 설정").setOnMenuItemClickListener {
@@ -180,6 +187,31 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
             show()
         }
     }
+
+    private fun showMapTypeDialog() {
+        val current = mapPrefs.getString("map_type", "NAVER_NAVI") ?: "NAVER_NAVI"
+        val items = arrayOf("네이버 내비맵", "기본 지도 (비상/대체)")
+        val checked = if (current == "FREE_BASIC") 1 else 0
+        AlertDialog.Builder(this)
+            .setTitle("지도 종류")
+            .setSingleChoiceItems(items, checked) { dialog, which ->
+                val type = if (which == 1) "FREE_BASIC" else "NAVER_NAVI"
+                mapPrefs.edit().putString("map_type", type).apply()
+                applySavedMapStyle()
+                lastLocation?.let { updateNavigationCamera(it, false) }
+                dialog.dismiss()
+            }
+            .setNegativeButton("취소", null)
+            .show()
+    }
+
+    private fun applySavedMapStyle() {
+        val type = mapPrefs.getString("map_type", "NAVER_NAVI") ?: "NAVER_NAVI"
+        drivingMap.setStyle(if (type == "FREE_BASIC") NaverDrivingMap.Style.FREE_BASIC else NaverDrivingMap.Style.NAVER_NAVI)
+    }
+
+    private fun selectedMapLabel(): String =
+        if (mapPrefs.getString("map_type", "NAVER_NAVI") == "FREE_BASIC") "기본 지도" else "네이버 내비맵"
 
     private fun requestOptionalPermissions() {
         if (Build.VERSION.SDK_INT >= 33 &&
@@ -335,7 +367,8 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
             val roadText = snapped?.roadName?.takeIf { it.isNotBlank() }
             currentRoadName = roadText
             dataStatus.text = buildString {
-                append("네이버 내비맵 · ")
+                append(selectedMapLabel())
+                append(" · ")
                 if (gpsAccuracy != null && gpsAccuracy <= 35f) {
                     append("GPS ")
                     append(gpsAccuracy.roundToInt())
