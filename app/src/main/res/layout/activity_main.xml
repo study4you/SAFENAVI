@@ -8,8 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <org.osmdroid.views.MapView
-        android:id="@+id/freeMap"
+    <org.maplibre.android.maps.MapView
+        android:id="@+id/safeMap"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
