@@ -14,9 +14,14 @@ class SafetyDataSync(
     private val db: SafetyDatabase
 ) {
     private val prefs = context.getSharedPreferences("safety_sync", Context.MODE_PRIVATE)
+    private var lastAttemptAt = 0L
 
     suspend fun syncNearbyIfNeeded(lat: Double, lon: Double): Int = withContext(Dispatchers.IO) {
         if (!isCapitalArea(lat, lon)) return@withContext 0
+
+        val attemptNow = System.currentTimeMillis()
+        if (attemptNow - lastAttemptAt < 60_000L) return@withContext 0
+        lastAttemptAt = attemptNow
 
         val lastLat = java.lang.Double.longBitsToDouble(
             prefs.getLong("last_lat", java.lang.Double.doubleToLongBits(0.0))
