@@ -153,6 +153,8 @@ def main():
             raw = fetch_overpass(iso)
             points = normalize(code, raw)
             old_points = old.get("points", [])
+            if not points:
+                raise RuntimeError("empty enforcement-camera result; preserving installed dataset")
             changed = points != old_points
             if changed:
                 version += 1
@@ -184,16 +186,18 @@ def main():
         if path.exists():
             file_bytes = path.read_bytes()
             file_doc = load_json(path, {"points": []})
-            datasets.append({
-                "region": code,
-                "version": str(file_doc.get("version", version)),
-                "path": f"data/enforcement/{filename}",
-                "source": "OpenStreetMap",
-                "sourceKind": "ENFORCEMENT_CAMERA",
-                "count": len(file_doc.get("points", [])),
-                "bytes": len(file_bytes),
-                "sha256": hashlib.sha256(file_bytes).hexdigest(),
-            })
+            file_points = file_doc.get("points", [])
+            if file_points:
+                datasets.append({
+                    "region": code,
+                    "version": str(file_doc.get("version", version)),
+                    "path": f"data/enforcement/{filename}",
+                    "source": "OpenStreetMap",
+                    "sourceKind": "ENFORCEMENT_CAMERA",
+                    "count": len(file_points),
+                    "bytes": len(file_bytes),
+                    "sha256": hashlib.sha256(file_bytes).hexdigest(),
+                })
 
         if idx < len(REGIONS) - 1:
             time.sleep(2)
