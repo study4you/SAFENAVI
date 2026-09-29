@@ -53,6 +53,7 @@ class SafeNaviMap(private val mapView: MapView) {
     private var manualZoomUntil = 0L
     private var lookAheadTarget: LatLng? = null
     private var lastVehicleLocation: Location? = null
+    private var lastReliableHeading = Float.NaN
 
     fun attach(mapLibreMap: MapLibreMap, onReady: () -> Unit = {}) {
         map = mapLibreMap
@@ -166,6 +167,15 @@ class SafeNaviMap(private val mapView: MapView) {
             return
         }
         lastVehicleLocation = Location(location)
+        val speedForHeading = if (location.hasSpeed()) location.speed else 0f
+        val effectiveHeading = if (location.hasBearing() && speedForHeading >= 2.5f) {
+            lastReliableHeading = heading
+            heading
+        } else if (!lastReliableHeading.isNaN()) {
+            lastReliableHeading
+        } else {
+            heading
+        }
         val rawLat = location.latitude
         val rawLon = location.longitude
         if (smoothedTargetLat.isNaN() || forceZoom) {
@@ -185,7 +195,7 @@ class SafeNaviMap(private val mapView: MapView) {
         val vehicleTarget = LatLng(smoothedTargetLat, smoothedTargetLon)
         val speedMps = if (location.hasSpeed()) location.speed.toDouble() else 0.0
         val lookAheadMeters = (28.0 + speedMps * 1.65).coerceIn(28.0, 72.0)
-        val projected = offset(vehicleTarget, heading, lookAheadMeters)
+        val projected = offset(vehicleTarget, effectiveHeading, lookAheadMeters)
         val previousLookAhead = lookAheadTarget
         val target = if (previousLookAhead == null || forceZoom) projected else {
             val alpha = if (speedMps >= 15.0) 0.62 else 0.48
@@ -214,7 +224,7 @@ class SafeNaviMap(private val mapView: MapView) {
             .bearing(heading.toDouble())
             .tilt(if (mode == ViewMode.THREE_D) 58.0 else 0.0)
             .zoom(dynamicZoom)
-        val rawBearing = heading.toDouble()
+        val rawBearing = effectiveHeading.toDouble()
         if (smoothedCameraBearing.isNaN()) smoothedCameraBearing = rawBearing
         val turnDelta = ((rawBearing - smoothedCameraBearing + 540.0) % 360.0) - 180.0
         val bearingAlpha = when {
@@ -248,7 +258,7 @@ class SafeNaviMap(private val mapView: MapView) {
             lastCameraBearing = smoothedCameraBearing
             lastCameraUpdateAt = now
         }
-        updateCurrentRoadHighlight(location, heading)
+        updateCurrentRoadHighlight(location, effectiveHeading)
     }
 
     fun updateRoadGeometry(points: List<Pair<Double, Double>>) {
