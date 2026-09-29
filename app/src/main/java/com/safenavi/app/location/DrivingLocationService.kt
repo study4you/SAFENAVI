@@ -152,8 +152,9 @@ class DrivingLocationService : Service(), LocationListener {
         startForeground(1001, buildDriveNotification())
 
         scope.launch {
+            // Enforcement data is downloaded only from DataUpdateActivity.
+            // Driving mode uses the installed local Room database only.
             dataUpdater.pruneLegacyData()
-            dataUpdater.updateIfNeeded()
         }
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
