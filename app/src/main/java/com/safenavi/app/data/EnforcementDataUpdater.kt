@@ -27,6 +27,7 @@ class EnforcementDataUpdater(
         private const val BASE =
             "https://raw.githubusercontent.com/study4you/SAFENAVI/main/"
         private const val MANIFEST = "data/enforcement/manifest.json"
+        private const val REQUIRED_SCHEMA = 2
         private const val CHECK_INTERVAL = 6 * 60 * 60 * 1000L
 
         val ALL_REGIONS = linkedMapOf(
@@ -115,6 +116,15 @@ class EnforcementDataUpdater(
             )
 
         val root = JSONObject(manifestText)
+        if (root.optInt("schema", -1) != REQUIRED_SCHEMA) {
+            return@withContext DataUpdateResult(
+                checked = true,
+                updatedRegions = emptyList(),
+                totalCount = db.safetyPointDao().count(),
+                message = "지원하지 않는 단속정보 데이터 형식"
+            )
+        }
+
         val datasets = root.optJSONArray("datasets")
             ?: return@withContext DataUpdateResult(
                 checked = true,
