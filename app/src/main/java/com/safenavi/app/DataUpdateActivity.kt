@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.safenavi.app.data.EnforcementDataUpdater
 import com.safenavi.app.data.SafetyDatabase
+import com.safenavi.app.data.OfflineDataUpdater
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -18,6 +19,7 @@ class DataUpdateActivity : AppCompatActivity() {
     private lateinit var updater: EnforcementDataUpdater
     private lateinit var statusText: TextView
     private lateinit var updateButton: Button
+    private lateinit var offlineUpdater: OfflineDataUpdater
     private val boxes = linkedMapOf<String, CheckBox>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +27,7 @@ class DataUpdateActivity : AppCompatActivity() {
         setContentView(R.layout.activity_data_update)
 
         updater = EnforcementDataUpdater(this, SafetyDatabase.getInstance(this))
+        offlineUpdater = OfflineDataUpdater(this)
         statusText = findViewById(R.id.updateStatus)
         updateButton = findViewById(R.id.updateSelectedButton)
 
@@ -53,15 +56,20 @@ class DataUpdateActivity : AppCompatActivity() {
 
             lifecycleScope.launch(Dispatchers.IO) {
                 val result = updater.updateRegions(selected, force = true)
+                withContext(Dispatchers.Main) { statusText.text = result.message + " · 지도/도로 다운로드 준비" }
+                val offline = offlineUpdater.update { progress ->
+                    runOnUiThread { statusText.text = result.message + "\n" + progress }
+                }
                 withContext(Dispatchers.Main) {
                     updateButton.isEnabled = true
-                    statusText.text = result.message + " · 저장 ${result.totalCount}건"
+                    statusText.text = result.message + " · 저장 " + result.totalCount + "건\n" + offline.message + "\n" + offlineUpdater.status()
                     refreshVersions()
                 }
             }
         }
 
         refreshVersions()
+        statusText.text = "업데이트 대기 · " + offlineUpdater.status()
     }
 
     private fun bindRegions() {

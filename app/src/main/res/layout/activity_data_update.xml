@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="단속정보 / 교통정보 업데이트"
+            android:text="주행 데이터 업데이트"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
             android:textSize="24sp" />
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="업데이트할 시·도를 선택하세요. 기본값은 서울·경기·인천입니다."
+            android:text="단속정보를 선택 지역별로 갱신하고, 오프라인 지도·도로 데이터도 함께 다운로드합니다."
             android:textColor="#CCFFFFFF"
             android:textSize="14sp" />
 
@@ -83,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="18dp"
-            android:text="선택 지역 업데이트"
+            android:text="단속 + 지도 + 도로 업데이트"
             android:textStyle="bold"
             android:textSize="17sp" />
 
