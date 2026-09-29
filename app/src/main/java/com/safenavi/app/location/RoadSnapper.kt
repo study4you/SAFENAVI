@@ -3,6 +3,8 @@ package com.safenavi.app.location
 import android.location.Location
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
@@ -19,8 +21,19 @@ class RoadSnapper {
     private var lastSource: Location? = null
     private var lastResult: SnappedRoadPoint? = null
     private var stableResult: SnappedRoadPoint? = null
+    private val snapMutex = Mutex()
+    private var newestFixTimeNanos = Long.MIN_VALUE
 
-    suspend fun snap(location: Location): SnappedRoadPoint? = withContext(Dispatchers.IO) {
+    suspend fun snap(location: Location): SnappedRoadPoint? = snapMutex.withLock {
+        val fixTimeNanos = location.elapsedRealtimeNanos
+        if (fixTimeNanos > 0L && fixTimeNanos < newestFixTimeNanos) {
+            return@withLock lastResult
+        }
+        if (fixTimeNanos > 0L) newestFixTimeNanos = fixTimeNanos
+        snapInternal(location)
+    }
+
+    private suspend fun snapInternal(location: Location): SnappedRoadPoint? = withContext(Dispatchers.IO) {
         val now = System.currentTimeMillis()
         val previous = lastSource
         val moved = previous?.distanceTo(location) ?: Float.MAX_VALUE
@@ -36,7 +49,7 @@ class RoadSnapper {
             requestMethod = "GET"
             connectTimeout = 2500
             readTimeout = 2500
-            setRequestProperty("User-Agent", "SafeNavi/16")
+            setRequestProperty("User-Agent", "SafeNavi/21")
         }
 
         try {
