@@ -512,6 +512,25 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
         rotationSensor?.let {
             sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_UI)
         }
+
+        // Returning from the manual update screen must immediately refresh the
+        // installed camera count used by driving-mode status and local lookup UI.
+        if (::db.isInitialized) {
+            lifecycleScope.launch(Dispatchers.IO) {
+                val refreshedTotal = db.safetyPointDao().count()
+                safetyTotal = refreshedTotal
+                withContext(Dispatchers.Main) {
+                    if (driving) {
+                        driveHint.text = if (refreshedTotal > 0) {
+                            "로컬 단속정보 ${refreshedTotal}건"
+                        } else {
+                            "안전정보 데이터 업데이트 필요"
+                        }
+                    }
+                }
+            }
+        }
+
         sendBroadcast(
             Intent(DrivingLocationService.ACTION_APP_FOREGROUND).setPackage(packageName)
         )
