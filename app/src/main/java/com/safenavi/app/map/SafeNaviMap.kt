@@ -1,7 +1,6 @@
 package com.safenavi.app.map
 
 import android.location.Location
-import com.mapbox.geojson.Point
 import com.safenavi.app.data.SafetyPoint
 import org.maplibre.android.camera.CameraPosition
 import org.maplibre.android.camera.CameraUpdateFactory
