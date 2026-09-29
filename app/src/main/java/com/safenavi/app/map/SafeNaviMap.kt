@@ -48,6 +48,7 @@ class SafeNaviMap(private val mapView: MapView) {
     private var smoothedCameraBearing = Double.NaN
     private var smoothedTargetLat = Double.NaN
     private var smoothedTargetLon = Double.NaN
+    private var lastCameraUpdateAt = 0L
 
     fun attach(mapLibreMap: MapLibreMap, onReady: () -> Unit = {}) {
         map = mapLibreMap
@@ -188,10 +189,18 @@ class SafeNaviMap(private val mapView: MapView) {
         } ?: Float.MAX_VALUE
         val bearingDelta = if (lastCameraBearing.isNaN()) 180.0 else
             kotlin.math.abs(((smoothedCameraBearing - lastCameraBearing + 540.0) % 360.0) - 180.0)
-        if (forceZoom || moved >= 1.5f || bearingDelta >= 1.2) {
-            current.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 500)
+        val now = android.os.SystemClock.elapsedRealtime()
+        val minCameraInterval = when {
+            location.hasSpeed() && location.speed >= 20f -> 220L
+            location.hasSpeed() && location.speed >= 10f -> 260L
+            location.hasSpeed() && location.speed >= 3f -> 320L
+            else -> 420L
+        }
+        if (forceZoom || ((moved >= 1.5f || bearingDelta >= 1.2) && now - lastCameraUpdateAt >= minCameraInterval)) {
+            current.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), minCameraInterval.toInt() + 120)
             lastCameraTarget = target
             lastCameraBearing = smoothedCameraBearing
+            lastCameraUpdateAt = now
         }
         updateCurrentRoadHighlight(location, heading)
     }
