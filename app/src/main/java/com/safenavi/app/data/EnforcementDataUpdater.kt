@@ -263,13 +263,18 @@ class EnforcementDataUpdater(
             // Reject obviously corrupt coordinates outside the Korean service area.
             if (lat !in 32.0..39.5 || lon !in 123.0..132.5) continue
 
+            val id = p.optLong("id", 0L)
+            if (id <= 0L) continue
+            val speedLimit = if (p.has("speedLimit") && !p.isNull("speedLimit")) p.optInt("speedLimit") else null
+            if (speedLimit != null && speedLimit !in 10..130) continue
+
             result += SafetyPoint(
-                id = p.optLong("id"),
+                id = id,
                 region = region,
                 latitude = lat,
                 longitude = lon,
                 type = type,
-                speedLimit = if (p.has("speedLimit") && !p.isNull("speedLimit")) p.optInt("speedLimit") else null,
+                speedLimit = speedLimit,
                 roadName = p.optString("roadName").takeIf { it.isNotBlank() },
                 locationName = p.optString("locationName").takeIf { it.isNotBlank() },
                 direction = if (p.has("direction") && !p.isNull("direction")) p.optDouble("direction") else null,
