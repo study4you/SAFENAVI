@@ -139,13 +139,18 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
         db = SafetyDatabase.getInstance(this)
         dataUpdater = EnforcementDataUpdater(this, db)
 
+        // Driving mode is offline for enforcement data. Network downloads are
+        // performed only from DataUpdateActivity when the user runs Update.
         lifecycleScope.launch(Dispatchers.IO) {
             dataUpdater.pruneLegacyData()
-            val result = dataUpdater.updateIfNeeded()
-            safetyTotal = result.totalCount
+            safetyTotal = db.safetyPointDao().count()
             withContext(Dispatchers.Main) {
-                if (driving && result.checked) {
-                    dataStatus.text = result.message + " · ${result.totalCount}건"
+                if (driving) {
+                    dataStatus.text = if (safetyTotal > 0) {
+                        "로컬 단속정보 ${safetyTotal}건"
+                    } else {
+                        "단속정보 업데이트 필요"
+                    }
                 }
             }
         }
