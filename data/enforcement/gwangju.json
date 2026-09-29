@@ -1,6 +1,12 @@
 {
+  "schema": 2,
   "region": "GWANGJU",
+  "regionName": "광주",
   "version": "1",
-  "updatedAt": "2026-09-29",
+  "updatedAt": "2026-09-29T23:10:47+00:00",
+  "source": "OpenStreetMap",
+  "sourceLicense": "ODbL",
+  "sourceKind": "ENFORCEMENT_CAMERA",
+  "sourceNote": "공개된 무인 단속카메라 태그 기반 보조 데이터입니다. 현장 표지와 실제 제한속도가 우선입니다.",
   "points": []
 }

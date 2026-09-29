@@ -1,128 +1,179 @@
 {
   "schema": 2,
-  "updatedAt": "2026-09-29T18:37:08+00:00",
+  "updatedAt": "2026-09-29T23:10:47+00:00",
   "source": "OpenStreetMap",
   "sourceLicense": "ODbL",
-  "sourceKind": "ROAD_SAFETY",
+  "sourceKind": "ENFORCEMENT_CAMERA",
   "datasets": [
     {
       "region": "SEOUL",
-      "version": "2",
+      "version": "3",
       "path": "data/enforcement/seoul.json",
       "source": "OpenStreetMap",
-      "sourceKind": "ROAD_SAFETY"
+      "sourceKind": "ENFORCEMENT_CAMERA",
+      "count": 0,
+      "bytes": 387,
+      "sha256": "ed9bfe60facc7059cc58f54165a40c3b1eff4670d62aa58495b28f2955e91189"
     },
     {
       "region": "BUSAN",
-      "version": "3",
+      "version": "4",
       "path": "data/enforcement/busan.json",
       "source": "OpenStreetMap",
-      "sourceKind": "ROAD_SAFETY"
+      "sourceKind": "ENFORCEMENT_CAMERA",
+      "count": 0,
+      "bytes": 387,
+      "sha256": "b7879e9848f4a5ee845cec0d862b2c35a23818a061c96b4f3c73b6d7b1a09865"
     },
     {
       "region": "DAEGU",
       "version": "2",
       "path": "data/enforcement/daegu.json",
       "source": "OpenStreetMap",
-      "sourceKind": "ROAD_SAFETY"
+      "sourceKind": "ENFORCEMENT_CAMERA",
+      "count": 1741,
+      "bytes": 767708,
+      "sha256": "49d66af1e2d6ca94bf5e175e6c6686cc16e55104544dad5e9c850b108de73593"
     },
     {
       "region": "INCHEON",
       "version": "2",
       "path": "data/enforcement/incheon.json",
       "source": "OpenStreetMap",
-      "sourceKind": "ROAD_SAFETY"
+      "sourceKind": "ENFORCEMENT_CAMERA",
+      "count": 1487,
+      "bytes": 662210,
+      "sha256": "dcc3d0466800dd5eee0dd55984822e8b58abf16a285ceb1965432ff893cf0fb7"
     },
     {
       "region": "GWANGJU",
       "version": "1",
       "path": "data/enforcement/gwangju.json",
       "source": "OpenStreetMap",
-      "sourceKind": "ROAD_SAFETY"
+      "sourceKind": "ENFORCEMENT_CAMERA",
+      "count": 0,
+      "bytes": 389,
+      "sha256": "808c3c371c03d9e7fec42142e78a49ae0d9633571adb41c1f2c15d0e8f0520e4"
     },
     {
       "region": "DAEJEON",
-      "version": "3",
+      "version": "4",
       "path": "data/enforcement/daejeon.json",
       "source": "OpenStreetMap",
-      "sourceKind": "ROAD_SAFETY"
+      "sourceKind": "ENFORCEMENT_CAMERA",
+      "count": 0,
+      "bytes": 389,
+      "sha256": "67eb31cd8a9845d8224fb03584dcfc7327b1ec61d034f45f7017d20b48659d7b"
     },
     {
       "region": "ULSAN",
-      "version": "3",
+      "version": "4",
       "path": "data/enforcement/ulsan.json",
       "source": "OpenStreetMap",
-      "sourceKind": "ROAD_SAFETY"
+      "sourceKind": "ENFORCEMENT_CAMERA",
+      "count": 0,
+      "bytes": 387,
+      "sha256": "d919fe28bea1aa1d7e943d8c3124a7216190b1c15b98a5eabafeabd8eaf00d77"
     },
     {
       "region": "SEJONG",
       "version": "2",
       "path": "data/enforcement/sejong.json",
       "source": "OpenStreetMap",
-      "sourceKind": "ROAD_SAFETY"
+      "sourceKind": "ENFORCEMENT_CAMERA",
+      "count": 738,
+      "bytes": 320652,
+      "sha256": "28133b147a7cb1060048550236695cf3b1b8aafd831f6893bbb6399898d21457"
     },
     {
       "region": "GYEONGGI",
       "version": "1",
       "path": "data/enforcement/gyeonggi.json",
       "source": "OpenStreetMap",
-      "sourceKind": "ROAD_SAFETY"
+      "sourceKind": "ENFORCEMENT_CAMERA",
+      "count": 0,
+      "bytes": 90,
+      "sha256": "05ebbf3e6523e1f6cb016dca57172878f3c33862c0bd045ef438b7a287c40adf"
     },
     {
       "region": "GANGWON",
-      "version": "2",
+      "version": "3",
       "path": "data/enforcement/gangwon.json",
       "source": "OpenStreetMap",
-      "sourceKind": "ROAD_SAFETY"
+      "sourceKind": "ENFORCEMENT_CAMERA",
+      "count": 0,
+      "bytes": 389,
+      "sha256": "767880d001dbe8b341bbfd2c6bfc6596b1f0a0cad4b473ae5cb0ef34f29a6be7"
     },
     {
       "region": "CHUNGBUK",
       "version": "3",
       "path": "data/enforcement/chungbuk.json",
       "source": "OpenStreetMap",
-      "sourceKind": "ROAD_SAFETY"
+      "sourceKind": "ENFORCEMENT_CAMERA",
+      "count": 4950,
+      "bytes": 2169905,
+      "sha256": "3fffff938dface03a1f4c5ffaeb0b2503ea9a1f114b8e7aa66dcd76df73e0c51"
     },
     {
       "region": "CHUNGNAM",
-      "version": "2",
+      "version": "3",
       "path": "data/enforcement/chungnam.json",
       "source": "OpenStreetMap",
-      "sourceKind": "ROAD_SAFETY"
+      "sourceKind": "ENFORCEMENT_CAMERA",
+      "count": 0,
+      "bytes": 390,
+      "sha256": "f7a01ae8e2e4ed4b08997436818ac664ecdf73cdfc29677090937a2c3bd8a2dd"
     },
     {
       "region": "JEONBUK",
-      "version": "2",
+      "version": "3",
       "path": "data/enforcement/jeonbuk.json",
       "source": "OpenStreetMap",
-      "sourceKind": "ROAD_SAFETY"
+      "sourceKind": "ENFORCEMENT_CAMERA",
+      "count": 0,
+      "bytes": 389,
+      "sha256": "5e85615a69d04054eaa3d63e5ade80a460123234e10d030c50e042f28d2bf1d4"
     },
     {
       "region": "JEONNAM",
       "version": "1",
       "path": "data/enforcement/jeonnam.json",
       "source": "OpenStreetMap",
-      "sourceKind": "ROAD_SAFETY"
+      "sourceKind": "ENFORCEMENT_CAMERA",
+      "count": 0,
+      "bytes": 389,
+      "sha256": "33c0579e82d737769ccf08f35b6795c4a7f8259f60c7edf5b8ad092d281310e7"
     },
     {
       "region": "GYEONGBUK",
       "version": "1",
       "path": "data/enforcement/gyeongbuk.json",
       "source": "OpenStreetMap",
-      "sourceKind": "ROAD_SAFETY"
+      "sourceKind": "ENFORCEMENT_CAMERA",
+      "count": 0,
+      "bytes": 391,
+      "sha256": "ca48837ab69420bf7f246bf536fa6eb3b94055d960515df1b83b0c3e07861da5"
     },
     {
       "region": "GYEONGNAM",
-      "version": "3",
+      "version": "4",
       "path": "data/enforcement/gyeongnam.json",
       "source": "OpenStreetMap",
-      "sourceKind": "ROAD_SAFETY"
+      "sourceKind": "ENFORCEMENT_CAMERA",
+      "count": 0,
+      "bytes": 391,
+      "sha256": "f42f0dc966cb19e4e0774b390316a1c32c109d25014d9338c2832c2183b35915"
     },
     {
       "region": "JEJU",
-      "version": "3",
+      "version": "4",
       "path": "data/enforcement/jeju.json",
       "source": "OpenStreetMap",
-      "sourceKind": "ROAD_SAFETY"
+      "sourceKind": "ENFORCEMENT_CAMERA",
+      "count": 0,
+      "bytes": 386,
+      "sha256": "1e53e573347cba6a4d6dd91a20bd7356a98c552c75c696148118a52136f2f977"
     }
   ]
 }
