@@ -28,6 +28,8 @@ class RoadSnapper {
     private var geometryFetchedAt = 0L
     private var geometryAnchor: SnappedRoadPoint? = null
     private var lastSnapRequestAt = 0L
+    private var consecutiveSnapFailures = 0
+    private var nextNetworkAttemptAt = 0L
 
     suspend fun snap(location: Location): SnappedRoadPoint? = snapMutex.withLock {
         val fixTimeNanos = location.elapsedRealtimeNanos
@@ -63,6 +65,10 @@ class RoadSnapper {
         lastSnapRequestAt = now
         lastSource = Location(location)
 
+        if (now < nextNetworkAttemptAt && lastResult != null) {
+            return@withContext lastResult
+        }
+
         val bearingOption = if (location.hasBearing() && location.speed > 2f) {
             val bearing = ((location.bearing % 360f) + 360f) % 360f
             "&bearings=${bearing.toInt()},35"
@@ -79,7 +85,12 @@ class RoadSnapper {
         }
 
         try {
-            if (connection.responseCode !in 200..299) return@withContext lastResult
+            if (connection.responseCode !in 200..299) {
+                registerNetworkFailure(now)
+                return@withContext lastResult
+            }
+            consecutiveSnapFailures = 0
+            nextNetworkAttemptAt = 0L
 
             val body = connection.inputStream.bufferedReader().use { it.readText() }
             val root = JSONObject(body)
@@ -168,10 +179,22 @@ class RoadSnapper {
             stableResult = enriched
             enriched.also { lastResult = it }
         } catch (_: Exception) {
+            registerNetworkFailure(now)
             lastResult
         } finally {
             connection.disconnect()
         }
+    }
+
+    private fun registerNetworkFailure(now: Long) {
+        consecutiveSnapFailures = (consecutiveSnapFailures + 1).coerceAtMost(5)
+        val delay = when (consecutiveSnapFailures) {
+            1 -> 1_500L
+            2 -> 3_000L
+            3 -> 6_000L
+            else -> 10_000L
+        }
+        nextNetworkAttemptAt = now + delay
     }
 
     private fun fetchLocalGeometry(point: SnappedRoadPoint, location: Location): List<Pair<Double, Double>> {
