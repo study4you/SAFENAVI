@@ -163,7 +163,6 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
     }
 
     override fun onMapReady(naverMap: NaverMap) {
-        applySavedMapStyle()
         drivingMap.attach(naverMap)
         lastLocation?.let { updateNavigationCamera(it, true) }
     }
@@ -220,10 +219,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
         freeMap.visibility = if (isFreeMap()) View.VISIBLE else View.GONE
     }
 
-    private fun applySavedMapStyle() {
-        val type = mapPrefs.getString("map_type", "NAVER_NAVI") ?: "NAVER_NAVI"
-        drivingMap.setStyle(if (type == "FREE_BASIC") NaverDrivingMap.Style.FREE_BASIC else NaverDrivingMap.Style.NAVER_NAVI)
-    }
+    private fun applySavedMapStyle() = Unit
 
     private fun selectedMapLabel(): String =
         if (mapPrefs.getString("map_type", "NAVER_NAVI") == "FREE_BASIC") "OpenStreetMap" else "네이버 내비맵"
