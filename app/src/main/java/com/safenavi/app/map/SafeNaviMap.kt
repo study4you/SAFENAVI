@@ -27,6 +27,8 @@ import org.maplibre.android.style.layers.PropertyFactory.lineWidth
 import org.maplibre.android.style.layers.PropertyFactory.lineOpacity
 import org.maplibre.android.style.expressions.Expression.get
 import org.maplibre.android.style.expressions.Expression.toNumber
+import org.maplibre.android.style.expressions.Expression.eq
+import org.maplibre.android.style.expressions.Expression.literal
 import org.maplibre.android.annotations.Marker
 import org.maplibre.android.annotations.MarkerOptions
 
@@ -75,16 +77,24 @@ class SafeNaviMap(private val mapView: MapView) {
     }
 
     private fun installRoadHierarchy(style: Style) {
-        if (style.getLayer("safenavi-major-roads") != null) return
-        // A restrained overlay makes the primary driving network visually dominant.
-        val major = LineLayer("safenavi-major-roads", "openmaptiles")
-            .withSourceLayer("transportation")
-            .withProperties(
-                lineColor("#f4c86a"),
-                lineWidth(3.8f),
-                lineOpacity(0.62f)
-            )
-        style.addLayer(major)
+        if (style.getLayer("safenavi-motorway") != null) return
+
+        fun roadLayer(id: String, roadClass: String, color: String, width: Float, opacity: Float) =
+            LineLayer(id, "openmaptiles")
+                .withSourceLayer("transportation")
+                .withFilter(eq(get("class"), literal(roadClass)))
+                .withProperties(
+                    lineColor(color),
+                    lineWidth(width),
+                    lineOpacity(opacity)
+                )
+
+        // Draw from local streets to the highest-capacity roads so the driving hierarchy is obvious.
+        style.addLayer(roadLayer("safenavi-minor", "minor", "#e7e7e4", 1.15f, 0.52f))
+        style.addLayer(roadLayer("safenavi-secondary", "secondary", "#f3e2ad", 2.15f, 0.68f))
+        style.addLayer(roadLayer("safenavi-primary", "primary", "#f4cf79", 3.15f, 0.78f))
+        style.addLayer(roadLayer("safenavi-trunk", "trunk", "#efb85c", 4.15f, 0.84f))
+        style.addLayer(roadLayer("safenavi-motorway", "motorway", "#e9a84e", 5.1f, 0.90f))
     }
 
     private fun installKoreanRoadLabels(style: Style) {
