@@ -151,6 +151,10 @@ class EnforcementDataUpdater(
 
             onProgress?.invoke(DownloadProgress((i * 100 / datasets.length()).coerceIn(0, 99), 0, ALL_REGIONS[region] ?: region))
             val expectedBytes = item.optLong("bytes", -1L)
+            if (path.startsWith("/") || path.contains("..") || !path.startsWith("data/enforcement/")) {
+                failed += region
+                continue
+            }
             val dataText = downloadText(BASE + path) { read, total, speed ->
                 val knownTotal = if (expectedBytes > 0L) expectedBytes else total
                 val filePercent = if (knownTotal > 0) (read * 100 / knownTotal).toInt().coerceIn(0, 100) else 0
