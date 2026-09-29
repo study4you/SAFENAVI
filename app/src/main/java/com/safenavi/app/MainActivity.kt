@@ -36,6 +36,7 @@ import com.safenavi.app.location.DrivingLocationService
 import com.safenavi.app.location.RoadSnapper
 import com.safenavi.app.location.TunnelDeadReckoner
 import com.safenavi.app.map.NaverDrivingMap
+import com.safenavi.app.map.OsmDrivingMap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -48,6 +49,8 @@ import kotlin.math.*
 
 class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener, OnMapReadyCallback {
     private lateinit var map: MapView
+    private lateinit var freeMap: org.osmdroid.views.MapView
+    private lateinit var osmDrivingMap: OsmDrivingMap
     private lateinit var status: TextView
     private lateinit var dataStatus: TextView
     private lateinit var currentSpeed: TextView
@@ -118,6 +121,9 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
 
         bindViews()
         map.onCreate(savedInstanceState)
+        org.osmdroid.config.Configuration.getInstance().userAgentValue = packageName
+        osmDrivingMap = OsmDrivingMap(freeMap)
+        applyMapVisibility()
         map.getMapAsync(this)
         val appVersion = packageManager.getPackageInfo(packageName, 0).versionName ?: "?"
         findViewById<TextView>(R.id.versionLabel).text = "v$appVersion"
@@ -147,8 +153,8 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
         }
         findViewById<Button>(R.id.driveRecenterButton).setOnClickListener { recenter(true) }
         findViewById<Button>(R.id.menuButton).setOnClickListener { anchor -> showDriveMenu(anchor) }
-        findViewById<Button>(R.id.zoomInButton).setOnClickListener { drivingMap.zoomIn() }
-        findViewById<Button>(R.id.zoomOutButton).setOnClickListener { drivingMap.zoomOut() }
+        findViewById<Button>(R.id.zoomInButton).setOnClickListener { if (isFreeMap()) osmDrivingMap.zoomIn() else drivingMap.zoomIn() }
+        findViewById<Button>(R.id.zoomOutButton).setOnClickListener { if (isFreeMap()) osmDrivingMap.zoomOut() else drivingMap.zoomOut() }
         findViewById<Button>(R.id.stopButton).setOnClickListener { stopSafetyAndExit() }
 
         requestOptionalPermissions()
@@ -190,7 +196,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
 
     private fun showMapTypeDialog() {
         val current = mapPrefs.getString("map_type", "NAVER_NAVI") ?: "NAVER_NAVI"
-        val items = arrayOf("네이버 내비맵", "기본 지도 (비상/대체)")
+        val items = arrayOf("네이버 내비맵", "OpenStreetMap 무료 지도")
         val checked = if (current == "FREE_BASIC") 1 else 0
         AlertDialog.Builder(this)
             .setTitle("지도 종류")
@@ -198,11 +204,20 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
                 val type = if (which == 1) "FREE_BASIC" else "NAVER_NAVI"
                 mapPrefs.edit().putString("map_type", type).apply()
                 applySavedMapStyle()
+                applyMapVisibility()
                 lastLocation?.let { updateNavigationCamera(it, false) }
                 dialog.dismiss()
             }
             .setNegativeButton("취소", null)
             .show()
+    }
+
+    private fun isFreeMap(): Boolean = mapPrefs.getString("map_type", "NAVER_NAVI") == "FREE_BASIC"
+
+    private fun applyMapVisibility() {
+        if (!::freeMap.isInitialized) return
+        map.visibility = if (isFreeMap()) View.GONE else View.VISIBLE
+        freeMap.visibility = if (isFreeMap()) View.VISIBLE else View.GONE
     }
 
     private fun applySavedMapStyle() {
@@ -211,7 +226,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
     }
 
     private fun selectedMapLabel(): String =
-        if (mapPrefs.getString("map_type", "NAVER_NAVI") == "FREE_BASIC") "기본 지도" else "네이버 내비맵"
+        if (mapPrefs.getString("map_type", "NAVER_NAVI") == "FREE_BASIC") "OpenStreetMap" else "네이버 내비맵"
 
     private fun requestOptionalPermissions() {
         if (Build.VERSION.SDK_INT >= 33 &&
@@ -256,6 +271,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
 
     private fun bindViews() {
         map = findViewById(R.id.map)
+        freeMap = findViewById(R.id.freeMap)
         status = findViewById(R.id.status)
         dataStatus = findViewById(R.id.dataStatus)
         currentSpeed = findViewById(R.id.currentSpeed)
@@ -414,7 +430,8 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
         }
         val heading = navigationHeading
 
-        drivingMap.updateVehicle(location, heading, forceZoom)
+        if (isFreeMap()) osmDrivingMap.updateVehicle(location, heading, forceZoom)
+        else drivingMap.updateVehicle(location, heading, forceZoom)
     }
 
     private fun recenter(navigationMode: Boolean) {
@@ -455,12 +472,14 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
     }
 
     private fun showSafetyMarkers(points: List<SafetyPoint>) {
-        drivingMap.showSafetyPoints(points)
+        if (isFreeMap()) osmDrivingMap.showSafetyPoints(points)
+        else drivingMap.showSafetyPoints(points)
     }
 
     override fun onResume() {
         super.onResume()
         map.onResume()
+        if (::freeMap.isInitialized) freeMap.onResume()
         rotationSensor?.let {
             sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_UI)
         }
@@ -474,6 +493,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
         sendBroadcast(
             Intent(DrivingLocationService.ACTION_APP_BACKGROUND).setPackage(packageName)
         )
+        if (::freeMap.isInitialized) freeMap.onPause()
         map.onPause()
         super.onPause()
     }
@@ -504,6 +524,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
     override fun onDestroy() {
         window.decorView.removeCallbacks(tunnelTicker)
         try { locationManager.removeUpdates(this) } catch (_: Exception) {}
+        if (::freeMap.isInitialized) freeMap.onDetach()
         map.onDestroy()
         super.onDestroy()
     }
