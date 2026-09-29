@@ -37,6 +37,7 @@ import com.safenavi.app.location.RoadSnapper
 import com.safenavi.app.location.TunnelDeadReckoner
 import com.safenavi.app.map.NaverDrivingMap
 import com.safenavi.app.map.SafeNaviMap
+import org.maplibre.android.MapLibre
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -117,6 +118,8 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // MapLibre must be initialized before the XML MapView is inflated.
+        MapLibre.getInstance(this)
         setContentView(R.layout.activity_main)
 
         bindViews()
