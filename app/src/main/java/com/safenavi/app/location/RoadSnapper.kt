@@ -27,6 +27,7 @@ class RoadSnapper {
     private var newestFixTimeNanos = Long.MIN_VALUE
     private var geometryFetchedAt = 0L
     private var geometryAnchor: SnappedRoadPoint? = null
+    private var lastSnapRequestAt = 0L
 
     suspend fun snap(location: Location): SnappedRoadPoint? = snapMutex.withLock {
         val fixTimeNanos = location.elapsedRealtimeNanos
@@ -41,8 +42,25 @@ class RoadSnapper {
         val now = System.currentTimeMillis()
         val previous = lastSource
         val moved = previous?.distanceTo(location) ?: Float.MAX_VALUE
+        val speed = if (location.hasSpeed()) location.speed else 0f
+        val minInterval = when {
+            speed >= 20f -> 650L
+            speed >= 10f -> 850L
+            speed >= 3f -> 1200L
+            else -> 1800L
+        }
+        val minMove = when {
+            speed >= 20f -> 8f
+            speed >= 10f -> 5f
+            speed >= 3f -> 3f
+            else -> 2f
+        }
+        if (lastResult != null && now - lastSnapRequestAt < minInterval && moved < minMove) {
+            return@withContext lastResult
+        }
 
         lastRequestAt = now
+        lastSnapRequestAt = now
         lastSource = Location(location)
 
         val bearingOption = if (location.hasBearing() && location.speed > 2f) {
