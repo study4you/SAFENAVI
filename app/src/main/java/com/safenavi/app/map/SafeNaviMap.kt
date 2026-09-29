@@ -8,12 +8,15 @@ import org.maplibre.android.geometry.LatLng
 import org.maplibre.android.maps.MapView
 import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.Style
+import org.maplibre.android.annotations.Marker
+import org.maplibre.android.annotations.MarkerOptions
 
 class SafeNaviMap(private val mapView: MapView) {
     enum class ViewMode { TWO_D, THREE_D }
 
     private var map: MapLibreMap? = null
     private var mode = ViewMode.TWO_D
+    private val safetyMarkers = mutableListOf<Marker>()
 
     fun attach(mapLibreMap: MapLibreMap, onReady: () -> Unit = {}) {
         map = mapLibreMap
@@ -45,6 +48,22 @@ class SafeNaviMap(private val mapView: MapView) {
         current.animateCamera(CameraUpdateFactory.newCameraPosition(builder.build()), 350)
     }
 
-    // Marker rendering moves to a GeoJSON source/layer in the next map-style unit.
-    fun showSafetyPoints(points: List<SafetyPoint>) = Unit
+    fun showSafetyPoints(points: List<SafetyPoint>) {
+        val current = map ?: return
+        safetyMarkers.forEach { current.removeMarker(it) }
+        safetyMarkers.clear()
+        points.forEach { point ->
+            val title = when (point.type.uppercase()) {
+                "SIGNAL_SPEED" -> "신호·과속"
+                "SECTION" -> "구간단속"
+                else -> "과속단속"
+            }
+            val marker = current.addMarker(
+                MarkerOptions()
+                    .position(LatLng(point.latitude, point.longitude))
+                    .title(title)
+            )
+            safetyMarkers += marker
+        }
+    }
 }
