@@ -49,6 +49,7 @@ class SafeNaviMap(private val mapView: MapView) {
     private var smoothedTargetLat = Double.NaN
     private var smoothedTargetLon = Double.NaN
     private var lastCameraUpdateAt = 0L
+    private var dynamicZoom = Double.NaN
 
     fun attach(mapLibreMap: MapLibreMap, onReady: () -> Unit = {}) {
         map = mapLibreMap
@@ -163,11 +164,23 @@ class SafeNaviMap(private val mapView: MapView) {
             smoothedTargetLon += (rawLon - smoothedTargetLon) * positionAlpha
         }
         val target = LatLng(smoothedTargetLat, smoothedTargetLon)
+        val speedKmh = if (location.hasSpeed()) location.speed * 3.6 else 0.0
+        val desiredZoom = when {
+            speedKmh >= 100.0 -> 15.1
+            speedKmh >= 80.0 -> 15.4
+            speedKmh >= 60.0 -> 15.7
+            speedKmh >= 40.0 -> 16.0
+            speedKmh >= 20.0 -> 16.3
+            else -> 16.6
+        }
+        if (dynamicZoom.isNaN() || forceZoom) dynamicZoom = desiredZoom
+        else dynamicZoom += (desiredZoom - dynamicZoom) * 0.18
+
         val builder = CameraPosition.Builder()
             .target(target)
             .bearing(heading.toDouble())
             .tilt(if (mode == ViewMode.THREE_D) 58.0 else 0.0)
-        if (forceZoom) builder.zoom(16.5) else builder.zoom(current.cameraPosition.zoom)
+            .zoom(dynamicZoom)
         val rawBearing = heading.toDouble()
         if (smoothedCameraBearing.isNaN()) smoothedCameraBearing = rawBearing
         val turnDelta = ((rawBearing - smoothedCameraBearing + 540.0) % 360.0) - 180.0
