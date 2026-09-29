@@ -9,12 +9,18 @@ import org.maplibre.android.maps.MapView
 import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.Style
 import org.maplibre.android.style.layers.FillExtrusionLayer
+import org.maplibre.android.style.layers.SymbolLayer
 import org.maplibre.android.style.layers.Property
 import org.maplibre.android.style.layers.PropertyFactory.fillExtrusionBase
 import org.maplibre.android.style.layers.PropertyFactory.fillExtrusionColor
 import org.maplibre.android.style.layers.PropertyFactory.fillExtrusionHeight
 import org.maplibre.android.style.layers.PropertyFactory.fillExtrusionOpacity
 import org.maplibre.android.style.layers.PropertyFactory.visibility
+import org.maplibre.android.style.layers.PropertyFactory.textField
+import org.maplibre.android.style.layers.PropertyFactory.textSize
+import org.maplibre.android.style.layers.PropertyFactory.textColor
+import org.maplibre.android.style.layers.PropertyFactory.textHaloColor
+import org.maplibre.android.style.layers.PropertyFactory.textHaloWidth
 import org.maplibre.android.style.expressions.Expression.get
 import org.maplibre.android.style.expressions.Expression.toNumber
 import org.maplibre.android.annotations.Marker
@@ -34,6 +40,8 @@ class SafeNaviMap(private val mapView: MapView) {
             Style.Builder().fromUri("https://tiles.openfreemap.org/styles/liberty")
         ) { style ->
             loadedStyle = style
+            simplifyBaseStyle(style)
+            installKoreanRoadLabels(style)
             installBuildingLayer(style)
             applyBuildingMode()
             onReady()
@@ -50,13 +58,38 @@ class SafeNaviMap(private val mapView: MapView) {
         applyBuildingMode()
     }
 
+    private fun simplifyBaseStyle(style: Style) {
+        // Safety-driving mode: suppress noisy POI/transit/shop labels from the public base style.
+        style.layers.forEach { layer ->
+            val id = layer.id.lowercase()
+            if (id.contains("poi") || id.contains("shop") || id.contains("transit") ||
+                id.contains("station") || id.contains("housenumber")) {
+                layer.setProperties(visibility(Property.NONE))
+            }
+        }
+    }
+
+    private fun installKoreanRoadLabels(style: Style) {
+        if (style.getLayer("safenavi-road-labels") != null) return
+        val layer = SymbolLayer("safenavi-road-labels", "openmaptiles")
+            .withSourceLayer("transportation_name")
+            .withProperties(
+                textField("{name:ko}"),
+                textSize(13f),
+                textColor("#4f5357"),
+                textHaloColor("#ffffff"),
+                textHaloWidth(1.4f)
+            )
+        style.addLayer(layer)
+    }
+
     private fun installBuildingLayer(style: Style) {
         if (style.getLayer("safenavi-3d-buildings") != null) return
         val layer = FillExtrusionLayer("safenavi-3d-buildings", "openmaptiles")
             .withSourceLayer("building")
             .withProperties(
-                fillExtrusionColor("#d7d9dc"),
-                fillExtrusionOpacity(0.78f),
+                fillExtrusionColor("#d9dcde"),
+                fillExtrusionOpacity(0.48f),
                 fillExtrusionHeight(toNumber(get("render_height"))),
                 fillExtrusionBase(toNumber(get("render_min_height"))),
                 visibility(Property.NONE)
