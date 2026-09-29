@@ -54,7 +54,6 @@ class SafeNaviMap(private val mapView: MapView) {
         if (style.getLayer("safenavi-3d-buildings") != null) return
         val layer = FillExtrusionLayer("safenavi-3d-buildings", "openmaptiles")
             .withSourceLayer("building")
-            .withMinZoom(15f)
             .withProperties(
                 fillExtrusionColor("#d7d9dc"),
                 fillExtrusionOpacity(0.78f),
