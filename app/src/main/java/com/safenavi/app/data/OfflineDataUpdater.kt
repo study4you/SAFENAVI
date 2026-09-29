@@ -9,6 +9,12 @@ import java.net.URL
 import java.util.zip.ZipInputStream
 
 data class OfflineDataResult(val ok:Boolean,val message:String)
+data class InstalledGraphInfo(
+    val installed:Boolean,
+    val type:String?,
+    val version:String?,
+    val directory:File
+)
 
 class OfflineDataUpdater(private val context: Context) {
     companion object {
@@ -18,20 +24,28 @@ class OfflineDataUpdater(private val context: Context) {
     private val prefs=context.getSharedPreferences("offline_drive_data",Context.MODE_PRIVATE)
     private val dir=File(context.filesDir,"offline").apply{mkdirs()}
 
+    fun installedGraphInfo():InstalledGraphInfo {
+        val graphDir=File(dir,"south-korea-graph")
+        val info=File(graphDir,"safenavi-graph-info.txt")
+        val lines=if(info.exists()) info.readLines() else emptyList()
+        val installed=graphDir.exists() && graphDir.walkTopDown().any { it.isFile && it.name!="safenavi-graph-info.txt" }
+        return InstalledGraphInfo(
+            installed=installed,
+            type=lines.firstOrNull{it.startsWith("type=")}?.substringAfter("="),
+            version=lines.firstOrNull{
+                it.startsWith("graph.version") || it.startsWith("datareader.import.date")
+            }?.substringAfter("="),
+            directory=graphDir
+        )
+    }
+
     fun status():String {
         val map=File(dir,"south-korea.map")
         val graph=File(dir,"south-korea-graph.zip")
-        val graphDir=File(dir,"south-korea-graph")
         fun mb(f:File)=if(f.exists()) "%.1fMB".format(f.length()/1048576.0) else "없음"
-        val installed=graphDir.exists() && graphDir.walkTopDown().any { it.isFile }
-        val graphInfo=File(graphDir,"safenavi-graph-info.txt")
-        val graphInfoLines=if(graphInfo.exists()) graphInfo.readLines() else emptyList()
-        val graphType=graphInfoLines.firstOrNull{it.startsWith("type=")}?.substringAfter("=")
-        val graphVersion=graphInfoLines.firstOrNull{
-            it.startsWith("graph.version") || it.startsWith("datareader.import.date")
-        }?.substringAfter("=")
+        val info=installedGraphInfo()
         return "오프라인 지도 "+mb(map)+" · 도로 그래프 "+mb(graph)+
-            (if(installed) " · 설치됨"+(graphType?.let{" · $it"}?:"")+(graphVersion?.let{" · $it"}?:"") else "")
+            (if(info.installed) " · 설치됨"+(info.type?.let{" · $it"}?:"")+(info.version?.let{" · $it"}?:"") else "")
     }
 
     suspend fun update(onProgress:(String)->Unit):OfflineDataResult=withContext(Dispatchers.IO){
