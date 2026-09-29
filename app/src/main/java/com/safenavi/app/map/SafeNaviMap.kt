@@ -56,6 +56,7 @@ class SafeNaviMap(private val mapView: MapView) {
     private var lastReliableHeading = Float.NaN
     private var headingCandidate = Float.NaN
     private var headingCandidateCount = 0
+    private var lastRoadGeometryAt = 0L
 
     fun attach(mapLibreMap: MapLibreMap, onReady: () -> Unit = {}) {
         map = mapLibreMap
@@ -282,12 +283,19 @@ class SafeNaviMap(private val mapView: MapView) {
             lastCameraBearing = smoothedCameraBearing
             lastCameraUpdateAt = now
         }
+        if (android.os.SystemClock.elapsedRealtime() - lastRoadGeometryAt > 12_000L) {
+            currentRoadLine?.let { current.removePolyline(it) }
+            currentRoadLine = null
+            lastRoadGeometry = emptyList()
+        }
         updateCurrentRoadHighlight(location, effectiveHeading)
     }
 
     fun updateRoadGeometry(points: List<Pair<Double, Double>>) {
         val current = map ?: return
-        if (points.size < 2 || sameGeometry(points, lastRoadGeometry)) return
+        if (points.size < 2) return
+        lastRoadGeometryAt = android.os.SystemClock.elapsedRealtime()
+        if (sameGeometry(points, lastRoadGeometry)) return
         currentRoadLine?.let { current.removePolyline(it) }
         val latLngs = points.map { LatLng(it.first, it.second) }.toTypedArray()
         currentRoadLine = current.addPolyline(
