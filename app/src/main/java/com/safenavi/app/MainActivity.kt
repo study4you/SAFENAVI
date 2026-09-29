@@ -42,6 +42,7 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import com.safenavi.app.data.SafetyPoint
+import com.safenavi.app.safety.SafetyEngine
 import kotlin.math.*
 
 class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener {
@@ -61,6 +62,8 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
     private lateinit var sensorManager: SensorManager
     private var rotationSensor: Sensor? = null
     private val roadSnapper = RoadSnapper()
+    private val safetyEngine = SafetyEngine()
+    private var currentRoadName: String? = null
     private var sensorHeading = 0f
     private var gpsHeading = 0f
     private var navigationHeading = 0f
@@ -108,6 +111,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
         setContentView(R.layout.activity_main)
 
         bindViews()
+        findViewById<TextView>(R.id.versionLabel).text = "v${BuildConfig.VERSION_NAME}"
         applySystemInsets()
 
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -319,6 +323,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
             status.text = "안전운행 중"
 
             val roadText = snapped?.roadName?.takeIf { it.isNotBlank() }
+            currentRoadName = roadText
             dataStatus.text = buildString {
                 append("GPS ")
                 append(raw.accuracy.roundToInt())
@@ -331,7 +336,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
 
             updateNavigationCamera(smooth, firstFix)
             firstFix = false
-            loadNearbySafetyPoints(smooth)
+            loadNearbySafetyPoints(smooth, roadText)
             map.invalidate()
         }
     }
@@ -421,7 +426,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
         return GeoPoint(Math.toDegrees(phi2), Math.toDegrees(lambda2))
     }
 
-    private fun loadNearbySafetyPoints(location: Location) {
+    private fun loadNearbySafetyPoints(location: Location, roadName: String?) {
         lifecycleScope.launch(Dispatchers.IO) {
             val r = 5000.0
             val latD = r / 111320.0
@@ -432,10 +437,18 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
                 location.longitude - lonD,
                 location.longitude + lonD
             )
+            val heading = when {
+                location.hasBearing() && location.speed > 0.35f -> location.bearing.toDouble()
+                gpsHeading != 0f -> gpsHeading.toDouble()
+                else -> navigationHeading.toDouble()
+            }
+            val pathPoints = safetyEngine.findAhead(
+                location.latitude, location.longitude, heading, points, roadName
+            ).map { it.point }
             withContext(Dispatchers.Main) {
-                showSafetyMarkers(points)
+                showSafetyMarkers(pathPoints)
                 driveHint.text = when {
-                    points.isNotEmpty() -> "5km 이내 안전정보 ${points.size}건"
+                    pathPoints.isNotEmpty() -> "진행경로 안전정보 ${pathPoints.size}건"
                     safetyTotal == 0 -> "안전정보 데이터 업데이트 필요"
                     else -> "5km 이내 안전정보 없음"
                 }

@@ -7,9 +7,14 @@ class SafetyEngine {
             val d=GeoCalculator.distanceMeters(lat,lon,p.latitude,p.longitude)
             if(d>2000) return@mapNotNull null
             val b=GeoCalculator.bearing(lat,lon,p.latitude,p.longitude)
-            if(GeoCalculator.angleDifference(heading,b)>28) return@mapNotNull null
-            p.direction?.let { if(GeoCalculator.angleDifference(heading,it)>28) return@mapNotNull null }
-            if(currentRoadName!=null && p.roadName!=null && !p.roadName.equals(currentRoadName,true)) return@mapNotNull null
+            val angle=GeoCalculator.angleDifference(heading,b)
+            if(angle>18) return@mapNotNull null
+            val lateral=d * kotlin.math.sin(Math.toRadians(angle))
+            if(lateral>30.0) return@mapNotNull null
+            p.direction?.let { if(GeoCalculator.angleDifference(heading,it)>20) return@mapNotNull null }
+            if(currentRoadName!=null) {
+                if(p.roadName==null || !p.roadName.equals(currentRoadName,true)) return@mapNotNull null
+            }
             SafetyAlert(p,d)
         }.sortedBy { it.distanceMeters }
 }
