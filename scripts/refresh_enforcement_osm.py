@@ -187,7 +187,13 @@ def main():
             file_bytes = path.read_bytes()
             file_doc = load_json(path, {"points": []})
             file_points = file_doc.get("points", [])
-            if file_points:
+            valid_camera_dataset = (
+                file_doc.get("schema") == 2
+                and file_doc.get("region") == code
+                and file_doc.get("sourceKind") == "ENFORCEMENT_CAMERA"
+                and bool(file_points)
+            )
+            if valid_camera_dataset:
                 datasets.append({
                     "region": code,
                     "version": str(file_doc.get("version", version)),
