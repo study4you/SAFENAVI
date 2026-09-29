@@ -2,13 +2,6 @@ name: Refresh SafeNavi road-safety data
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "20 18 * * *"
-  push:
-    branches: [ "main" ]
-    paths:
-      - "scripts/refresh_enforcement_osm.py"
-      - ".github/workflows/data-refresh.yml"
 
 permissions:
   contents: write
