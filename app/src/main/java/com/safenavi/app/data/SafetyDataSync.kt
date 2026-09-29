@@ -40,12 +40,14 @@ class SafetyDataSync(
         val points = fetchOsmSafetyPoints(lat, lon)
         if (points.isNotEmpty()) {
             db.safetyPointDao().insertAll(points)
-            prefs.edit()
-                .putLong("last_lat", java.lang.Double.doubleToLongBits(lat))
-                .putLong("last_lon", java.lang.Double.doubleToLongBits(lon))
-                .putLong("last_time", now)
-                .apply()
         }
+        // A successful empty response is still a completed sync. Without recording
+        // it, camera-free areas would hit Overpass again on every location update.
+        prefs.edit()
+            .putLong("last_lat", java.lang.Double.doubleToLongBits(lat))
+            .putLong("last_lon", java.lang.Double.doubleToLongBits(lon))
+            .putLong("last_time", now)
+            .apply()
 
         points.size
     }
