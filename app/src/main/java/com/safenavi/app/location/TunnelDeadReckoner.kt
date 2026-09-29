@@ -5,15 +5,14 @@ import kotlin.math.*
 
 /**
  * Short GPS-outage dead reckoning for tunnels/underground roads.
- * Keeps the last trusted travel line and speed for at most 30 seconds.
- * This is intentionally bounded because phone-only inertial navigation drifts.
+ * Keeps the last trusted travel line and speed until usable GPS returns.
+ * Intended for tunnel/underground continuity where satellite fixes may be unavailable for an extended period.
  */
 class TunnelDeadReckoner {
     private var trusted: Location? = null
     private var headingDeg = 0.0
     private var speedMps = 0.0
     private var lastUpdateMs = 0L
-    private var outageStartMs = 0L
 
     fun acceptGps(location: Location): Location {
         val now = location.elapsedRealtimeNanos.takeIf { it > 0L }?.div(1_000_000L)
@@ -24,7 +23,6 @@ class TunnelDeadReckoner {
             if (location.hasBearing() && location.speed > 1.5f) headingDeg = location.bearing.toDouble()
             if (location.hasSpeed()) speedMps = location.speed.toDouble().coerceAtLeast(0.0)
             lastUpdateMs = now
-            outageStartMs = 0L
             return Location(location)
         }
         return predict(now) ?: Location(location)
@@ -33,9 +31,6 @@ class TunnelDeadReckoner {
     fun predict(nowMs: Long = android.os.SystemClock.elapsedRealtime()): Location? {
         val base = trusted ?: return null
         if (lastUpdateMs == 0L || speedMps < 1.0) return Location(base)
-        if (outageStartMs == 0L) outageStartMs = nowMs
-        if (nowMs - outageStartMs > 30_000L) return Location(base)
-
         val dt = ((nowMs - lastUpdateMs).coerceIn(0L, 1500L)) / 1000.0
         if (dt <= 0.0) return Location(base)
         val next = move(base, headingDeg, speedMps * dt)
@@ -47,7 +42,7 @@ class TunnelDeadReckoner {
     }
 
     fun adjustHeading(sensorHeading: Float) {
-        if (outageStartMs == 0L) return
+        if (trusted == null) return
         var delta = (sensorHeading - headingDeg + 540.0) % 360.0 - 180.0
         delta = delta.coerceIn(-8.0, 8.0)
         headingDeg = (headingDeg + delta * 0.12 + 360.0) % 360.0
