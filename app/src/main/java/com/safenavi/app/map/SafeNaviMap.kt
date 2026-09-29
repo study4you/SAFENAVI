@@ -52,6 +52,7 @@ class SafeNaviMap(private val mapView: MapView) {
     private var dynamicZoom = Double.NaN
     private var manualZoomUntil = 0L
     private var lookAheadTarget: LatLng? = null
+    private var lastVehicleLocation: Location? = null
 
     fun attach(mapLibreMap: MapLibreMap, onReady: () -> Unit = {}) {
         map = mapLibreMap
@@ -157,6 +158,14 @@ class SafeNaviMap(private val mapView: MapView) {
 
     fun updateVehicle(location: Location, heading: Float, forceZoom: Boolean) {
         val current = map ?: return
+        val previousVehicle = lastVehicleLocation
+        val jumpDistance = previousVehicle?.distanceTo(location) ?: 0f
+        val speedMpsForJump = if (location.hasSpeed()) location.speed else 0f
+        val plausibleJump = 35f + speedMpsForJump * 2.5f
+        if (!forceZoom && previousVehicle != null && jumpDistance > plausibleJump && location.accuracy > 12f) {
+            return
+        }
+        lastVehicleLocation = Location(location)
         val rawLat = location.latitude
         val rawLon = location.longitude
         if (smoothedTargetLat.isNaN() || forceZoom) {
