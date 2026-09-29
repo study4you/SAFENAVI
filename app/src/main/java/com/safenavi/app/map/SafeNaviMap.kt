@@ -46,6 +46,8 @@ class SafeNaviMap(private val mapView: MapView) {
     private var lastCameraTarget: LatLng? = null
     private var lastCameraBearing = Double.NaN
     private var smoothedCameraBearing = Double.NaN
+    private var smoothedTargetLat = Double.NaN
+    private var smoothedTargetLon = Double.NaN
 
     fun attach(mapLibreMap: MapLibreMap, onReady: () -> Unit = {}) {
         map = mapLibreMap
@@ -143,7 +145,23 @@ class SafeNaviMap(private val mapView: MapView) {
 
     fun updateVehicle(location: Location, heading: Float, forceZoom: Boolean) {
         val current = map ?: return
-        val target = LatLng(location.latitude, location.longitude)
+        val rawLat = location.latitude
+        val rawLon = location.longitude
+        if (smoothedTargetLat.isNaN() || forceZoom) {
+            smoothedTargetLat = rawLat
+            smoothedTargetLon = rawLon
+        } else {
+            val speed = if (location.hasSpeed()) location.speed else 0f
+            val positionAlpha = when {
+                speed >= 20f -> 0.72
+                speed >= 10f -> 0.62
+                speed >= 3f -> 0.50
+                else -> 0.34
+            }
+            smoothedTargetLat += (rawLat - smoothedTargetLat) * positionAlpha
+            smoothedTargetLon += (rawLon - smoothedTargetLon) * positionAlpha
+        }
+        val target = LatLng(smoothedTargetLat, smoothedTargetLon)
         val builder = CameraPosition.Builder()
             .target(target)
             .bearing(heading.toDouble())
