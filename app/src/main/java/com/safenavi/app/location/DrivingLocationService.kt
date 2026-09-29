@@ -65,6 +65,18 @@ class DrivingLocationService : Service(), LocationListener {
     private var appInBackground = false
     private var overlayParams: WindowManager.LayoutParams? = null
     private val overlayPrefs by lazy { getSharedPreferences("overlay_position", Context.MODE_PRIVATE) }
+    private var lastGpsCallbackMs = 0L
+
+    private val tunnelTicker = object : Runnable {
+        override fun run() {
+            if (lastGpsCallbackMs > 0L &&
+                SystemClock.elapsedRealtime() - lastGpsCallbackMs >= 1800L
+            ) {
+                tunnelReckoner.predict()?.let { processDriveLocation(it) }
+            }
+            handler.postDelayed(this, 1000L)
+        }
+    }
 
     private val warningTone = object : Runnable {
         override fun run() {
@@ -98,6 +110,7 @@ class DrivingLocationService : Service(), LocationListener {
         lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         toneGenerator = ToneGenerator(AudioManager.STREAM_ALARM, 95)
+        handler.post(tunnelTicker)
 
         val filter = IntentFilter().apply {
             addAction(ACTION_APP_FOREGROUND)
@@ -188,8 +201,11 @@ class DrivingLocationService : Service(), LocationListener {
     }
 
     override fun onLocationChanged(location: Location) {
-        val driveLocation = tunnelReckoner.acceptGps(location)
+        lastGpsCallbackMs = SystemClock.elapsedRealtime()
+        processDriveLocation(tunnelReckoner.acceptGps(location))
+    }
 
+    private fun processDriveLocation(driveLocation: Location) {
         trajectory.add(driveLocation)
         val speedKmh = if (driveLocation.hasSpeed()) {
             (driveLocation.speed * 3.6f).roundToInt()
@@ -253,6 +269,7 @@ class DrivingLocationService : Service(), LocationListener {
         if (violation && !speeding) {
             speeding = true
             handler.removeCallbacks(warningTone)
+        handler.removeCallbacks(tunnelTicker)
             handler.post(warningTone)
         } else if (!violation && speeding) {
             speeding = false
