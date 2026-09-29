@@ -1,5 +1,12 @@
 # SafeNavi Changelog
 
+## 21
+- GPS 콜백이 완전히 끊기는 터널에서도 0.8초 주기로 추측 위치 계속 갱신
+- 마지막 정상 GPS 속도/방향을 사용해 GPS 복귀 전까지 차량 위치가 멈추지 않도록 수정
+- 회전 센서 방향을 TunnelDeadReckoner에 연결해 터널 내 진행방향 보정
+- GPS 복귀 즉시 실제 위치로 재결합
+- 이번 단계는 포그라운드 주행 화면 연속성 수정이며 도로 그래프 곡선 추종은 다음 단계로 분리
+
 ## 20
 - 다운로드된 Mapsforge South Korea .map 파일을 실제 주행 지도에 연결
 - 오프라인 지도 설치 시 osmdroid Mapsforge provider로 자동 전환

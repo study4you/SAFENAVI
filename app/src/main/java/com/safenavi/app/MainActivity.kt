@@ -86,6 +86,18 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
     private var driving = false
     private var followMode = true
     private var safetyTotal = 0
+    private var lastGpsCallbackMs = 0L
+
+    private val tunnelTicker = object : Runnable {
+        override fun run() {
+            if (driving && lastGpsCallbackMs > 0L &&
+                android.os.SystemClock.elapsedRealtime() - lastGpsCallbackMs >= 1600L
+            ) {
+                tunnelReckoner.predict()?.let { processDriveLocation(it, null) }
+            }
+            window.decorView.postDelayed(this, 800L)
+        }
+    }
 
     private val locationPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -157,6 +169,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
         findViewById<Button>(R.id.stopButton).setOnClickListener { stopSafetyAndExit() }
 
         requestOptionalPermissions()
+        window.decorView.post(tunnelTicker)
         startAutomaticDrive()
     }
 
@@ -289,6 +302,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
     }
 
     override fun onLocationChanged(location: Location) {
+        lastGpsCallbackMs = android.os.SystemClock.elapsedRealtime()
         if (location.hasBearing() && location.speed > 1.5f) {
             gpsHeading = location.bearing
             updateCompass(gpsHeading)
@@ -296,6 +310,10 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
 
         val rawGps = Location(location)
         val raw = tunnelReckoner.acceptGps(rawGps)
+        processDriveLocation(raw, rawGps.accuracy)
+    }
+
+    private fun processDriveLocation(raw: Location, gpsAccuracy: Float?) {
         lifecycleScope.launch {
             val snapped = roadSnapper.snap(raw)
             val displayLocation = Location(raw).apply {
@@ -324,10 +342,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
             lastLocation = smooth
             updateCarMarker(smooth)
 
-            val speedKmh = if (raw.hasSpeed()) {
-                (raw.speed * 3.6f).roundToInt()
-            } else 0
-
+            val speedKmh = if (raw.hasSpeed()) (raw.speed * 3.6f).roundToInt() else 0
             currentSpeed.text = speedKmh.toString()
             status.text = "안전운행 중"
 
@@ -335,9 +350,13 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
             currentRoadName = roadText
             dataStatus.text = buildString {
                 append(if (offlineMapActive) "오프라인맵 · " else "온라인맵 · ")
-                append(if (rawGps.accuracy <= 35f) "GPS " else "터널 추측주행 ")
-                append(rawGps.accuracy.roundToInt())
-                append("m · ")
+                if (gpsAccuracy != null && gpsAccuracy <= 35f) {
+                    append("GPS ")
+                    append(gpsAccuracy.roundToInt())
+                    append("m · ")
+                } else {
+                    append("터널 추측주행 · ")
+                }
                 append(speedKmh)
                 append("km/h")
                 if (snapped != null) append(" · 도로보정")
@@ -542,6 +561,8 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
         SensorManager.getOrientation(matrix, orientation)
         sensorHeading = ((Math.toDegrees(orientation[0].toDouble()) + 360.0) % 360.0).toFloat()
 
+        tunnelReckoner.adjustHeading(sensorHeading)
+
         val moving = lastLocation?.speed?.let { it > 1.5f } == true
         if (!moving) updateCompass(sensorHeading)
     }
@@ -556,6 +577,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
         (this * resources.displayMetrics.density).toInt()
 
     override fun onDestroy() {
+        window.decorView.removeCallbacks(tunnelTicker)
         try { locationManager.removeUpdates(this) } catch (_: Exception) {}
         offlineMapManager.detach()
         super.onDestroy()
