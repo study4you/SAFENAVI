@@ -267,6 +267,10 @@ class EnforcementDataUpdater(
             if (id <= 0L) continue
             val speedLimit = if (p.has("speedLimit") && !p.isNull("speedLimit")) p.optInt("speedLimit") else null
             if (speedLimit != null && speedLimit !in 10..130) continue
+            val direction = if (p.has("direction") && !p.isNull("direction")) p.optDouble("direction") else null
+            if (direction != null && (!direction.isFinite() || direction < 0.0 || direction >= 360.0)) continue
+            val sectionLength = if (p.has("sectionLength") && !p.isNull("sectionLength")) p.optDouble("sectionLength") else null
+            if (sectionLength != null && (!sectionLength.isFinite() || sectionLength <= 0.0)) continue
 
             result += SafetyPoint(
                 id = id,
@@ -277,9 +281,9 @@ class EnforcementDataUpdater(
                 speedLimit = speedLimit,
                 roadName = p.optString("roadName").takeIf { it.isNotBlank() },
                 locationName = p.optString("locationName").takeIf { it.isNotBlank() },
-                direction = if (p.has("direction") && !p.isNull("direction")) p.optDouble("direction") else null,
+                direction = direction,
                 sectionType = p.optString("sectionType").takeIf { it.isNotBlank() },
-                sectionLength = if (p.has("sectionLength") && !p.isNull("sectionLength")) p.optDouble("sectionLength") else null,
+                sectionLength = sectionLength,
                 protectedArea = false,
                 dataDate = p.optString("dataDate").takeIf { it.isNotBlank() }
             )
