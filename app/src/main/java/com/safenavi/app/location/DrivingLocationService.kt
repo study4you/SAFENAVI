@@ -222,16 +222,16 @@ class DrivingLocationService : Service(), LocationListener {
                 currentLat,
                 currentLon,
                 heading,
-                pts
+                pts,
+                snapped?.roadName
             )
 
-            alerts.forEach { alert ->
+            val nearest = alerts.firstOrNull()
+            nearest?.let { alert ->
                 tracker.update(alert)?.let { stage ->
                     voice.announce(alert.point, stage)
                 }
             }
-
-            val nearest = alerts.firstOrNull()
             val limit = nearest?.point?.speedLimit
             val distance = nearest?.distanceMeters?.roundToInt()
             val isSpeeding = limit != null && speedKmh > limit

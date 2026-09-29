@@ -64,6 +64,8 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
     private var sensorHeading = 0f
     private var gpsHeading = 0f
     private var navigationHeading = 0f
+    private var smoothLat: Double? = null
+    private var smoothLon: Double? = null
 
     private lateinit var locationManager: LocationManager
     private lateinit var db: SafetyDatabase
@@ -290,8 +292,24 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
                 }
             }
 
-            lastLocation = displayLocation
-            updateCarMarker(displayLocation)
+            val smooth = Location(displayLocation).apply {
+                val pLat = smoothLat
+                val pLon = smoothLon
+                if (pLat != null && pLon != null) {
+                    val alpha = when {
+                        raw.speed >= 20f -> 0.55
+                        raw.speed >= 10f -> 0.42
+                        raw.speed >= 3f -> 0.32
+                        else -> 0.22
+                    }
+                    latitude = pLat + (latitude - pLat) * alpha
+                    longitude = pLon + (longitude - pLon) * alpha
+                }
+                smoothLat = latitude
+                smoothLon = longitude
+            }
+            lastLocation = smooth
+            updateCarMarker(smooth)
 
             val speedKmh = if (raw.hasSpeed()) {
                 (raw.speed * 3.6f).roundToInt()
@@ -311,9 +329,9 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
             }
             locationLabel.text = roadText ?: "현재 도로 추적 중"
 
-            updateNavigationCamera(displayLocation, firstFix)
+            updateNavigationCamera(smooth, firstFix)
             firstFix = false
-            loadNearbySafetyPoints(displayLocation)
+            loadNearbySafetyPoints(smooth)
             map.invalidate()
         }
     }
@@ -347,8 +365,11 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
             navigationHeading = targetHeading
         } else {
             var delta = (targetHeading - navigationHeading + 540f) % 360f - 180f
-            // Smooth small GPS fluctuations while still following real turns quickly.
-            navigationHeading = (navigationHeading + delta * 0.35f + 360f) % 360f
+            // Hold the map steady on straight roads and follow only meaningful turns.
+            if (kotlin.math.abs(delta) >= 4f) {
+                val factor = if (kotlin.math.abs(delta) >= 25f) 0.32f else 0.16f
+                navigationHeading = (navigationHeading + delta * factor + 360f) % 360f
+            }
         }
         val heading = navigationHeading
 

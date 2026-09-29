@@ -25,10 +25,6 @@ class RoadSnapper {
         val previous = lastSource
         val moved = previous?.distanceTo(location) ?: Float.MAX_VALUE
 
-        if (lastResult != null && now - lastRequestAt < 5000L && moved < 20f) {
-            return@withContext lastResult
-        }
-
         lastRequestAt = now
         lastSource = Location(location)
 
@@ -40,7 +36,7 @@ class RoadSnapper {
             requestMethod = "GET"
             connectTimeout = 2500
             readTimeout = 2500
-            setRequestProperty("User-Agent", "SafeNavi/14")
+            setRequestProperty("User-Agent", "SafeNavi/16")
         }
 
         try {
@@ -99,9 +95,9 @@ class RoadSnapper {
             // this prevents GPS jitter from hopping between parallel directions.
             val keepPrevious = previousRoad != null &&
                 location.speed > 3f &&
-                previousDistance < 38.0 &&
+                previousDistance < 28.0 &&
                 selected.roadName == previousRoad.roadName &&
-                selected.snapDistanceMeters + 12.0 >= previousDistance
+                selected.snapDistanceMeters + 18.0 >= previousDistance
 
             val result = if (keepPrevious) previousRoad else selected
             stableResult = result
