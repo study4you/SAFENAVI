@@ -162,9 +162,15 @@ class EnforcementDataUpdater(
 
             val points = parseDataset(region, dataText)
             val declaredCount = item.optInt("count", -1)
-            // Production datasets must declare their expected record count.
-            // Without it the app cannot verify a complete download.
-            if (declaredCount < 1 || points.size != declaredCount) {
+            val declaredSha256 = item.optString("sha256").lowercase()
+            // Production datasets must declare count + SHA-256 so a truncated,
+            // stale or tampered file can never replace the installed region.
+            val actualSha256 = sha256(dataText)
+            if (declaredCount < 1 ||
+                declaredSha256.length != 64 ||
+                actualSha256 != declaredSha256 ||
+                points.size != declaredCount
+            ) {
                 failed += region
                 continue
             }
@@ -242,6 +248,11 @@ class EnforcementDataUpdater(
         }
         return result
     }
+
+    private fun sha256(text: String): String =
+        java.security.MessageDigest.getInstance("SHA-256")
+            .digest(text.toByteArray(Charsets.UTF_8))
+            .joinToString("") { "%02x".format(it) }
 
     private fun downloadText(urlText: String, progress: ((Long, Long, Long) -> Unit)? = null): String? {
         val connection = (URL(urlText).openConnection() as HttpURLConnection).apply {
