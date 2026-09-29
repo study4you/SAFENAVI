@@ -1,10 +1,9 @@
 # SafeNavi Changelog
 
-## 18
-- v17 빌드 실패 원인이었던 BuildConfig 참조 제거
+## 17 build retry
+- 최초 v17 빌드의 BuildConfig 컴파일 오류 수정
+- 실패한 빌드는 버전 증가로 계산하지 않고 v17로 재빌드
 - PackageManager에서 실제 설치 앱 versionName을 읽어 화면에 표시
-- v17의 현재 진행경로 단속 필터 수정사항 유지
-
 
 ## 17
 - 지도에 반경 5km 단속점을 전부 표시하던 로직 제거
