@@ -58,8 +58,9 @@ class SafetyDataSync(
         val query = """
             [out:json][timeout:20];
             (
-              nwr(around:5000,$lat,$lon)["amenity"="school"];
-              nwr(around:5000,$lat,$lon)["traffic_calming"];
+              nwr(around:5000,$lat,$lon)["highway"="speed_camera"];
+              nwr(around:5000,$lat,$lon)["enforcement"="maxspeed"];
+              nwr(around:5000,$lat,$lon)["enforcement"="traffic_signals"];
             );
             out center tags;
         """.trimIndent()
@@ -112,17 +113,20 @@ class SafetyDataSync(
             }
             if (!lat.isFinite() || !lon.isFinite()) continue
 
-            val isSchool = tags.optString("amenity") == "school"
-            val trafficCalming = tags.optString("traffic_calming")
-            if (!isSchool && trafficCalming.isBlank()) continue
+            val highway = tags.optString("highway")
+            val enforcement = tags.optString("enforcement")
+            val isCamera = highway == "speed_camera" || enforcement == "maxspeed" || enforcement == "traffic_signals"
+            if (!isCamera) continue
 
-            val type = if (isSchool) "SCHOOL" else "TRAFFIC_CALMING"
-            val name = when {
-                tags.optString("name").isNotBlank() -> tags.optString("name")
-                isSchool -> "학교 주변"
-                trafficCalming.isNotBlank() -> "과속방지시설"
-                else -> "안전운행 지점"
+            val type = when (enforcement) {
+                "traffic_signals" -> "SIGNAL_SPEED"
+                else -> "SPEED"
             }
+            val name = tags.optString("name").takeIf { it.isNotBlank() } ?: "단속 카메라"
+            val maxspeed = tags.optString("maxspeed").filter { it.isDigit() }.toIntOrNull()
+            val direction = tags.optString("direction").toDoubleOrNull()
+            val roadName = tags.optString("road_name").takeIf { it.isNotBlank() }
+                ?: tags.optString("addr:street").takeIf { it.isNotBlank() }
 
             val stableId = -abs(
                 ((osmType.hashCode().toLong() and 0x7fffffffL) shl 32) xor osmId
@@ -134,13 +138,13 @@ class SafetyDataSync(
                 latitude = lat,
                 longitude = lon,
                 type = type,
-                speedLimit = null,
-                roadName = null,
+                speedLimit = maxspeed,
+                roadName = roadName,
                 locationName = name,
-                direction = null,
+                direction = direction,
                 sectionType = null,
                 sectionLength = null,
-                protectedArea = isSchool,
+                protectedArea = false,
                 dataDate = "OSM"
             )
         }
