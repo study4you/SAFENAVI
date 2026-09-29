@@ -178,7 +178,9 @@ class EnforcementDataUpdater(
                 failed += region
                 continue
             }
-            if (datasetRoot.optString("region").uppercase() != region ||
+            val datasetSchema = datasetRoot.optInt("schema", REQUIRED_SCHEMA)
+            if (datasetSchema != REQUIRED_SCHEMA ||
+                datasetRoot.optString("region").uppercase() != region ||
                 datasetRoot.optString("version") != version
             ) {
                 failed += region
