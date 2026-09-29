@@ -50,6 +50,7 @@ class DrivingLocationService : Service(), LocationListener {
     private val trajectory = TrajectoryTracker()
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val roadSnapper = RoadSnapper()
+    private val tunnelReckoner = TunnelDeadReckoner()
 
     private var overlayView: View? = null
     private var speedText: TextView? = null
@@ -187,15 +188,15 @@ class DrivingLocationService : Service(), LocationListener {
     }
 
     override fun onLocationChanged(location: Location) {
-        if (location.accuracy > 50) return
+        val driveLocation = tunnelReckoner.acceptGps(location)
 
-        trajectory.add(location)
-        val speedKmh = if (location.hasSpeed()) {
-            (location.speed * 3.6f).roundToInt()
+        trajectory.add(driveLocation)
+        val speedKmh = if (driveLocation.hasSpeed()) {
+            (driveLocation.speed * 3.6f).roundToInt()
         } else 0
 
         val heading = trajectory.heading()
-            ?: if (location.hasBearing()) location.bearing.toDouble() else null
+            ?: if (driveLocation.hasBearing()) driveLocation.bearing.toDouble() else null
 
         if (heading == null) {
             handler.post { updateOverlay(speedKmh, null, null, false) }
@@ -203,9 +204,9 @@ class DrivingLocationService : Service(), LocationListener {
         }
 
         scope.launch {
-            val snapped = roadSnapper.snap(location)
-            val currentLat = snapped?.latitude ?: location.latitude
-            val currentLon = snapped?.longitude ?: location.longitude
+            val snapped = roadSnapper.snap(driveLocation)
+            val currentLat = snapped?.latitude ?: driveLocation.latitude
+            val currentLon = snapped?.longitude ?: driveLocation.longitude
 
             val r = 2000.0
             val latD = r / 111320.0

@@ -33,6 +33,7 @@ import com.safenavi.app.data.EnforcementDataUpdater
 import com.safenavi.app.data.SafetyDatabase
 import com.safenavi.app.location.DrivingLocationService
 import com.safenavi.app.location.RoadSnapper
+import com.safenavi.app.location.TunnelDeadReckoner
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -62,6 +63,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
     private lateinit var sensorManager: SensorManager
     private var rotationSensor: Sensor? = null
     private val roadSnapper = RoadSnapper()
+    private val tunnelReckoner = TunnelDeadReckoner()
     private val safetyEngine = SafetyEngine()
     private var currentRoadName: String? = null
     private var sensorHeading = 0f
@@ -111,7 +113,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
         setContentView(R.layout.activity_main)
 
         bindViews()
-        val appVersion = packageManager.getPackageInfo(packageName, 0).versionName ?: "18"
+        val appVersion = packageManager.getPackageInfo(packageName, 0).versionName ?: "?"
         findViewById<TextView>(R.id.versionLabel).text = "v$appVersion"
         applySystemInsets()
 
@@ -287,7 +289,8 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
             updateCompass(gpsHeading)
         }
 
-        val raw = Location(location)
+        val rawGps = Location(location)
+        val raw = tunnelReckoner.acceptGps(rawGps)
         lifecycleScope.launch {
             val snapped = roadSnapper.snap(raw)
             val displayLocation = Location(raw).apply {
@@ -326,8 +329,8 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
             val roadText = snapped?.roadName?.takeIf { it.isNotBlank() }
             currentRoadName = roadText
             dataStatus.text = buildString {
-                append("GPS ")
-                append(raw.accuracy.roundToInt())
+                append(if (rawGps.accuracy <= 35f) "GPS " else "터널 추측주행 ")
+                append(rawGps.accuracy.roundToInt())
                 append("m · ")
                 append(speedKmh)
                 append("km/h")
