@@ -151,6 +151,11 @@ class EnforcementDataUpdater(
             }
 
             val points = parseDataset(region, dataText)
+            val declaredCount = item.optInt("count", -1)
+            if (declaredCount >= 0 && points.size != declaredCount) {
+                failed += region
+                continue
+            }
             if (points.isEmpty()) {
                 // Never replace a valid installed region with a corrupt/empty download.
                 failed += region
