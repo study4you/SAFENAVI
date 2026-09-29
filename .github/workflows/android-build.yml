@@ -27,6 +27,25 @@ jobs:
         with:
           gradle-version: '8.9'
 
+      - name: Restore persistent debug signing key
+        uses: actions/cache@v4
+        with:
+          path: ~/.android/debug.keystore
+          key: safenavi-debug-signing-v1
+
+      - name: Create persistent debug signing key if missing
+        run: |
+          mkdir -p ~/.android
+          if [ ! -f ~/.android/debug.keystore ]; then
+            keytool -genkeypair -v \
+              -keystore ~/.android/debug.keystore \
+              -storepass android \
+              -alias androiddebugkey \
+              -keypass android \
+              -keyalg RSA -keysize 2048 -validity 10000 \
+              -dname "CN=SafeNavi Debug,O=SafeNavi,C=KR"
+          fi
+
       - name: Build debug APK
         env:
           NAVER_MAP_CLIENT_ID: ${{ secrets.NAVER_MAP_CLIENT_ID }}
