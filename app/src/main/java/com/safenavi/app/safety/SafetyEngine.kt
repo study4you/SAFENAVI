@@ -28,17 +28,20 @@ class SafetyEngine {
             val lateral = d * kotlin.math.sin(Math.toRadians(forwardAngle))
             if (lateral > 18.0) return@mapNotNull null
 
-            // Direction is the decisive filter. If the source has no direction,
-            // do not guess and accidentally warn for the opposite carriageway.
-            val cameraDirection = p.direction ?: return@mapNotNull null
-            if (GeoCalculator.angleDifference(heading, cameraDirection) > 18.0) {
-                return@mapNotNull null
+            // Use direction metadata when the source provides it. Missing direction
+            // must not hide a real camera; forward/lateral geometry still filters it.
+            p.direction?.let { cameraDirection ->
+                if (GeoCalculator.angleDifference(heading, cameraDirection) > 28.0) {
+                    return@mapNotNull null
+                }
             }
 
-            // Keep alerts on the road currently being driven.
-            if (currentRoadName != null) {
-                val cameraRoad = p.roadName ?: return@mapNotNull null
-                if (!cameraRoad.equals(currentRoadName, ignoreCase = true)) return@mapNotNull null
+            // Compare road names only when both sides actually provide one.
+            // OSM camera nodes often omit road-name metadata.
+            if (!currentRoadName.isNullOrBlank() && !p.roadName.isNullOrBlank()) {
+                if (normalizeRoadName(p.roadName) != normalizeRoadName(currentRoadName)) {
+                    return@mapNotNull null
+                }
             }
 
             SafetyAlert(p, d)
@@ -60,4 +63,11 @@ class SafetyEngine {
         }
         return kept
     }
+    private fun normalizeRoadName(value: String): String =
+        value.lowercase()
+            .replace(" ", "")
+            .replace("-", "")
+            .replace("·", "")
+            .trim()
+
 }
