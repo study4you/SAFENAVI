@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import hashlib
 import json
 import time
 import urllib.parse
@@ -34,10 +35,11 @@ def fetch_overpass(iso_code):
 [out:json][timeout:150];
 area["ISO3166-2"="{iso_code}"]["boundary"="administrative"]->.a;
 (
-  way["highway"]["maxspeed"](area.a);
-  node["highway"="traffic_signals"](area.a);
+  node["highway"="speed_camera"](area.a);
+  node["enforcement"="maxspeed"](area.a);
+  node["enforcement"="traffic_signals"](area.a);
 );
-out tags center;
+out tags;
 """
     data = urllib.parse.urlencode({"data": query}).encode()
     req = urllib.request.Request(
@@ -60,37 +62,42 @@ def parse_speed(value):
             return int(token)
     return None
 
+def parse_direction(value):
+    if value is None:
+        return None
+    try:
+        direction = float(str(value).strip())
+        if 0.0 <= direction < 360.0:
+            return direction
+    except Exception:
+        pass
+    return None
+
 def normalize(region, raw):
     out = []
     seen = set()
     today = datetime.now(timezone.utc).date().isoformat()
 
     for e in raw.get("elements", []):
-        tags = e.get("tags") or {}
-
-        if e.get("type") == "way":
-            center = e.get("center") or {}
-            lat = center.get("lat")
-            lon = center.get("lon")
-            limit = parse_speed(tags.get("maxspeed"))
-            if lat is None or lon is None or limit is None:
-                continue
-            ptype = "SPEED"
-            source_id = f"way/{e['id']}"
-
-        elif e.get("type") == "node" and tags.get("highway") == "traffic_signals":
-            lat = e.get("lat")
-            lon = e.get("lon")
-            if lat is None or lon is None:
-                continue
-            limit = None
-            ptype = "SIGNAL_SPEED"
-            source_id = f"node/{e['id']}"
-
-        else:
+        if e.get("type") != "node":
             continue
 
-        key = (round(float(lat), 5), round(float(lon), 5), ptype, limit)
+        tags = e.get("tags") or {}
+        is_speed_camera = tags.get("highway") == "speed_camera"
+        enforcement = (tags.get("enforcement") or "").lower()
+        if not is_speed_camera and enforcement not in {"maxspeed", "traffic_signals"}:
+            continue
+
+        lat = e.get("lat")
+        lon = e.get("lon")
+        if lat is None or lon is None:
+            continue
+
+        ptype = "SIGNAL_SPEED" if enforcement == "traffic_signals" else "SPEED"
+        limit = parse_speed(tags.get("maxspeed"))
+        direction = parse_direction(tags.get("direction"))
+
+        key = (round(float(lat), 6), round(float(lon), 6), ptype)
         if key in seen:
             continue
         seen.add(key)
@@ -102,14 +109,14 @@ def normalize(region, raw):
             "type": ptype,
             "speedLimit": limit,
             "roadName": tags.get("name"),
-            "locationName": tags.get("name") or tags.get("ref"),
-            "direction": None,
+            "locationName": tags.get("description") or tags.get("name") or tags.get("ref"),
+            "direction": direction,
             "sectionType": None,
             "sectionLength": None,
             "dataDate": today,
             "source": "OpenStreetMap",
-            "sourceId": source_id,
-            "sourceKind": "ROAD_SPEED_LIMIT" if ptype == "SPEED" else "TRAFFIC_SIGNAL",
+            "sourceId": f"node/{e['id']}",
+            "sourceKind": "ENFORCEMENT_CAMERA",
         })
 
     out.sort(key=lambda p: (p["latitude"], p["longitude"], p["id"]))
@@ -151,14 +158,15 @@ def main():
                 version += 1
 
             doc = {
+                "schema": 2,
                 "region": code,
                 "regionName": name,
                 "version": str(version),
                 "updatedAt": now,
                 "source": "OpenStreetMap",
                 "sourceLicense": "ODbL",
-                "sourceKind": "ROAD_SAFETY",
-                "sourceNote": "도로 제한속도와 교통신호 공개정보 기반. 실제 도로 표지와 현장 제한속도가 우선입니다.",
+                "sourceKind": "ENFORCEMENT_CAMERA",
+                "sourceNote": "공개된 무인 단속카메라 태그 기반 보조 데이터입니다. 현장 표지와 실제 제한속도가 우선입니다.",
                 "points": points,
             }
             path.write_text(
@@ -173,13 +181,19 @@ def main():
                 "error": str(ex),
             }
 
-        datasets.append({
-            "region": code,
-            "version": str(version),
-            "path": f"data/enforcement/{filename}",
-            "source": "OpenStreetMap",
-            "sourceKind": "ROAD_SAFETY",
-        })
+        if path.exists():
+            file_bytes = path.read_bytes()
+            file_doc = load_json(path, {"points": []})
+            datasets.append({
+                "region": code,
+                "version": str(file_doc.get("version", version)),
+                "path": f"data/enforcement/{filename}",
+                "source": "OpenStreetMap",
+                "sourceKind": "ENFORCEMENT_CAMERA",
+                "count": len(file_doc.get("points", [])),
+                "bytes": len(file_bytes),
+                "sha256": hashlib.sha256(file_bytes).hexdigest(),
+            })
 
         if idx < len(REGIONS) - 1:
             time.sleep(2)
@@ -189,7 +203,7 @@ def main():
         "updatedAt": now,
         "source": "OpenStreetMap",
         "sourceLicense": "ODbL",
-        "sourceKind": "ROAD_SAFETY",
+        "sourceKind": "ENFORCEMENT_CAMERA",
         "datasets": datasets,
     }
     manifest_path.write_text(
