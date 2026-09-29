@@ -111,7 +111,8 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener 
         setContentView(R.layout.activity_main)
 
         bindViews()
-        findViewById<TextView>(R.id.versionLabel).text = "v${BuildConfig.VERSION_NAME}"
+        val appVersion = packageManager.getPackageInfo(packageName, 0).versionName ?: "18"
+        findViewById<TextView>(R.id.versionLabel).text = "v$appVersion"
         applySystemInsets()
 
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
