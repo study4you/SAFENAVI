@@ -14,7 +14,8 @@ data class SnappedRoadPoint(
     val longitude: Double,
     val roadName: String?,
     val snapDistanceMeters: Double,
-    val roadBearing: Double?
+    val roadBearing: Double?,
+    val roadGeometry: List<Pair<Double, Double>> = emptyList()
 )
 
 class RoadSnapper {
@@ -78,7 +79,8 @@ class RoadSnapper {
                     longitude = a.getDouble(0),
                     roadName = wp.optString("name").takeIf { it.isNotBlank() },
                     snapDistanceMeters = distance,
-                    roadBearing = wp.optJSONArray("nodes")?.let { null }
+                    roadBearing = null,
+                    roadGeometry = emptyList()
                 )
             }
             if (candidates.isEmpty()) return@withContext null
@@ -123,12 +125,64 @@ class RoadSnapper {
                 selected.snapDistanceMeters + 18.0 >= previousDistance
 
             val result = if (keepPrevious) previousRoad else selected
-            stableResult = result
-            result.also { lastResult = it }
+            val geometry = fetchLocalGeometry(result, location)
+            val enriched = if (geometry.isNotEmpty()) {
+                result.copy(
+                    roadBearing = geometryBearing(geometry, location.bearing.toDouble()),
+                    roadGeometry = geometry
+                )
+            } else result
+            stableResult = enriched
+            enriched.also { lastResult = it }
         } catch (_: Exception) {
             lastResult
         } finally {
             connection.disconnect()
         }
+    }
+
+    private fun fetchLocalGeometry(point: SnappedRoadPoint, location: Location): List<Pair<Double, Double>> {
+        val heading = if (location.hasBearing()) location.bearing.toDouble() else 0.0
+        val back = destination(point.latitude, point.longitude, heading + 180.0, 70.0)
+        val front = destination(point.latitude, point.longitude, heading, 140.0)
+        val urlText = "https://router.project-osrm.org/route/v1/driving/" +
+            "${back.second},${back.first};${front.second},${front.first}" +
+            "?overview=full&geometries=geojson&steps=false"
+        val connection = (URL(urlText).openConnection() as HttpURLConnection).apply {
+            requestMethod = "GET"; connectTimeout = 1800; readTimeout = 1800
+            setRequestProperty("User-Agent", "SafeNavi/32")
+        }
+        return try {
+            if (connection.responseCode !in 200..299) emptyList() else {
+                val root = JSONObject(connection.inputStream.bufferedReader().use { it.readText() })
+                val coords = root.optJSONArray("routes")?.optJSONObject(0)
+                    ?.optJSONObject("geometry")?.optJSONArray("coordinates")
+                    ?: return emptyList()
+                (0 until coords.length()).mapNotNull { i ->
+                    val p = coords.optJSONArray(i) ?: return@mapNotNull null
+                    p.optDouble(1) to p.optDouble(0)
+                }
+            }
+        } catch (_: Exception) { emptyList() } finally { connection.disconnect() }
+    }
+
+    private fun geometryBearing(points: List<Pair<Double, Double>>, fallback: Double): Double {
+        if (points.size < 2) return fallback
+        val a = points[points.size / 3]
+        val b = points[(points.size * 2 / 3).coerceAtMost(points.lastIndex)]
+        val out = FloatArray(2)
+        Location.distanceBetween(a.first, a.second, b.first, b.second, out)
+        return out[1].toDouble()
+    }
+
+    private fun destination(lat: Double, lon: Double, bearing: Double, meters: Double): Pair<Double, Double> {
+        val r = 6371000.0
+        val d = meters / r
+        val t = Math.toRadians(bearing)
+        val p1 = Math.toRadians(lat)
+        val l1 = Math.toRadians(lon)
+        val p2 = kotlin.math.asin(kotlin.math.sin(p1) * kotlin.math.cos(d) + kotlin.math.cos(p1) * kotlin.math.sin(d) * kotlin.math.cos(t))
+        val l2 = l1 + kotlin.math.atan2(kotlin.math.sin(t) * kotlin.math.sin(d) * kotlin.math.cos(p1), kotlin.math.cos(d) - kotlin.math.sin(p1) * kotlin.math.sin(p2))
+        return Math.toDegrees(p2) to Math.toDegrees(l2)
     }
 }
