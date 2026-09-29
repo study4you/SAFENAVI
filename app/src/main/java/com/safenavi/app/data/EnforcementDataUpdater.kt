@@ -28,7 +28,6 @@ class EnforcementDataUpdater(
             "https://raw.githubusercontent.com/study4you/SAFENAVI/main/"
         private const val MANIFEST = "data/enforcement/manifest.json"
         private const val REQUIRED_SCHEMA = 2
-        private const val CHECK_INTERVAL = 6 * 60 * 60 * 1000L
 
         val ALL_REGIONS = linkedMapOf(
             "SEOUL" to "서울",
@@ -72,10 +71,6 @@ class EnforcementDataUpdater(
     fun getRegionVersion(region: String): String? =
         prefs.getString("version_${region.uppercase()}", null)
 
-    suspend fun updateIfNeeded(force: Boolean = false): DataUpdateResult {
-        return updateRegions(getSelectedRegions(), force)
-    }
-
     suspend fun updateRegions(
         selectedRegions: Set<String>,
         force: Boolean = true,
@@ -92,18 +87,6 @@ class EnforcementDataUpdater(
                 updatedRegions = emptyList(),
                 totalCount = db.safetyPointDao().count(),
                 message = "선택된 지역이 없습니다"
-            )
-        }
-
-        val now = System.currentTimeMillis()
-        val lastCheck = prefs.getLong("last_manifest_check", 0L)
-
-        if (!force && now - lastCheck < CHECK_INTERVAL) {
-            return@withContext DataUpdateResult(
-                checked = false,
-                updatedRegions = emptyList(),
-                totalCount = db.safetyPointDao().count(),
-                message = "최근 데이터 확인 완료"
             )
         }
 
@@ -237,7 +220,6 @@ class EnforcementDataUpdater(
         }
 
         saveSelectedRegions(normalized)
-        prefs.edit().putLong("last_manifest_check", now).apply()
 
         val total = db.safetyPointDao().count()
         val message = when {
