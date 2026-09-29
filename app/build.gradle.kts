@@ -11,8 +11,8 @@ android {
         applicationId = "com.safenavi.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 25
-        versionName = "25"
+        versionCode = 24
+        versionName = "24"
     }
 
     compileOptions {
@@ -31,6 +31,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
-    implementation("com.naver.maps:map-sdk:3.24.0")
+    implementation("org.osmdroid:osmdroid-android:6.1.20")
+    implementation("org.osmdroid:osmdroid-mapsforge:6.1.20")
     kapt("androidx.room:room-compiler:2.6.1")
 }
