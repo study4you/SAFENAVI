@@ -12,6 +12,8 @@ import org.osmdroid.views.overlay.Marker
 import kotlin.math.*
 
 class OsmDrivingMap(private val map: MapView) {
+    enum class ViewMode { TWO_D, THREE_D }
+    private var viewMode = ViewMode.TWO_D
     private val safetyMarkers = mutableListOf<Marker>()
     private val vehicle = Marker(map)
 
@@ -23,6 +25,13 @@ class OsmDrivingMap(private val map: MapView) {
         vehicle.icon = ContextCompat.getDrawable(map.context, R.drawable.ic_navigation_arrow)
         vehicle.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
         map.overlays.add(vehicle)
+    }
+
+    fun setViewMode(mode: ViewMode) {
+        viewMode = mode
+        // osmdroid is a 2D raster renderer. Keep this explicit: THREE_D is
+        // persisted now, but a real pitched/extruded renderer will replace it.
+        map.invalidate()
     }
 
     fun zoomIn() { map.controller.zoomIn() }
