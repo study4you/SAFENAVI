@@ -31,6 +31,8 @@ import org.maplibre.android.style.expressions.Expression.eq
 import org.maplibre.android.style.expressions.Expression.literal
 import org.maplibre.android.annotations.Marker
 import org.maplibre.android.annotations.MarkerOptions
+import org.maplibre.android.annotations.Polyline
+import org.maplibre.android.annotations.PolylineOptions
 
 class SafeNaviMap(private val mapView: MapView) {
     enum class ViewMode { TWO_D, THREE_D }
@@ -39,6 +41,7 @@ class SafeNaviMap(private val mapView: MapView) {
     private var mode = ViewMode.TWO_D
     private var loadedStyle: Style? = null
     private val safetyMarkers = mutableListOf<Marker>()
+    private var currentRoadLine: Polyline? = null
 
     fun attach(mapLibreMap: MapLibreMap, onReady: () -> Unit = {}) {
         map = mapLibreMap
@@ -143,6 +146,38 @@ class SafeNaviMap(private val mapView: MapView) {
             .tilt(if (mode == ViewMode.THREE_D) 58.0 else 0.0)
         if (forceZoom) builder.zoom(16.5) else builder.zoom(current.cameraPosition.zoom)
         current.animateCamera(CameraUpdateFactory.newCameraPosition(builder.build()), 350)
+        updateCurrentRoadHighlight(location, heading)
+    }
+
+    private fun updateCurrentRoadHighlight(location: Location, heading: Float) {
+        val current = map ?: return
+        currentRoadLine?.let { current.removePolyline(it) }
+        val center = LatLng(location.latitude, location.longitude)
+        val back = offset(center, heading + 180f, 32.0)
+        val front = offset(center, heading, 78.0)
+        currentRoadLine = current.addPolyline(
+            PolylineOptions()
+                .add(back, center, front)
+                .width(8f)
+                .color(android.graphics.Color.rgb(255, 184, 54))
+        )
+    }
+
+    private fun offset(origin: LatLng, bearing: Float, meters: Double): LatLng {
+        val radius = 6371000.0
+        val angular = meters / radius
+        val theta = Math.toRadians(bearing.toDouble())
+        val phi1 = Math.toRadians(origin.latitude)
+        val lambda1 = Math.toRadians(origin.longitude)
+        val phi2 = kotlin.math.asin(
+            kotlin.math.sin(phi1) * kotlin.math.cos(angular) +
+                kotlin.math.cos(phi1) * kotlin.math.sin(angular) * kotlin.math.cos(theta)
+        )
+        val lambda2 = lambda1 + kotlin.math.atan2(
+            kotlin.math.sin(theta) * kotlin.math.sin(angular) * kotlin.math.cos(phi1),
+            kotlin.math.cos(angular) - kotlin.math.sin(phi1) * kotlin.math.sin(phi2)
+        )
+        return LatLng(Math.toDegrees(phi2), Math.toDegrees(lambda2))
     }
 
     fun showSafetyPoints(points: List<SafetyPoint>) {
