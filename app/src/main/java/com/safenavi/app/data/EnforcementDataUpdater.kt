@@ -136,6 +136,12 @@ class EnforcementDataUpdater(
         val updated = mutableListOf<String>()
         val failed = mutableListOf<String>()
 
+        val manifestRegions = (0 until datasets.length())
+            .mapNotNull { datasets.optJSONObject(it) }
+            .map { it.optString("region").uppercase() }
+            .toSet()
+        failed += normalized.filter { it !in manifestRegions }
+
         val selectedItems = (0 until datasets.length())
             .mapNotNull { datasets.optJSONObject(it) }
             .filter {
@@ -149,7 +155,10 @@ class EnforcementDataUpdater(
             val version = item.optString("version")
             val path = item.optString("path")
 
-            if (version.isBlank() || path.isBlank()) continue
+            if (version.isBlank() || path.isBlank()) {
+                failed += region
+                continue
+            }
 
             val localVersion = prefs.getString("version_$region", null)
             if (!force && localVersion == version) continue
