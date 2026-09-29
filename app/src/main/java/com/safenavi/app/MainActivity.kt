@@ -204,7 +204,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
     private fun showMapTypeDialog() {
         val current = mapPrefs.getString("map_type", "NAVER_NAVI") ?: "NAVER_NAVI"
         val items = arrayOf("네이버 내비맵", "SafeNavi 자체 지도")
-        val checked = if (current == "FREE_BASIC") 1 else 0
+        val checked = if (current in setOf("FREE_BASIC", "SAFENAVI")) 1 else 0
         AlertDialog.Builder(this)
             .setTitle("지도 종류")
             .setSingleChoiceItems(items, checked) { dialog, which ->
