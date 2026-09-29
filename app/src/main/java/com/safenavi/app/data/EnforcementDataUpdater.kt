@@ -162,7 +162,9 @@ class EnforcementDataUpdater(
 
             val points = parseDataset(region, dataText)
             val declaredCount = item.optInt("count", -1)
-            if (declaredCount >= 0 && points.size != declaredCount) {
+            // Production datasets must declare their expected record count.
+            // Without it the app cannot verify a complete download.
+            if (declaredCount < 1 || points.size != declaredCount) {
                 failed += region
                 continue
             }
