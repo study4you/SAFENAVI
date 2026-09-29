@@ -136,20 +136,25 @@ class EnforcementDataUpdater(
         val updated = mutableListOf<String>()
         val failed = mutableListOf<String>()
 
-        for (i in 0 until datasets.length()) {
-            val item = datasets.optJSONObject(i) ?: continue
+        val selectedItems = (0 until datasets.length())
+            .mapNotNull { datasets.optJSONObject(it) }
+            .filter {
+                val region = it.optString("region").uppercase()
+                region in normalized && region in ALL_REGIONS.keys
+            }
+        val selectedCount = selectedItems.size.coerceAtLeast(1)
+
+        for ((selectedIndex, item) in selectedItems.withIndex()) {
             val region = item.optString("region").uppercase()
             val version = item.optString("version")
             val path = item.optString("path")
 
-            if (region !in normalized) continue
-            if (region !in ALL_REGIONS.keys) continue
             if (version.isBlank() || path.isBlank()) continue
 
             val localVersion = prefs.getString("version_$region", null)
             if (!force && localVersion == version) continue
 
-            onProgress?.invoke(DownloadProgress((i * 100 / datasets.length()).coerceIn(0, 99), 0, ALL_REGIONS[region] ?: region))
+            onProgress?.invoke(DownloadProgress((selectedIndex * 100 / selectedCount).coerceIn(0, 99), 0, ALL_REGIONS[region] ?: region))
             val expectedBytes = item.optLong("bytes", -1L)
             if (path.startsWith("/") || path.contains("..") || !path.startsWith("data/enforcement/")) {
                 failed += region
@@ -162,7 +167,7 @@ class EnforcementDataUpdater(
             val dataText = downloadText(BASE + path) { read, total, speed ->
                 val knownTotal = if (expectedBytes > 0L) expectedBytes else total
                 val filePercent = if (knownTotal > 0) (read * 100 / knownTotal).toInt().coerceIn(0, 100) else 0
-                val overall = (((i.toDouble() + filePercent / 100.0) / datasets.length()) * 100).toInt().coerceIn(0, 99)
+                val overall = (((selectedIndex.toDouble() + filePercent / 100.0) / selectedCount) * 100).toInt().coerceIn(0, 99)
                 onProgress?.invoke(DownloadProgress(overall, speed, ALL_REGIONS[region] ?: region))
             }
             if (dataText == null) {
