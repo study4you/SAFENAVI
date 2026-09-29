@@ -150,8 +150,10 @@ class EnforcementDataUpdater(
             if (!force && localVersion == version) continue
 
             onProgress?.invoke(DownloadProgress((i * 100 / datasets.length()).coerceIn(0, 99), 0, ALL_REGIONS[region] ?: region))
+            val expectedBytes = item.optLong("bytes", -1L)
             val dataText = downloadText(BASE + path) { read, total, speed ->
-                val filePercent = if (total > 0) (read * 100 / total).toInt() else 0
+                val knownTotal = if (expectedBytes > 0L) expectedBytes else total
+                val filePercent = if (knownTotal > 0) (read * 100 / knownTotal).toInt().coerceIn(0, 100) else 0
                 val overall = (((i.toDouble() + filePercent / 100.0) / datasets.length()) * 100).toInt().coerceIn(0, 99)
                 onProgress?.invoke(DownloadProgress(overall, speed, ALL_REGIONS[region] ?: region))
             }
@@ -160,6 +162,10 @@ class EnforcementDataUpdater(
                 continue
             }
 
+            if (expectedBytes > 0L && dataText.toByteArray(Charsets.UTF_8).size.toLong() != expectedBytes) {
+                failed += region
+                continue
+            }
             val points = parseDataset(region, dataText)
             val declaredCount = item.optInt("count", -1)
             val declaredSha256 = item.optString("sha256").lowercase()
