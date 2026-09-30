@@ -89,6 +89,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
     private var safetyTotal = 0
     private var lastGpsCallbackMs = 0L
     private var newestDriveFixNanos = Long.MIN_VALUE
+    private var tunnelPredictionActive = false
     private var safetyLookupGeneration = 0L
 
     private val tunnelTicker = object : Runnable {
@@ -384,6 +385,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
 
         lifecycleScope.launch {
             val tunnelMode = gpsAccuracy == null
+            val recoveringFromTunnel = !tunnelMode && tunnelPredictionActive
             // During a GPS outage the dead reckoner already advances the vehicle
             // from speed + heading. Re-snapping that predicted point to a cached
             // network result can freeze the car at the tunnel entrance for up to
@@ -405,6 +407,15 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
                     longitude = snapped.longitude
                 }
             }
+
+            if (recoveringFromTunnel) {
+                // A predicted tunnel position can drift. When a real snapped GPS
+                // fix returns, discard the old smoothing anchor so the vehicle
+                // rejoins the road immediately instead of trailing for seconds.
+                smoothLat = null
+                smoothLon = null
+            }
+            tunnelPredictionActive = tunnelMode
 
             val smooth = Location(displayLocation).apply {
                 val pLat = smoothLat
@@ -458,7 +469,11 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
             val liveRoadBearing = if (tunnelMode) null else snapped?.roadBearing
             val liveRoadGeometry = if (tunnelMode) emptyList() else (snapped?.roadGeometry ?: emptyList())
 
-            updateNavigationCamera(smooth, firstFix, liveRoadBearing)
+            updateNavigationCamera(
+                smooth,
+                firstFix || recoveringFromTunnel,
+                liveRoadBearing
+            )
             firstFix = false
             loadNearbySafetyPoints(smooth, roadText, liveRoadBearing, liveRoadGeometry)
         }
