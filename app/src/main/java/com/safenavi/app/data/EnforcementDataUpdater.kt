@@ -118,6 +118,15 @@ class EnforcementDataUpdater(
                 message = "데이터 목록 형식 오류"
             )
 
+        if (datasets.length() == 0) {
+            return@withContext DataUpdateResult(
+                checked = true,
+                updatedRegions = emptyList(),
+                totalCount = db.safetyPointDao().count(),
+                message = "검증된 단속정보 데이터 준비 중 · 기존 저장 데이터 유지"
+            )
+        }
+
         val updated = mutableListOf<String>()
         val failed = mutableListOf<String>()
 
