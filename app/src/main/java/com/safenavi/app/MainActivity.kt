@@ -440,7 +440,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
             if (isFreeMap() && snapped != null && snapped.roadGeometry.size >= 2) {
                 safeNaviMap.updateRoadGeometry(snapped.roadGeometry)
             }
-            updateNavigationCamera(smooth, firstFix)
+            updateNavigationCamera(smooth, firstFix, snapped?.roadBearing)
             firstFix = false
             loadNearbySafetyPoints(smooth, roadText, snapped?.roadBearing, snapped?.roadGeometry ?: emptyList())
         }
@@ -448,7 +448,11 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
 
     private fun updateCarMarker(location: Location) = Unit
 
-    private fun updateNavigationCamera(location: Location, forceZoom: Boolean) {
+    private fun updateNavigationCamera(
+        location: Location,
+        forceZoom: Boolean,
+        snappedRoadBearing: Double? = null
+    ) {
         if (!followMode) return
 
         // Heading-up navigation: keep the vehicle pointing toward the top of the
@@ -456,6 +460,11 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
         // walking/slow-driving speed; when it is unavailable, fall back to the
         // device heading so the map does not snap back to north-up.
         val targetHeading = when {
+            // While driving, prefer the direction of the snapped road geometry.
+            // This keeps the map aligned with the road instead of reacting to
+            // short GPS-bearing swings toward a parallel/opposite carriageway.
+            snappedRoadBearing != null && location.speed > 0.35f ->
+                snappedRoadBearing.toFloat()
             location.hasBearing() && location.speed > 0.35f -> location.bearing
             gpsHeading != 0f -> gpsHeading
             else -> sensorHeading
