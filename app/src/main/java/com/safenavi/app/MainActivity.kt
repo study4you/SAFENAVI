@@ -373,7 +373,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
 
         val rawGps = Location(location)
         val raw = tunnelReckoner.acceptGps(rawGps)
-        processDriveLocation(raw, rawGps.accuracy)
+        processDriveLocation(raw, rawGps.accuracy.takeIf { rawGps.hasAccuracy() })
     }
 
     private fun processDriveLocation(raw: Location, gpsAccuracy: Float?) {
