@@ -41,6 +41,7 @@ class SafeNaviMap(private val mapView: MapView) {
     private var mode = ViewMode.TWO_D
     private var loadedStyle: Style? = null
     private val safetyMarkers = mutableListOf<Marker>()
+    private var lastSafetyMarkerKeys: List<String> = emptyList()
     private var currentRoadLine: Polyline? = null
     private var lastRoadGeometry: List<Pair<Double, Double>> = emptyList()
     private var lastCameraTarget: LatLng? = null
@@ -359,6 +360,13 @@ class SafeNaviMap(private val mapView: MapView) {
 
     fun showSafetyPoints(points: List<SafetyPoint>) {
         val current = map ?: return
+        val markerKeys = points
+            .map { point ->
+                "${point.id}:${point.type}:${point.latitude}:${point.longitude}:${point.speedLimit ?: ""}"
+            }
+            .sorted()
+        if (markerKeys == lastSafetyMarkerKeys) return
+
         safetyMarkers.forEach { current.removeMarker(it) }
         safetyMarkers.clear()
         points.forEach { point ->
@@ -374,5 +382,6 @@ class SafeNaviMap(private val mapView: MapView) {
             )
             safetyMarkers += marker
         }
+        lastSafetyMarkerKeys = markerKeys
     }
 }
