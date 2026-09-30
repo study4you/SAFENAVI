@@ -69,11 +69,11 @@ class RoadSnapper {
         lastSource = Location(location)
 
         if (now < nextNetworkAttemptAt && lastResult != null) {
-            val age = now - lastGoodSnapAt
-            if (age <= 30_000L) return@withContext lastResult
-            lastResult = null
-            stableResult = null
-            geometryAnchor = null
+            freshFallback(location, now)?.let { return@withContext it }
+            // Keep cached metadata for tunnel continuity, but do not reuse an old
+            // snapped coordinate after the vehicle has moved. MainActivity will
+            // fall back to the fresh GPS position instead of freezing the car.
+            return@withContext null
         }
 
         val bearingOption = if (location.hasBearing() && location.speed > 2f) {
@@ -94,7 +94,7 @@ class RoadSnapper {
         try {
             if (connection.responseCode !in 200..299) {
                 registerNetworkFailure(now)
-                return@withContext lastResult
+                return@withContext freshFallback(location, now)
             }
             consecutiveSnapFailures = 0
             nextNetworkAttemptAt = 0L
@@ -102,8 +102,8 @@ class RoadSnapper {
 
             val body = connection.inputStream.bufferedReader().use { it.readText() }
             val root = JSONObject(body)
-            val waypoints = root.optJSONArray("waypoints") ?: return@withContext lastResult
-            if (waypoints.length() == 0) return@withContext lastResult
+            val waypoints = root.optJSONArray("waypoints") ?: return@withContext freshFallback(location, now)
+            if (waypoints.length() == 0) return@withContext freshFallback(location, now)
 
             // Divided roads often return both carriageways as equally-near candidates.
             // Prefer continuity with the previously selected carriageway instead of
@@ -188,10 +188,22 @@ class RoadSnapper {
             enriched.also { lastResult = it }
         } catch (_: Exception) {
             registerNetworkFailure(now)
-            lastResult
+            freshFallback(location, now)
         } finally {
             connection.disconnect()
         }
+    }
+
+    private fun freshFallback(location: Location, now: Long): SnappedRoadPoint? {
+        val cached = lastResult ?: return null
+        if (lastGoodSnapAt <= 0L || now - lastGoodSnapAt > 3_000L) return null
+
+        val moved = FloatArray(1)
+        Location.distanceBetween(
+            location.latitude, location.longitude,
+            cached.latitude, cached.longitude, moved
+        )
+        return cached.takeIf { moved[0] <= 15f }
     }
 
     private fun registerNetworkFailure(now: Long) {
