@@ -233,15 +233,18 @@ class EnforcementDataUpdater(
         saveSelectedRegions(normalized)
 
         val total = db.safetyPointDao().count()
+        fun regionNames(codes: List<String>): String =
+            codes.distinct().joinToString(", ") { ALL_REGIONS[it] ?: it }
+
         val message = when {
             failed.isNotEmpty() && updated.isNotEmpty() ->
-                "일부 업데이트 완료 / 실패: " + failed.joinToString(", ")
+                "일부 업데이트 완료 / 실패: " + regionNames(failed)
             failed.isNotEmpty() ->
-                "업데이트 실패: " + failed.joinToString(", ")
+                "업데이트 실패: " + regionNames(failed)
             updated.isEmpty() ->
                 "선택 지역 단속정보 최신 상태"
             else ->
-                "업데이트 완료: " + updated.joinToString(", ")
+                "업데이트 완료: " + regionNames(updated)
         }
 
         onProgress?.invoke(DownloadProgress(100, 0, "완료"))
