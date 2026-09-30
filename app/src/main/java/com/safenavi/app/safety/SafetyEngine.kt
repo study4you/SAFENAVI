@@ -43,15 +43,16 @@ class SafetyEngine {
             // close to that actual road shape. This rejects nearby parallel roads,
             // opposite carriageways and underground/overpass roads that happen to
             // be inside the same broad forward cone.
-            if (currentRoadGeometry.size >= 2) {
+            // RoadSnapper currently supplies only a short local geometry
+            // (roughly 70 m behind and 140 m ahead). Do not use that short
+            // polyline to reject cameras farther down the road, otherwise a
+            // valid camera hundreds of metres ahead would always look "far"
+            // from the end of the local geometry and be incorrectly hidden.
+            if (currentRoadGeometry.size >= 2 && d <= 180.0) {
                 val roadDistance = distanceToPolylineMeters(
                     p.latitude, p.longitude, currentRoadGeometry
                 )
-                val maxRoadDistance = when {
-                    d < 250.0 -> 24.0
-                    d < 700.0 -> 20.0
-                    else -> 16.0
-                }
+                val maxRoadDistance = if (d < 80.0) 24.0 else 20.0
                 if (roadDistance > maxRoadDistance) return@mapNotNull null
             }
 
