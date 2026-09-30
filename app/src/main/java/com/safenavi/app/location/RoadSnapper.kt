@@ -199,7 +199,12 @@ class RoadSnapper {
             val geometry = if (reuseGeometry) anchor!!.roadGeometry else fetchLocalGeometry(result, location)
             val enriched = if (geometry.isNotEmpty()) {
                 result.copy(
-                    roadBearing = geometryBearing(geometry, location.bearing.toDouble()),
+                    roadBearing = geometryBearing(
+                        geometry,
+                        result.latitude,
+                        result.longitude,
+                        location.bearing.toDouble()
+                    ),
                     roadGeometry = geometry
                 )
             } else result
@@ -265,10 +270,46 @@ class RoadSnapper {
         } catch (_: Exception) { emptyList() } finally { connection.disconnect() }
     }
 
-    private fun geometryBearing(points: List<Pair<Double, Double>>, fallback: Double): Double {
+    private fun geometryBearing(
+        points: List<Pair<Double, Double>>,
+        nearLat: Double,
+        nearLon: Double,
+        fallback: Double
+    ): Double {
         if (points.size < 2) return fallback
-        val a = points[points.size / 3]
-        val b = points[(points.size * 2 / 3).coerceAtMost(points.lastIndex)]
+
+        // Use the segment nearest the snapped vehicle position. Averaging the
+        // middle third of a route can point across a curve/ramp and make the map
+        // rotate late or camera filtering use the wrong direction.
+        var bestIndex = 0
+        var bestDistance = Double.MAX_VALUE
+        val latScale = 111320.0
+        val lonScale = 111320.0 * kotlin.math.cos(Math.toRadians(nearLat))
+
+        for (i in 0 until points.lastIndex) {
+            val a = points[i]
+            val b = points[i + 1]
+            val ax = (a.second - nearLon) * lonScale
+            val ay = (a.first - nearLat) * latScale
+            val bx = (b.second - nearLon) * lonScale
+            val by = (b.first - nearLat) * latScale
+            val dx = bx - ax
+            val dy = by - ay
+            val len2 = dx * dx + dy * dy
+            val t = if (len2 > 0.0) {
+                (-(ax * dx + ay * dy) / len2).coerceIn(0.0, 1.0)
+            } else 0.0
+            val px = ax + dx * t
+            val py = ay + dy * t
+            val distance = px * px + py * py
+            if (distance < bestDistance) {
+                bestDistance = distance
+                bestIndex = i
+            }
+        }
+
+        val a = points[bestIndex]
+        val b = points[bestIndex + 1]
         val out = FloatArray(2)
         Location.distanceBetween(a.first, a.second, b.first, b.second, out)
 
