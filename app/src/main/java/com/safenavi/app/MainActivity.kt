@@ -447,12 +447,20 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
             }
             locationLabel.text = roadText ?: "현재 도로 추적 중"
 
-            if (isFreeMap() && snapped != null && snapped.roadGeometry.size >= 2) {
+            if (isFreeMap() && !tunnelMode && snapped != null && snapped.roadGeometry.size >= 2) {
                 safeNaviMap.updateRoadGeometry(snapped.roadGeometry)
             }
-            updateNavigationCamera(smooth, firstFix, snapped?.roadBearing)
+
+            // In tunnel/underground mode, lastKnownRoad is metadata from the last
+            // trusted GPS snap. Its bearing/short geometry can become stale after
+            // the vehicle has advanced or the tunnel curves. Keep the road name,
+            // but drive heading/filtering from the dead-reckoned Location itself.
+            val liveRoadBearing = if (tunnelMode) null else snapped?.roadBearing
+            val liveRoadGeometry = if (tunnelMode) emptyList() else (snapped?.roadGeometry ?: emptyList())
+
+            updateNavigationCamera(smooth, firstFix, liveRoadBearing)
             firstFix = false
-            loadNearbySafetyPoints(smooth, roadText, snapped?.roadBearing, snapped?.roadGeometry ?: emptyList())
+            loadNearbySafetyPoints(smooth, roadText, liveRoadBearing, liveRoadGeometry)
         }
     }
 
