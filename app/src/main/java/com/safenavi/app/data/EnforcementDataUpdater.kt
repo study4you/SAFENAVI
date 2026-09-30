@@ -59,7 +59,15 @@ class EnforcementDataUpdater(
         // pre-provenance cache once, then accept only validated camera datasets.
         if (!prefs.getBoolean("legacy_source_quarantine_v2", false)) {
             db.safetyPointDao().deleteAll()
-            prefs.edit()
+
+            // Region versions belonged to the unverifiable legacy cache too.
+            // Remove them so the update screen never claims quarantined data
+            // is still installed after the rows have been cleared.
+            val editor = prefs.edit()
+            ALL_REGIONS.keys.forEach { region ->
+                editor.remove("version_$region")
+            }
+            editor
                 .putBoolean("legacy_source_quarantine_v2", true)
                 .putBoolean("legacy_pruned", true)
                 .apply()
