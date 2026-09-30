@@ -32,6 +32,8 @@ class RoadSnapper {
     private var nextNetworkAttemptAt = 0L
     private var lastGoodSnapAt = 0L
 
+    fun lastKnownRoad(): SnappedRoadPoint? = lastResult
+
     suspend fun snap(location: Location): SnappedRoadPoint? = snapMutex.withLock {
         val fixTimeNanos = location.elapsedRealtimeNanos
         if (fixTimeNanos > 0L && fixTimeNanos < newestFixTimeNanos) {
