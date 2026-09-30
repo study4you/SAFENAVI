@@ -157,10 +157,25 @@ class RoadSnapper {
             // A divided highway can put both carriageways only a few metres apart.
             // Keep the current carriageway unless the new candidate is clearly better;
             // this prevents GPS jitter from hopping between parallel directions.
+            val sameNamedRoad = previousRoad != null &&
+                !selected.roadName.isNullOrBlank() &&
+                !previousRoad.roadName.isNullOrBlank() &&
+                selected.roadName == previousRoad.roadName
+
+            val unnamedButDirectionConsistent = previousRoad != null &&
+                selected.roadName.isNullOrBlank() &&
+                previousRoad.roadName.isNullOrBlank() &&
+                previousRoad.roadBearing?.let { roadBearing ->
+                    val delta = kotlin.math.abs(
+                        ((location.bearing.toDouble() - roadBearing + 540.0) % 360.0) - 180.0
+                    )
+                    delta <= 30.0
+                } == true
+
             val keepPrevious = previousRoad != null &&
                 location.speed > 3f &&
-                previousDistance < 28.0 &&
-                selected.roadName == previousRoad.roadName &&
+                previousDistance < if (sameNamedRoad) 28.0 else 18.0 &&
+                (sameNamedRoad || unnamedButDirectionConsistent) &&
                 selected.snapDistanceMeters + 18.0 >= previousDistance
 
             val result = if (keepPrevious) previousRoad else selected
