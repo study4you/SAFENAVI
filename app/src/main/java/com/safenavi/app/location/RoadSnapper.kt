@@ -172,6 +172,7 @@ class RoadSnapper {
                 selected.roadName == road.roadName
 
             val unnamedButDirectionConsistent = road != null &&
+                location.hasBearing() &&
                 selected.roadName.isNullOrBlank() &&
                 road.roadName.isNullOrBlank() &&
                 road.roadBearing?.let { roadBearing ->
@@ -204,14 +205,27 @@ class RoadSnapper {
                 result.roadName == anchor.roadName
             val cacheFresh = now - geometryFetchedAt < 8000L
             val reuseGeometry = sameRoad && anchorDistance < 65.0 && cacheFresh && anchor!!.roadGeometry.size >= 2
-            val geometry = if (reuseGeometry) anchor!!.roadGeometry else fetchLocalGeometry(result, location)
-            val enriched = if (geometry.isNotEmpty()) {
+            val travelHeading = when {
+                location.hasBearing() && location.speed > 1f -> location.bearing.toDouble()
+                previousRoad?.roadBearing != null -> previousRoad.roadBearing
+                else -> null
+            }
+
+            // Never invent a northbound (0°) heading when Android has no usable
+            // bearing yet. Doing so can request geometry from the wrong branch at
+            // intersections and then rotate/filter the map against that bad path.
+            val geometry = when {
+                reuseGeometry -> anchor!!.roadGeometry
+                travelHeading != null -> fetchLocalGeometry(result, location, travelHeading)
+                else -> emptyList()
+            }
+            val enriched = if (geometry.isNotEmpty() && travelHeading != null) {
                 result.copy(
                     roadBearing = geometryBearing(
                         geometry,
                         result.latitude,
                         result.longitude,
-                        location.bearing.toDouble()
+                        travelHeading
                     ),
                     roadGeometry = geometry
                 )
@@ -253,8 +267,11 @@ class RoadSnapper {
         nextNetworkAttemptAt = now + delay
     }
 
-    private fun fetchLocalGeometry(point: SnappedRoadPoint, location: Location): List<Pair<Double, Double>> {
-        val heading = if (location.hasBearing()) location.bearing.toDouble() else 0.0
+    private fun fetchLocalGeometry(
+        point: SnappedRoadPoint,
+        location: Location,
+        heading: Double
+    ): List<Pair<Double, Double>> {
         val back = destination(point.latitude, point.longitude, heading + 180.0, 70.0)
         val front = destination(point.latitude, point.longitude, heading, 140.0)
         val urlText = "https://router.project-osrm.org/route/v1/driving/" +
