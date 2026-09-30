@@ -187,7 +187,13 @@ class RoadSnapper {
                 Location.distanceBetween(result.latitude, result.longitude, it.latitude, it.longitude, out)
                 out[0].toDouble()
             } ?: Double.MAX_VALUE
-            val sameRoad = anchor != null && result.roadName == anchor.roadName
+            // Never treat two unnamed road segments as the same road merely
+            // because both names are null. Near ramps/intersections that could reuse
+            // geometry from a different branch and rotate/filter against the wrong path.
+            val sameRoad = anchor != null &&
+                !result.roadName.isNullOrBlank() &&
+                !anchor.roadName.isNullOrBlank() &&
+                result.roadName == anchor.roadName
             val cacheFresh = now - geometryFetchedAt < 8000L
             val reuseGeometry = sameRoad && anchorDistance < 65.0 && cacheFresh && anchor!!.roadGeometry.size >= 2
             val geometry = if (reuseGeometry) anchor!!.roadGeometry else fetchLocalGeometry(result, location)
