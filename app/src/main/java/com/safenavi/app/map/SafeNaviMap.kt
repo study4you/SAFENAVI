@@ -278,7 +278,14 @@ class SafeNaviMap(private val mapView: MapView) {
             else -> 420L
         }
         if (forceZoom || ((moved >= 1.5f || bearingDelta >= 1.2) && now - lastCameraUpdateAt >= minCameraInterval)) {
-            current.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), minCameraInterval.toInt() + 120)
+            // Never let one camera animation run longer than the update interval.
+            // Overlapping animations build a queue and make the map appear to
+            // move in delayed steps at higher speed.
+            val animationMs = (minCameraInterval - 30L).coerceAtLeast(120L).toInt()
+            current.animateCamera(
+                CameraUpdateFactory.newCameraPosition(cameraPosition),
+                animationMs
+            )
             lastCameraTarget = target
             lastCameraBearing = smoothedCameraBearing
             lastCameraUpdateAt = now
