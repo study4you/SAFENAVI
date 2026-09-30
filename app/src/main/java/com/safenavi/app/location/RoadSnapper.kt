@@ -157,28 +157,30 @@ class RoadSnapper {
             // A divided highway can put both carriageways only a few metres apart.
             // Keep the current carriageway unless the new candidate is clearly better;
             // this prevents GPS jitter from hopping between parallel directions.
-            val sameNamedRoad = previousRoad != null &&
+            val road = previousRoad
+            val sameNamedRoad = road != null &&
                 !selected.roadName.isNullOrBlank() &&
-                !previousRoad.roadName.isNullOrBlank() &&
-                selected.roadName == previousRoad.roadName
+                !road.roadName.isNullOrBlank() &&
+                selected.roadName == road.roadName
 
-            val unnamedButDirectionConsistent = previousRoad != null &&
+            val unnamedButDirectionConsistent = road != null &&
                 selected.roadName.isNullOrBlank() &&
-                previousRoad.roadName.isNullOrBlank() &&
-                previousRoad.roadBearing?.let { roadBearing ->
+                road.roadName.isNullOrBlank() &&
+                road.roadBearing?.let { roadBearing ->
                     val delta = kotlin.math.abs(
                         ((location.bearing.toDouble() - roadBearing + 540.0) % 360.0) - 180.0
                     )
                     delta <= 30.0
                 } == true
 
-            val keepPrevious = previousRoad != null &&
+            val continuityLimit = if (sameNamedRoad) 28.0 else 18.0
+            val keepPrevious = road != null &&
                 location.speed > 3f &&
-                previousDistance < if (sameNamedRoad) 28.0 else 18.0 &&
+                previousDistance < continuityLimit &&
                 (sameNamedRoad || unnamedButDirectionConsistent) &&
                 selected.snapDistanceMeters + 18.0 >= previousDistance
 
-            val result = if (keepPrevious) previousRoad else selected
+            val result = if (keepPrevious) road!! else selected
             val anchor = geometryAnchor
             val anchorDistance = anchor?.let {
                 val out = FloatArray(1)
