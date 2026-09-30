@@ -89,6 +89,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
     private var safetyTotal = 0
     private var lastGpsCallbackMs = 0L
     private var newestDriveFixNanos = Long.MIN_VALUE
+    private var safetyLookupGeneration = 0L
 
     private val tunnelTicker = object : Runnable {
         override fun run() {
@@ -498,6 +499,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
         snappedRoadBearing: Double?,
         snappedRoadGeometry: List<Pair<Double, Double>>
     ) {
+        val generation = ++safetyLookupGeneration
         lifecycleScope.launch(Dispatchers.IO) {
             val r = 5000.0
             val latD = r / 111320.0
@@ -520,6 +522,12 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
                 location.latitude, location.longitude, heading, points, roadName, snappedRoadGeometry
             ).map { it.point }
             withContext(Dispatchers.Main) {
+                // Database lookups run asynchronously on every driving fix.
+                // Ignore an older lookup if a newer fix has already started,
+                // otherwise stale markers can briefly reappear after the car
+                // has moved past them.
+                if (generation != safetyLookupGeneration) return@withContext
+
                 showSafetyMarkers(pathPoints)
                 driveHint.text = when {
                     pathPoints.isNotEmpty() -> "진행경로 안전정보 ${pathPoints.size}건"
