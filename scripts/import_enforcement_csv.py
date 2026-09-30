@@ -57,11 +57,25 @@ def stable_id(region, management_no, lat, lon, kind):
     value = int.from_bytes(hashlib.sha256(raw).digest()[:8], "big") & ((1 << 63) - 1)
     return value or 1
 
-def camera_type(value):
-    text = (value or "").replace(" ", "")
-    if "구간" in text:
+def camera_type(value, section_type=None, section_length=None):
+    # Public-data standard regltSe:
+    # 01 speed, 02 signal, 03 traffic-lane violation,
+    # 04 illegal parking, 99 other. Multiple values may use '+'.
+    text = (value or "").strip().replace(" ", "")
+    codes = {token.zfill(2) for token in text.replace("/", "+").split("+") if token}
+    labels = text.lower()
+
+    is_speed = "01" in codes or "속도" in labels
+    is_signal = "02" in codes or "신호" in labels
+
+    # SafeNavi currently warns only for driving-relevant speed/signal cameras.
+    # Exclude traffic-lane, parking and miscellaneous-only cameras.
+    if not (is_speed or is_signal):
+        return None
+
+    if section_type or (section_length is not None and section_length > 0):
         return "SECTION"
-    if "신호" in text:
+    if is_signal:
         return "SIGNAL_SPEED"
     return "SPEED"
 
@@ -94,15 +108,27 @@ def main():
                 rejected += 1
                 continue
 
-            kind = camera_type(first(row, "단속구분", "단속유형", "카메라구분"))
-            speed = integer(first(row, "제한속도", "제한속도(km/h)", "속도제한"))
-            if speed is not None and not (10 <= speed <= 130):
-                rejected += 1
-                continue
-
+            section_type = first(row, "단속구간위치구분", "단속구간구분")
             section_length = number(first(row, "과속단속구간길이", "단속구간길이", "구간길이"))
             if section_length is not None and section_length <= 0:
                 section_length = None
+
+            kind = camera_type(
+                first(row, "단속구분", "단속유형", "카메라구분"),
+                section_type,
+                section_length,
+            )
+            if kind is None:
+                rejected += 1
+                continue
+
+            speed = integer(first(row, "제한속도", "제한속도(km/h)", "속도제한"))
+            # The public-data standard uses 0 when no speed limit is specified.
+            if speed == 0:
+                speed = None
+            if speed is not None and not (10 <= speed <= 130):
+                rejected += 1
+                continue
 
             management_no = first(row, "카메라관리번호", "무인교통단속카메라관리번호", "관리번호")
             point = {
@@ -114,7 +140,7 @@ def main():
                 "roadName": first(row, "도로노선명", "도로명", "도로명주소"),
                 "locationName": first(row, "설치장소", "소재지도로명주소", "소재지지번주소"),
                 "direction": None,
-                "sectionType": first(row, "단속구간위치구분"),
+                "sectionType": section_type,
                 "sectionLength": section_length,
                 "dataDate": first(row, "데이터기준일자", "기준일자"),
                 "source": "Korean Public Data Standard",
