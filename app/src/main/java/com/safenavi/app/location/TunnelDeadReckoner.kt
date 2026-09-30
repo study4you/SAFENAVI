@@ -36,6 +36,14 @@ class TunnelDeadReckoner {
         val next = move(base, headingDeg, speedMps * dt)
         next.speed = speedMps.toFloat()
         next.bearing = headingDeg.toFloat()
+
+        // A dead-reckoned point is a new location fix. Give it the prediction
+        // timestamp instead of inheriting the last GPS fix timestamp from the
+        // copied Location, so stale-result filtering can correctly order tunnel
+        // positions and never accept an older asynchronous result afterward.
+        next.elapsedRealtimeNanos = nowMs * 1_000_000L
+        next.time = System.currentTimeMillis()
+
         trusted = Location(next)
         lastUpdateMs = nowMs
         return next
