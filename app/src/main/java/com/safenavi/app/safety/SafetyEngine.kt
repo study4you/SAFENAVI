@@ -10,7 +10,8 @@ class SafetyEngine {
         lon: Double,
         heading: Double,
         points: List<SafetyPoint>,
-        currentRoadName: String? = null
+        currentRoadName: String? = null,
+        currentRoadGeometry: List<Pair<Double, Double>> = emptyList()
     ): List<SafetyAlert> {
         val candidates = points.mapNotNull { p ->
             // Only enforcement cameras. Speed-limit signs and other road-safety
@@ -37,6 +38,22 @@ class SafetyEngine {
                 else -> 20.0
             }
             if (lateral > maxLateral) return@mapNotNull null
+
+            // When snapped road geometry is available, require the camera to lie
+            // close to that actual road shape. This rejects nearby parallel roads,
+            // opposite carriageways and underground/overpass roads that happen to
+            // be inside the same broad forward cone.
+            if (currentRoadGeometry.size >= 2) {
+                val roadDistance = distanceToPolylineMeters(
+                    p.latitude, p.longitude, currentRoadGeometry
+                )
+                val maxRoadDistance = when {
+                    d < 250.0 -> 24.0
+                    d < 700.0 -> 20.0
+                    else -> 16.0
+                }
+                if (roadDistance > maxRoadDistance) return@mapNotNull null
+            }
 
             // Use direction metadata when the source provides it. Missing direction
             // must not hide a real camera; forward/lateral geometry still filters it.
@@ -80,4 +97,33 @@ class SafetyEngine {
             .replace("·", "")
             .trim()
 
+    private fun distanceToPolylineMeters(
+        lat: Double,
+        lon: Double,
+        points: List<Pair<Double, Double>>
+    ): Double {
+        var best = Double.MAX_VALUE
+        val latScale = 111320.0
+        val lonScale = 111320.0 * kotlin.math.cos(Math.toRadians(lat))
+
+        for (i in 0 until points.lastIndex) {
+            val a = points[i]
+            val b = points[i + 1]
+            val ax = (a.second - lon) * lonScale
+            val ay = (a.first - lat) * latScale
+            val bx = (b.second - lon) * lonScale
+            val by = (b.first - lat) * latScale
+            val dx = bx - ax
+            val dy = by - ay
+            val len2 = dx * dx + dy * dy
+            val t = if (len2 > 0.0) {
+                (-(ax * dx + ay * dy) / len2).coerceIn(0.0, 1.0)
+            } else 0.0
+            val px = ax + dx * t
+            val py = ay + dy * t
+            val dist = kotlin.math.sqrt(px * px + py * py)
+            if (dist < best) best = dist
+        }
+        return best
+    }
 }
