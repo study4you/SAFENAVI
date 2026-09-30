@@ -208,11 +208,14 @@ class SafeNaviMap(private val mapView: MapView) {
             smoothedTargetLon = rawLon
         } else {
             val speed = if (location.hasSpeed()) location.speed else 0f
+            // MainActivity already smooths the snapped vehicle position.
+            // Keep only light display smoothing here; heavy second-stage
+            // smoothing makes the vehicle/camera visibly lag behind at speed.
             val positionAlpha = when {
-                speed >= 20f -> 0.72
-                speed >= 10f -> 0.62
-                speed >= 3f -> 0.50
-                else -> 0.34
+                speed >= 20f -> 0.92
+                speed >= 10f -> 0.86
+                speed >= 3f -> 0.76
+                else -> 0.52
             }
             smoothedTargetLat += (rawLat - smoothedTargetLat) * positionAlpha
             smoothedTargetLon += (rawLon - smoothedTargetLon) * positionAlpha
@@ -223,7 +226,7 @@ class SafeNaviMap(private val mapView: MapView) {
         val projected = offset(vehicleTarget, effectiveHeading, lookAheadMeters)
         val previousLookAhead = lookAheadTarget
         val target = if (previousLookAhead == null || forceZoom) projected else {
-            val alpha = if (speedMps >= 15.0) 0.62 else 0.48
+            val alpha = if (speedMps >= 15.0) 0.82 else 0.68
             LatLng(
                 previousLookAhead.latitude + (projected.latitude - previousLookAhead.latitude) * alpha,
                 previousLookAhead.longitude + (projected.longitude - previousLookAhead.longitude) * alpha
