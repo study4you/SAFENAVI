@@ -429,7 +429,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
             }
             updateNavigationCamera(smooth, firstFix)
             firstFix = false
-            loadNearbySafetyPoints(smooth, roadText, snapped?.roadBearing)
+            loadNearbySafetyPoints(smooth, roadText, snapped?.roadBearing, snapped?.roadGeometry ?: emptyList())
         }
     }
 
@@ -473,7 +473,8 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
     private fun loadNearbySafetyPoints(
         location: Location,
         roadName: String?,
-        snappedRoadBearing: Double?
+        snappedRoadBearing: Double?,
+        snappedRoadGeometry: List<Pair<Double, Double>>
     ) {
         lifecycleScope.launch(Dispatchers.IO) {
             val r = 5000.0
@@ -494,7 +495,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
                 else -> navigationHeading.toDouble()
             }
             val pathPoints = safetyEngine.findAhead(
-                location.latitude, location.longitude, heading, points, roadName
+                location.latitude, location.longitude, heading, points, roadName, snappedRoadGeometry
             ).map { it.point }
             withContext(Dispatchers.Main) {
                 showSafetyMarkers(pathPoints)
