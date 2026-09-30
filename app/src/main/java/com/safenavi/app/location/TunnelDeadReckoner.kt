@@ -17,7 +17,7 @@ class TunnelDeadReckoner {
     fun acceptGps(location: Location): Location {
         val now = location.elapsedRealtimeNanos.takeIf { it > 0L }?.div(1_000_000L)
             ?: android.os.SystemClock.elapsedRealtime()
-        val good = location.accuracy <= 35f
+        val good = location.hasAccuracy() && location.accuracy <= 35f
         if (good) {
             trusted = Location(location)
             if (location.hasBearing() && location.speed > 1.5f) headingDeg = location.bearing.toDouble()
