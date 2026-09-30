@@ -15,6 +15,7 @@ import kotlin.math.*
 class NaverDrivingMap {
     private var map: NaverMap? = null
     private val safetyMarkers = mutableListOf<Marker>()
+    private var lastSafetyMarkerKeys: List<String> = emptyList()
 
     fun attach(naverMap: NaverMap) {
         map = naverMap
@@ -54,9 +55,16 @@ class NaverDrivingMap {
     }
 
     fun showSafetyPoints(points: List<SafetyPoint>) {
+        val naverMap = map ?: return
+        val markerKeys = points
+            .map { point ->
+                "${point.id}:${point.type}:${point.latitude}:${point.longitude}:${point.speedLimit ?: ""}"
+            }
+            .sorted()
+        if (markerKeys == lastSafetyMarkerKeys) return
+
         safetyMarkers.forEach { it.map = null }
         safetyMarkers.clear()
-        val naverMap = map ?: return
         points.forEach { point ->
             Marker().apply {
                 position = LatLng(point.latitude, point.longitude)
@@ -69,6 +77,7 @@ class NaverDrivingMap {
                 map = naverMap
             }.also(safetyMarkers::add)
         }
+        lastSafetyMarkerKeys = markerKeys
     }
 
     private fun pointAhead(lat: Double, lon: Double, bearing: Double, meters: Double): LatLng {
