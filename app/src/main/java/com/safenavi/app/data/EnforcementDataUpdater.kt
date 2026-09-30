@@ -53,9 +53,16 @@ class EnforcementDataUpdater(
     }
 
     suspend fun pruneLegacyData() = withContext(Dispatchers.IO) {
-        if (!prefs.getBoolean("legacy_pruned", false)) {
-            db.safetyPointDao().deleteNonEnforcement()
-            prefs.edit().putBoolean("legacy_pruned", true).apply()
+        // Data installed by older builds did not record dataset provenance.
+        // Some ROAD_SAFETY rows used SPEED/SIGNAL_SPEED types, so type-based
+        // pruning cannot distinguish them from verified camera data. Clear the
+        // pre-provenance cache once, then accept only validated camera datasets.
+        if (!prefs.getBoolean("legacy_source_quarantine_v2", false)) {
+            db.safetyPointDao().deleteAll()
+            prefs.edit()
+                .putBoolean("legacy_source_quarantine_v2", true)
+                .putBoolean("legacy_pruned", true)
+                .apply()
         }
     }
 
