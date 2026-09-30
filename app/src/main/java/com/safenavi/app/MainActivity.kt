@@ -390,6 +390,9 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
             // the RoadSnapper cache lifetime. Keep moving on the predicted point,
             // while reusing the last road metadata for heading/name filtering.
             val snapped = if (tunnelMode) roadSnapper.lastKnownRoad() else roadSnapper.snap(raw)
+            if (!tunnelMode) {
+                tunnelReckoner.alignToRoad(snapped?.roadBearing)
+            }
 
             // Road snapping may involve network I/O. If a newer GPS/tunnel fix
             // arrived while this coroutine was waiting, never let this older
