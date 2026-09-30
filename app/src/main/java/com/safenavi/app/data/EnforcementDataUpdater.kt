@@ -158,18 +158,29 @@ class EnforcementDataUpdater(
                 failed += region
                 continue
             }
-            val dataText = downloadText(BASE + path) { read, total, speed ->
+            val dataBytes = downloadBytes(BASE + path) { read, total, speed ->
                 val knownTotal = if (expectedBytes > 0L) expectedBytes else total
                 val filePercent = if (knownTotal > 0) (read * 100 / knownTotal).toInt().coerceIn(0, 100) else 0
                 val overall = (((selectedIndex.toDouble() + filePercent / 100.0) / selectedCount) * 100).toInt().coerceIn(0, 99)
                 onProgress?.invoke(DownloadProgress(overall, speed, ALL_REGIONS[region] ?: region))
             }
-            if (dataText == null) {
+            if (dataBytes == null) {
                 failed += region
                 continue
             }
 
-            if (expectedBytes > 0L && dataText.toByteArray(Charsets.UTF_8).size.toLong() != expectedBytes) {
+            if (expectedBytes > 0L && dataBytes.size.toLong() != expectedBytes) {
+                failed += region
+                continue
+            }
+            val declaredSha256 = item.optString("sha256").lowercase()
+            val actualSha256 = sha256(dataBytes)
+            if (declaredSha256.length != 64 || actualSha256 != declaredSha256) {
+                failed += region
+                continue
+            }
+
+            val dataText = try { dataBytes.toString(Charsets.UTF_8) } catch (_: Exception) {
                 failed += region
                 continue
             }
@@ -193,13 +204,10 @@ class EnforcementDataUpdater(
                 continue
             }
             val declaredCount = item.optInt("count", -1)
-            val declaredSha256 = item.optString("sha256").lowercase()
-            // Production datasets must declare count + SHA-256 so a truncated,
-            // stale or tampered file can never replace the installed region.
-            val actualSha256 = sha256(dataText)
+            // Production datasets must declare count + SHA-256. Raw bytes are
+            // verified before UTF-8 decoding so integrity checks match the
+            // published file exactly.
             if (declaredCount < 1 ||
-                declaredSha256.length != 64 ||
-                actualSha256 != declaredSha256 ||
                 points.size != declaredCount
             ) {
                 failed += region
@@ -290,12 +298,12 @@ class EnforcementDataUpdater(
         return result
     }
 
-    private fun sha256(text: String): String =
+    private fun sha256(bytes: ByteArray): String =
         java.security.MessageDigest.getInstance("SHA-256")
-            .digest(text.toByteArray(Charsets.UTF_8))
+            .digest(bytes)
             .joinToString("") { "%02x".format(it) }
 
-    private fun downloadText(urlText: String, progress: ((Long, Long, Long) -> Unit)? = null): String? {
+    private fun downloadBytes(urlText: String, progress: ((Long, Long, Long) -> Unit)? = null): ByteArray? {
         val connection = (URL(urlText).openConnection() as HttpURLConnection).apply {
             requestMethod = "GET"
             connectTimeout = 8000
@@ -321,11 +329,14 @@ class EnforcementDataUpdater(
                     progress?.invoke(read, total, read * 1000L / elapsed)
                 }
             }
-            out.toString(Charsets.UTF_8.name())
+            out.toByteArray()
         } catch (_: Exception) {
             null
         } finally {
             connection.disconnect()
         }
     }
+
+    private fun downloadText(urlText: String): String? =
+        downloadBytes(urlText)?.toString(Charsets.UTF_8)
 }
