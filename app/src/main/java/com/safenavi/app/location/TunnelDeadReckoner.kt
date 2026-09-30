@@ -48,6 +48,15 @@ class TunnelDeadReckoner {
         headingDeg = (headingDeg + delta * 0.12 + 360.0) % 360.0
     }
 
+    fun alignToRoad(roadBearing: Double?) {
+        if (trusted == null || roadBearing == null || speedMps < 1.5) return
+        val normalized = ((roadBearing % 360.0) + 360.0) % 360.0
+        val delta = ((normalized - headingDeg + 540.0) % 360.0) - 180.0
+        // Road geometry is more stable than the phone compass while moving.
+        // Blend toward it rather than snapping instantly so tunnel entry stays smooth.
+        headingDeg = (headingDeg + delta.coerceIn(-35.0, 35.0) * 0.45 + 360.0) % 360.0
+    }
+
     private fun move(from: Location, bearing: Double, meters: Double): Location {
         val r = 6371000.0
         val d = meters / r
