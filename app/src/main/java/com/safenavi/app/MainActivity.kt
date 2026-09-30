@@ -88,6 +88,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
     private var followMode = true
     private var safetyTotal = 0
     private var lastGpsCallbackMs = 0L
+    private var newestDriveFixNanos = Long.MIN_VALUE
 
     private val tunnelTicker = object : Runnable {
         override fun run() {
@@ -374,8 +375,20 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
     }
 
     private fun processDriveLocation(raw: Location, gpsAccuracy: Float?) {
+        val fixNanos = raw.elapsedRealtimeNanos
+        if (fixNanos > 0L) {
+            if (fixNanos < newestDriveFixNanos) return
+            newestDriveFixNanos = fixNanos
+        }
+
         lifecycleScope.launch {
             val snapped = roadSnapper.snap(raw)
+
+            // Road snapping may involve network I/O. If a newer GPS/tunnel fix
+            // arrived while this coroutine was waiting, never let this older
+            // result move the vehicle/camera backwards and create visible jitter.
+            if (fixNanos > 0L && fixNanos < newestDriveFixNanos) return@launch
+
             val displayLocation = Location(raw).apply {
                 if (snapped != null) {
                     latitude = snapped.latitude
