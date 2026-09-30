@@ -234,7 +234,18 @@ class RoadSnapper {
         val b = points[(points.size * 2 / 3).coerceAtMost(points.lastIndex)]
         val out = FloatArray(2)
         Location.distanceBetween(a.first, a.second, b.first, b.second, out)
-        return out[1].toDouble()
+
+        // Route geometry can be returned in either direction. Normalize it to
+        // the direction of travel so camera filtering never treats the same
+        // road geometry as the opposite carriageway solely because its point
+        // order is reversed.
+        var bearing = ((out[1].toDouble() % 360.0) + 360.0) % 360.0
+        val travel = ((fallback % 360.0) + 360.0) % 360.0
+        val delta = kotlin.math.abs(((bearing - travel + 540.0) % 360.0) - 180.0)
+        if (delta > 90.0) {
+            bearing = (bearing + 180.0) % 360.0
+        }
+        return bearing
     }
 
     private fun destination(lat: Double, lon: Double, bearing: Double, meters: Double): Pair<Double, Double> {
