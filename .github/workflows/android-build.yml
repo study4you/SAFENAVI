@@ -51,6 +51,9 @@ jobs:
               -dname "CN=SafeNavi Debug,O=SafeNavi,C=KR"
           fi
 
+      - name: Run unit tests
+        run: gradle --no-daemon testDebugUnitTest --stacktrace
+
       - name: Build debug APK
         env:
           NAVER_MAP_CLIENT_ID: ${{ secrets.NAVER_MAP_CLIENT_ID }}

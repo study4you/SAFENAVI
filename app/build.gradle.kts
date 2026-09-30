@@ -35,4 +35,5 @@ dependencies {
     implementation("com.naver.maps:map-sdk:3.24.0")
     implementation("org.maplibre.gl:android-sdk:13.6.1")
     kapt("androidx.room:room-compiler:2.7.2")
+    testImplementation("junit:junit:4.13.2")
 }
