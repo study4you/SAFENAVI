@@ -135,11 +135,19 @@ class RoadSnapper {
                     )
                     // Strong hysteresis: a parallel carriageway must be substantially
                     // better before we allow a lane-side switch.
-                    val directionPenalty = candidate.roadBearing?.let {
-                        val d = kotlin.math.abs(((location.bearing - it + 540.0) % 360.0) - 180.0)
-                        d * 0.35
-                    } ?: 0.0
-                    candidate.snapDistanceMeters + continuity[0] * 1.8 + directionPenalty
+                    // Candidate waypoints from /nearest do not include a road
+                    // bearing yet, so use the previously accepted local road
+                    // geometry as an additional carriageway-continuity signal.
+                    // This is much more useful than point-to-point continuity on
+                    // divided roads where both carriageways can be only metres apart.
+                    val geometryPenalty = if (previousRoad.roadGeometry.size >= 2) {
+                        distanceToPolylineMeters(
+                            candidate.latitude,
+                            candidate.longitude,
+                            previousRoad.roadGeometry
+                        ).coerceAtMost(40.0) * 1.4
+                    } else 0.0
+                    candidate.snapDistanceMeters + continuity[0] * 1.15 + geometryPenalty
                 } ?: candidates.first()
             } else {
                 candidates.minByOrNull { it.snapDistanceMeters } ?: candidates.first()
@@ -268,6 +276,37 @@ class RoadSnapper {
                 }
             }
         } catch (_: Exception) { emptyList() } finally { connection.disconnect() }
+    }
+
+    private fun distanceToPolylineMeters(
+        lat: Double,
+        lon: Double,
+        points: List<Pair<Double, Double>>
+    ): Double {
+        if (points.size < 2) return Double.MAX_VALUE
+        val latScale = 111320.0
+        val lonScale = 111320.0 * kotlin.math.cos(Math.toRadians(lat))
+        var best = Double.MAX_VALUE
+
+        for (i in 0 until points.lastIndex) {
+            val a = points[i]
+            val b = points[i + 1]
+            val ax = (a.second - lon) * lonScale
+            val ay = (a.first - lat) * latScale
+            val bx = (b.second - lon) * lonScale
+            val by = (b.first - lat) * latScale
+            val dx = bx - ax
+            val dy = by - ay
+            val len2 = dx * dx + dy * dy
+            val t = if (len2 > 0.0) {
+                (-(ax * dx + ay * dy) / len2).coerceIn(0.0, 1.0)
+            } else 0.0
+            val px = ax + dx * t
+            val py = ay + dy * t
+            val distance = kotlin.math.sqrt(px * px + py * py)
+            if (distance < best) best = distance
+        }
+        return best
     }
 
     private fun geometryBearing(
