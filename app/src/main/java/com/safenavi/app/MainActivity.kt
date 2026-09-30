@@ -383,7 +383,13 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
         }
 
         lifecycleScope.launch {
-            val snapped = roadSnapper.snap(raw)
+            val tunnelMode = gpsAccuracy == null
+            // During a GPS outage the dead reckoner already advances the vehicle
+            // from speed + heading. Re-snapping that predicted point to a cached
+            // network result can freeze the car at the tunnel entrance for up to
+            // the RoadSnapper cache lifetime. Keep moving on the predicted point,
+            // while reusing the last road metadata for heading/name filtering.
+            val snapped = if (tunnelMode) roadSnapper.lastKnownRoad() else roadSnapper.snap(raw)
 
             // Road snapping may involve network I/O. If a newer GPS/tunnel fix
             // arrived while this coroutine was waiting, never let this older
@@ -391,7 +397,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
             if (fixNanos > 0L && fixNanos < newestDriveFixNanos) return@launch
 
             val displayLocation = Location(raw).apply {
-                if (snapped != null) {
+                if (!tunnelMode && snapped != null) {
                     latitude = snapped.latitude
                     longitude = snapped.longitude
                 }
