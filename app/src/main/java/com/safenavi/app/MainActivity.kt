@@ -384,7 +384,11 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
         }
 
         lifecycleScope.launch {
-            val tunnelMode = gpsAccuracy == null
+            // TunnelDeadReckoner already replaces GPS fixes worse than 35 m
+            // with a predicted position. Treat those degraded fixes exactly like
+            // a GPS outage here too; otherwise the predicted point would be sent
+            // back through RoadSnapper as if it were a trusted satellite fix.
+            val tunnelMode = gpsAccuracy == null || gpsAccuracy > 35f
             val recoveringFromTunnel = !tunnelMode && tunnelPredictionActive
             // During a GPS outage the dead reckoner already advances the vehicle
             // from speed + heading. Re-snapping that predicted point to a cached
