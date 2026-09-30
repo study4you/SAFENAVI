@@ -1,0 +1,26 @@
+name: Validate enforcement data
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "data/enforcement/**"
+      - "scripts/import_enforcement_csv.py"
+      - "scripts/validate_enforcement_data.py"
+      - ".github/workflows/enforcement-data-validate.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate enforcement datasets
+        run: python scripts/validate_enforcement_data.py
