@@ -429,7 +429,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
             }
             updateNavigationCamera(smooth, firstFix)
             firstFix = false
-            loadNearbySafetyPoints(smooth, roadText)
+            loadNearbySafetyPoints(smooth, roadText, snapped?.roadBearing)
         }
     }
 
@@ -470,7 +470,11 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
         }
     }
 
-    private fun loadNearbySafetyPoints(location: Location, roadName: String?) {
+    private fun loadNearbySafetyPoints(
+        location: Location,
+        roadName: String?,
+        snappedRoadBearing: Double?
+    ) {
         lifecycleScope.launch(Dispatchers.IO) {
             val r = 5000.0
             val latD = r / 111320.0
@@ -481,7 +485,10 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
                 location.longitude - lonD,
                 location.longitude + lonD
             )
-            val heading = when {
+            // Prefer the snapped road direction when available. GPS/device heading
+            // can briefly point toward an adjacent or opposite carriageway, while
+            // the snapped road bearing represents the road geometry being followed.
+            val heading = snappedRoadBearing ?: when {
                 location.hasBearing() && location.speed > 0.35f -> location.bearing.toDouble()
                 gpsHeading != 0f -> gpsHeading.toDouble()
                 else -> navigationHeading.toDouble()
