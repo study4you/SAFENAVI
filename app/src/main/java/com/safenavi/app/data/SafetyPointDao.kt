@@ -19,4 +19,7 @@ interface SafetyPointDao {
 
     @Query("DELETE FROM safety_points WHERE type NOT IN ('SPEED','SIGNAL_SPEED','SECTION')")
     suspend fun deleteNonEnforcement()
+
+    @Query("DELETE FROM safety_points")
+    suspend fun deleteAll()
 }
