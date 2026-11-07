@@ -221,9 +221,22 @@ class DrivingLocationService : Service(), LocationListener {
         }
 
         scope.launch {
-            val snapped = roadSnapper.snap(driveLocation)
-            val currentLat = snapped?.latitude ?: driveLocation.latitude
-            val currentLon = snapped?.longitude ?: driveLocation.longitude
+            // Predicted tunnel fixes must never be snapped back to the last network
+            // coordinate. Keep the moving dead-reckoned position and reuse only road
+            // metadata; real GPS fixes continue to refresh the snap and road heading.
+            val tunnelMode = TunnelModePolicy.isPredicted(driveLocation.accuracy)
+            val snapped = if (tunnelMode) {
+                roadSnapper.lastKnownRoad()
+            } else {
+                roadSnapper.snap(driveLocation)
+            }
+            if (!tunnelMode) {
+                tunnelReckoner.alignToRoad(snapped?.roadBearing)
+            }
+            val currentLat = if (tunnelMode) driveLocation.latitude
+                else snapped?.latitude ?: driveLocation.latitude
+            val currentLon = if (tunnelMode) driveLocation.longitude
+                else snapped?.longitude ?: driveLocation.longitude
 
             val r = 2000.0
             val latD = r / 111320.0
