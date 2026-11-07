@@ -283,7 +283,7 @@ class DrivingLocationService : Service(), LocationListener {
         if (violation && !speeding) {
             speeding = true
             handler.removeCallbacks(warningTone)
-        handler.removeCallbacks(tunnelTicker)
+            // Keep tunnel prediction running while the speed-warning tone is active.
             handler.post(warningTone)
         } else if (!violation && speeding) {
             speeding = false
