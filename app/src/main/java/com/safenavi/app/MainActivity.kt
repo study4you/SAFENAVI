@@ -35,6 +35,7 @@ import com.safenavi.app.data.SafetyDatabase
 import com.safenavi.app.location.DrivingLocationService
 import com.safenavi.app.location.RoadSnapper
 import com.safenavi.app.location.TunnelDeadReckoner
+import com.safenavi.app.location.TunnelModePolicy
 import com.safenavi.app.map.NaverDrivingMap
 import com.safenavi.app.map.SafeNaviMap
 import org.maplibre.android.MapLibre
@@ -388,7 +389,7 @@ class MainActivity : AppCompatActivity(), LocationListener, SensorEventListener,
             // with a predicted position. Treat those degraded fixes exactly like
             // a GPS outage here too; otherwise the predicted point would be sent
             // back through RoadSnapper as if it were a trusted satellite fix.
-            val tunnelMode = gpsAccuracy == null || gpsAccuracy > 35f
+            val tunnelMode = gpsAccuracy == null || TunnelModePolicy.isPredicted(gpsAccuracy)
             val recoveringFromTunnel = !tunnelMode && tunnelPredictionActive
             // During a GPS outage the dead reckoner already advances the vehicle
             // from speed + heading. Re-snapping that predicted point to a cached
